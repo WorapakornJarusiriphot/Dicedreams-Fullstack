@@ -1,6 +1,5 @@
-// create config file for auth
-module.exports = {
+require('dotenv').config();
 
-    DOMAIN: "http://localhost:8080",
-   
+module.exports = {
+    DOMAIN: process.env.DOMAIN,
 }
