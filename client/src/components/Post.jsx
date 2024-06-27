@@ -40,7 +40,7 @@ export default function Post() {
           />
           <Button
             variant="contained"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/create-post')}
             sx={{ backgroundColor: 'crimson', height: '100px' }}
           >
             Post
