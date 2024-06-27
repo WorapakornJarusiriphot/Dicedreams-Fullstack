@@ -1,4 +1,3 @@
-// create function  in src/controllers/userController.js:
 const db = require("../models");
 const moment = require("moment");
 const bcrypt = require("bcryptjs");
@@ -9,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const { promisify } = require("util");
 const writeFileAsync = promisify(fs.writeFile);
-const config = require("../configs/config");
+const config = { DOMAIN: process.env.DOMAIN };
 
 const User = db.user;
 
@@ -36,7 +35,6 @@ exports.create = async (req, res, next) => {
 
     // Create a user
     const user = {
-      // เอาจาก model user.js
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       username: req.body.username,
@@ -49,7 +47,6 @@ exports.create = async (req, res, next) => {
         ? await saveImageToDisk(req.body.user_image)
         : req.body.user_image,
     };
-    // Save user in the database ใช้ async await แทนการใช้ promise
 
     await User.create(user);
 
@@ -63,7 +60,6 @@ exports.create = async (req, res, next) => {
 
 exports.findAll = async (req, res, next) => {
   try {
-    // find all User information from database ใช้ async await แทนการใช้ promise is not return password
     const users = await User.findAll({
       attributes: { exclude: ["password"] },
     });
