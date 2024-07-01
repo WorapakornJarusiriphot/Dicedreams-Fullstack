@@ -89,7 +89,7 @@ function LoginPage() {
                 {isRegister ? (
                     <Box width="100%">
                         <TextField
-                            label="Name-LastName"
+                            label="Name"
                             variant="filled"
                             fullWidth
                             margin="normal"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     AppBar, Toolbar, IconButton, Typography, Input, Box, Drawer,
     List, ListItem, ListItemText, Button
@@ -6,13 +6,26 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCircleUser } from 'react-icons/fa6';
-import FilterComponent from './FilterComponent'; // Ensure the path is correct
+import axios from 'axios';
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // State to check if the user is logged in
-    const navigate = useNavigate(); // Hook for navigation
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check login status
+        const checkLoginStatus = async () => {
+            try {
+                const response = await axios.get('/api/auth/status');
+                setIsLoggedIn(response.data.loggedIn);
+            } catch (error) {
+                console.log('Failed to check login status');
+            }
+        };
+        checkLoginStatus();
+    }, []);
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -61,9 +74,7 @@ const Navbar = () => {
                 <ListItem button component={Link} to="/rules">
                     <ListItemText primary="Website Rules" />
                 </ListItem>
-                <ListItem>
-                    <FilterComponent />
-                </ListItem>
+                {/* Add more items if needed */}
             </List>
         </Box>
     );
@@ -106,7 +117,7 @@ const Navbar = () => {
                     />
                 </Box>
                 {isLoggedIn ? (
-                    <IconButton color="inherit" onClick={navigateToLogin}>
+                    <IconButton color="inherit" onClick={() => navigate('/profile')}>
                         <FaCircleUser size={24} />
                     </IconButton>
                 ) : (
