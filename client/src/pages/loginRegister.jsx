@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, Link, Radio, RadioGroup, FormControlLabel, FormLabel, ButtonGroup } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function LoginPage() {
     const [isRegister, setIsRegister] = useState(false);
@@ -26,18 +27,38 @@ function LoginPage() {
         }
     }, [location]);
 
-    const handleLogin = () => {
-        // Logic to handle login
-        console.log('Login button clicked');
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('/api/auth/login', {
+                usernameOrEmail: formData.usernameOrEmail,
+                password: formData.loginPassword
+            });
+            console.log('Login successful', response.data);
+            // Handle successful login (e.g., store token, navigate to home page)
+        } catch (error) {
+            console.error('Error logging in', error.response?.data || error.message);
+        }
     };
 
-    const handleRegister = () => {
-        // Logic to handle register
-        console.log('Register button clicked');
+    const handleRegister = async () => {
+        try {
+            const response = await axios.post('/api/auth/register', {
+                username: formData.username,
+                email: formData.email,
+                password: formData.password,
+                name: formData.name,
+                telephone: formData.telephone,
+                dateOfBirth: formData.dateOfBirth,
+                gender: formData.gender
+            });
+            console.log('User registered successfully', response.data);
+            // Handle successful registration (e.g., navigate to login page)
+        } catch (error) {
+            console.error('Error registering user', error.response?.data || error.message);
+        }
     };
 
     const handleCancel = () => {
-        // Logic to handle cancel and navigate to home page
         navigate('/');
     };
 
@@ -89,7 +110,7 @@ function LoginPage() {
                 {isRegister ? (
                     <Box width="100%">
                         <TextField
-                            label="Name-LastName"
+                            label="Name"
                             variant="filled"
                             fullWidth
                             margin="normal"
@@ -150,8 +171,8 @@ function LoginPage() {
                             variant="filled"
                             fullWidth
                             margin="normal"
-                            name="dob"
-                            value={formData.dob}
+                            name="dateOfBirth"
+                            value={formData.dateOfBirth}
                             onChange={handleInputChange}
                             InputProps={{ style: { color: 'white' } }}
                             InputLabelProps={{ style: { color: 'white' }, shrink: true }}
@@ -190,8 +211,8 @@ function LoginPage() {
                             variant="filled"
                             fullWidth
                             margin="normal"
-                            name="password"
-                            value={formData.password}
+                            name="loginPassword"
+                            value={formData.loginPassword}
                             onChange={handleInputChange}
                             InputProps={{ style: { color: 'white' } }}
                             InputLabelProps={{ style: { color: 'white' } }}

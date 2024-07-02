@@ -4,7 +4,7 @@ import Home from '../pages/Home';
 import Post from "../components/Post";
 import CreatePost from "../components/Createpost";
 import Rules from "../pages/Rule";
-import LoginPage from "../pages/login/loginRegister";
+import LoginPage from "../pages/loginRegister";
 import NotificationPage from "../pages/NotificationPage";
 import ParticipationHistory from '../pages/ParticipationHistory';
 

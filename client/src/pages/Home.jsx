@@ -1,6 +1,6 @@
 import React from 'react';
 import RecipeReviewCard from '../components/RecipeReviewCard';
-import CreatePost from '../components/CreatePost';
+import CreatePost from '../components/Createpost';
 import Post from '../components/Post';
 import { EventProvider } from '../components/EventContext';
 import { Box } from '@mui/material';
