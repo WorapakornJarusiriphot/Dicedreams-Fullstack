@@ -4,6 +4,7 @@ import {
     List, ListItem, ListItemText, Button
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import InfoIcon from '@mui/icons-material/Info';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCircleUser } from 'react-icons/fa6';
 import axios from 'axios';
@@ -15,7 +16,6 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check login status
         const checkLoginStatus = async () => {
             try {
                 const response = await axios.get('/api/auth/status');
@@ -38,6 +38,12 @@ const Navbar = () => {
         setSearchQuery(event.target.value);
     };
 
+    const handleSearchSubmit = (event) => {
+        if (event.key === 'Enter') {
+            console.log('Search query:', searchQuery);
+        }
+    };
+
     const navigateToLogin = () => {
         navigate('/login');
     };
@@ -52,6 +58,21 @@ const Navbar = () => {
 
     const navigateToParticipationHistory = () => {
         navigate('/participation-history');
+    };
+
+    // Update this function to accept event ID and navigate to details
+    const navigateToDetails = (eventId) => {
+        navigate(`/events/${eventId}`);
+    };
+
+    const handleLogout = async () => {
+        try {
+            await axios.post('/api/auth/logout');
+            setIsLoggedIn(false);
+            navigate('/');
+        } catch (error) {
+            console.log('Failed to logout');
+        }
     };
 
     const drawerList = () => (
@@ -113,23 +134,32 @@ const Navbar = () => {
                         placeholder="Search..."
                         value={searchQuery}
                         onChange={handleSearchChange}
+                        onKeyDown={handleSearchSubmit}
                         sx={{ marginLeft: 2 }}
                     />
                 </Box>
                 {isLoggedIn ? (
-                    <IconButton color="inherit" onClick={() => navigate('/profile')}>
-                        <FaCircleUser size={24} />
-                    </IconButton>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <IconButton color="inherit" onClick={() => navigate('/profile')}>
+                            <FaCircleUser size={24} />
+                        </IconButton>
+                        <Button color="inherit" onClick={handleLogout}>Log out</Button>
+                    </Box>
                 ) : (
                     <>
                         <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
                         <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
                     </>
                 )}
+                {/* Update this to call navigateToDetails with a specific event ID */}
+                <IconButton color="inherit" onClick={() => navigateToDetails('example-event-id')}>
+                    <InfoIcon />
+                </IconButton>
             </Toolbar>
         </AppBar>
     );
 }
 
 export default Navbar;
+
 

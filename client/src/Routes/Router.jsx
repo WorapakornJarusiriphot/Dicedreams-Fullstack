@@ -6,7 +6,8 @@ import CreatePost from "../components/Createpost";
 import Rules from "../pages/Rule";
 import LoginPage from "../pages/loginRegister";
 import NotificationPage from "../pages/NotificationPage";
-import ParticipationHistory from '../pages/ParticipationHistory';
+import ParticipationHistory from '../pages/ParticipationHistory';2
+import EventDetailPage from '../components/DetailPage';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "participation-history",
         element: <ParticipationHistory />
+      },
+      {
+        path: "events/:id", // Add this route for event details
+        element: <EventDetailPage />
       }
     ]
   }
