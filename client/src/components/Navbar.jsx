@@ -1,18 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     AppBar, Toolbar, IconButton, Typography, Input, Box, Drawer,
     List, ListItem, ListItemText, Button
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import InfoIcon from '@mui/icons-material/Info';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCircleUser } from 'react-icons/fa6';
-import FilterComponent from './FilterComponent'; // Ensure the path is correct
+import axios from 'axios';
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // State to check if the user is logged in
-    const navigate = useNavigate(); // Hook for navigation
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            try {
+                const response = await axios.get('/api/auth/status');
+                setIsLoggedIn(response.data.loggedIn);
+            } catch (error) {
+                console.log('Failed to check login status');
+            }
+        };
+        checkLoginStatus();
+    }, []);
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -23,6 +36,12 @@ const Navbar = () => {
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
+    };
+
+    const handleSearchSubmit = (event) => {
+        if (event.key === 'Enter') {
+            console.log('Search query:', searchQuery);
+        }
     };
 
     const navigateToLogin = () => {
@@ -39,6 +58,21 @@ const Navbar = () => {
 
     const navigateToParticipationHistory = () => {
         navigate('/participation-history');
+    };
+
+    // Update this function to accept event ID and navigate to details
+    const navigateToDetails = (eventId) => {
+        navigate(`/events/${eventId}`);
+    };
+
+    const handleLogout = async () => {
+        try {
+            await axios.post('/api/auth/logout');
+            setIsLoggedIn(false);
+            navigate('/');
+        } catch (error) {
+            console.log('Failed to logout');
+        }
     };
 
     const drawerList = () => (
@@ -61,9 +95,7 @@ const Navbar = () => {
                 <ListItem button component={Link} to="/rules">
                     <ListItemText primary="Website Rules" />
                 </ListItem>
-                <ListItem>
-                    <FilterComponent />
-                </ListItem>
+                {/* Add more items if needed */}
             </List>
         </Box>
     );
@@ -102,23 +134,32 @@ const Navbar = () => {
                         placeholder="Search..."
                         value={searchQuery}
                         onChange={handleSearchChange}
+                        onKeyDown={handleSearchSubmit}
                         sx={{ marginLeft: 2 }}
                     />
                 </Box>
                 {isLoggedIn ? (
-                    <IconButton color="inherit" onClick={navigateToLogin}>
-                        <FaCircleUser size={24} />
-                    </IconButton>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <IconButton color="inherit" onClick={() => navigate('/profile')}>
+                            <FaCircleUser size={24} />
+                        </IconButton>
+                        <Button color="inherit" onClick={handleLogout}>Log out</Button>
+                    </Box>
                 ) : (
                     <>
                         <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
                         <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
                     </>
                 )}
+                {/* Update this to call navigateToDetails with a specific event ID */}
+                <IconButton color="inherit" onClick={() => navigateToDetails('example-event-id')}>
+                    <InfoIcon />
+                </IconButton>
             </Toolbar>
         </AppBar>
     );
 }
 
 export default Navbar;
+
 
