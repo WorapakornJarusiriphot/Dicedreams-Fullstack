@@ -20,7 +20,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:8080/api',
+        url: 'https://dicedreams-backend-deploy-to-render-and.onrender.com/api',
         description: "Development server",
       },
     ],
