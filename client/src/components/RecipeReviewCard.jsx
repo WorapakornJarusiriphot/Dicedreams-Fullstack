@@ -1,70 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  Container, Grid, Typography, Paper, Select, MenuItem, Card, CardHeader, CardMedia, CardContent,
-  CardActions, Avatar, Button
+  Container, Grid, Typography, Paper, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
-import { getPostGames } from './apiService'; // Import the API service
-
-function EventCard(props) {
-  const {
-    profilePic,
-    username,
-    postTime,
-    image,
-    title,
-    date,
-    content,
-    participants,
-    maxParticipants
-  } = props;
-
-  return (
-    <Card sx={{ maxWidth: 600, margin: '16px auto', backgroundColor: 'white', boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.5)' }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: 'red' }} aria-label="profile-picture" src={profilePic || ''}>
-            {username ? username[0] : 'U'}
-          </Avatar>
-        }
-        title={username || 'Unknown User'}
-        subheader={postTime || 'Unknown Time'}
-        sx={{ color: 'black' }}
-      />
-      <CardMedia
-        component="img"
-        sx={{ width: '100%', height: 'auto' }}
-        image={image || ''}
-        alt="Event image"
-      />
-      <CardContent sx={{ color: 'black' }}>
-        <Typography variant="h6" component="div">
-          {title || 'Untitled Event'}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {date || 'Unknown Date'}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {content || 'No content available'}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          จำนวนคนตอบไป: {participants || 0}/{maxParticipants || 'N/A'}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <Button variant="contained" color="primary" sx={{ backgroundColor: 'crimson', color: 'white' }}>
-          Join
-        </Button>
-        <Button variant="outlined" color="secondary" sx={{ borderColor: 'black', color: 'black' }}>
-          Comment
-        </Button>
-      </CardActions>
-    </Card>
-  );
-}
+import { getPostGames } from '../components/apiService'; // Import the API service
+import EventCard from '../components/EventCrad'; // Ensure EventCard is correctly imported
 
 function RecipeReviewCard() {
   const [events, setEvents] = useState([]);
   const [filter, setFilter] = useState('All');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -72,7 +17,9 @@ function RecipeReviewCard() {
         const data = await getPostGames();
         setEvents(data);
       } catch (error) {
-        console.error('Error fetching events:', error);
+        setError('Error fetching events');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -106,18 +53,33 @@ function RecipeReviewCard() {
             </Select>
           </Paper>
         </Grid>
-        {filteredEvents.map((event) => (
-          <Grid item key={event.id} xs={12} sm={8} md={6} lg={4} xl={3}>
-            <EventCard {...event} />
-          </Grid>
-        ))}
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Alert severity="error">{error}</Alert>
+        ) : (
+          filteredEvents.map((event) => (
+            <Grid item key={event.post_games_id} xs={12} sm={8} md={6} lg={4} xl={3}>
+              <EventCard
+                profilePic={event.games_image}
+                username={event.username} // Assuming username is included in the API response
+                postTime={event.creation_date}
+                image={event.games_image}
+                nameGames={event.name_games}
+                dateMeet={event.date_meet}
+                detailPost={event.detail_post}
+                numPeople={event.num_people}
+                maxParticipants={event.maxParticipants} // Adjust as needed if maxParticipants is a different field
+              />
+            </Grid>
+          ))
+        )}
       </Grid>
     </Container>
   );
 }
 
 export default RecipeReviewCard;
-
 
 
 
