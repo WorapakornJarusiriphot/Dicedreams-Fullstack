@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import {
     AppBar, Toolbar, IconButton, Typography, Input, Box, Drawer,
@@ -18,7 +19,7 @@ const Navbar = () => {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                const response = await axios.get('/api/auth/status');
+                const response = await axios.get('http://localhost:8080/api/auth');
                 setIsLoggedIn(response.data.loggedIn);
             } catch (error) {
                 console.log('Failed to check login status');
@@ -52,6 +53,7 @@ const Navbar = () => {
         navigate('/login?register=true');
     };
 
+    // eslint-disable-next-line no-unused-vars
     const navigateToNotifications = () => {
         navigate('/notifications');
     };
@@ -67,7 +69,7 @@ const Navbar = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.post('/api/auth/logout');
+            await axios.post('http://localhost:8080/api/auth');
             setIsLoggedIn(false);
             navigate('/');
         } catch (error) {
