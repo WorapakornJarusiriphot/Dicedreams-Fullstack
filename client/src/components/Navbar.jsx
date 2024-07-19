@@ -1,14 +1,14 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import {
     AppBar, Toolbar, IconButton, Typography, Input, Box, Drawer,
-    List, ListItem, ListItemText, Button
+    List, ListItem, ListItemText, Button, Divider
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import InfoIcon from '@mui/icons-material/Info';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCircleUser } from 'react-icons/fa6';
 import axios from 'axios';
+import FilterComponent from './FilterComponent'; // Import the FilterComponent
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -53,7 +53,6 @@ const Navbar = () => {
         navigate('/login?register=true');
     };
 
-    // eslint-disable-next-line no-unused-vars
     const navigateToNotifications = () => {
         navigate('/notifications');
     };
@@ -62,7 +61,6 @@ const Navbar = () => {
         navigate('/participation-history');
     };
 
-    // Update this function to accept event ID and navigate to details
     const navigateToDetails = (eventId) => {
         navigate(`/events/${eventId}`);
     };
@@ -77,27 +75,47 @@ const Navbar = () => {
         }
     };
 
+    const closeDrawer = () => {
+        setDrawerOpen(false);
+    };
+
     const drawerList = () => (
         <Box
             sx={{ width: 250 }}
             role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
         >
             <List>
-                <ListItem button component={Link} to="/">
+                <ListItem button component={Link} to="/"
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
                     <ListItemText primary="Home" />
                 </ListItem>
-                <ListItem button onClick={navigateToParticipationHistory}>
+                <ListItem button component={Link} to='/participation-history'
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
                     <ListItemText primary="Show Participation History" />
                 </ListItem>
-                <ListItem button component={Link} to="/notifications">
+                <ListItem button component={Link} to="/notifications"
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
                     <ListItemText primary="Notifications" />
                 </ListItem>
-                <ListItem button component={Link} to="/rules">
+                <ListItem button component={Link} to="/rules"
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
                     <ListItemText primary="Website Rules" />
                 </ListItem>
-                {/* Add more items if needed */}
+                <Divider />
+                <ListItem>
+                    <Typography variant="h6">Filter Events</Typography>
+                </ListItem>
+                <ListItem>
+                    <FilterComponent onSearch={closeDrawer} />
+                </ListItem>
             </List>
         </Box>
     );
@@ -153,7 +171,6 @@ const Navbar = () => {
                         <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
                     </>
                 )}
-                {/* Update this to call navigateToDetails with a specific event ID */}
                 <IconButton color="inherit" onClick={() => navigateToDetails('example-event-id')}>
                     <InfoIcon />
                 </IconButton>

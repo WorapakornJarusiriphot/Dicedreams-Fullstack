@@ -17,12 +17,13 @@ import axios from "axios";
 function LoginPage() {
   const [isRegister, setIsRegister] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
+    first_name: "",
+    last_name: "",
     username: "",
-    telephone: "",
+    phone_number: "",
     email: "",
     password: "",
-    dateOfBirth: "",
+    birthday: "",
     gender: "",
     identifier: "",
     loginPassword: "",
@@ -67,15 +68,17 @@ function LoginPage() {
 
   const handleRegister = async () => {
     try {
+      const formattedBirthday = formData.birthday.split("-").reverse().join("-"); // Ensure correct date format
       const response = await axios.post(
         "http://localhost:8080/api/users",
         {
+          first_name: formData.first_name,
+          last_name: formData.last_name,
           username: formData.username,
           email: formData.email,
           password: formData.password,
-          name: formData.name,
-          telephone: formData.telephone,
-          dateOfBirth: formData.dateOfBirth,
+          phone_number: formData.phone_number,
+          birthday: formattedBirthday,
           gender: formData.gender,
         }
       );
@@ -153,12 +156,23 @@ function LoginPage() {
         {isRegister ? (
           <Box width="100%">
             <TextField
-              label="Name"
+              label="First Name"
               variant="filled"
               fullWidth
               margin="normal"
-              name="name"
-              value={formData.name}
+              name="first_name"
+              value={formData.first_name}
+              onChange={handleInputChange}
+              InputProps={{ style: { color: "white" } }}
+              InputLabelProps={{ style: { color: "white" } }}
+            />
+            <TextField
+              label="Last Name"
+              variant="filled"
+              fullWidth
+              margin="normal"
+              name="last_name"
+              value={formData.last_name}
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
@@ -175,12 +189,12 @@ function LoginPage() {
               InputLabelProps={{ style: { color: "white" } }}
             />
             <TextField
-              label="Telephone Number"
+              label="Phone Number"
               variant="filled"
               fullWidth
               margin="normal"
-              name="telephone"
-              value={formData.telephone}
+              name="phone_number"
+              value={formData.phone_number}
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
@@ -209,13 +223,13 @@ function LoginPage() {
               InputLabelProps={{ style: { color: "white" } }}
             />
             <TextField
-              label="Date of Birth"
+              label="Birthday"
               type="date"
               variant="filled"
               fullWidth
               margin="normal"
-              name="dateOfBirth"
-              value={formData.dateOfBirth}
+              name="birthday"
+              value={formData.birthday}
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" }, shrink: true }}
@@ -279,7 +293,7 @@ function LoginPage() {
         ) : (
           <Box width="100%">
             <TextField
-              label="Username or e-mail"
+              label="Username or E-mail"
               variant="filled"
               fullWidth
               margin="normal"
@@ -339,3 +353,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
