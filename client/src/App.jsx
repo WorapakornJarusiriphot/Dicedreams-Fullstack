@@ -4,7 +4,7 @@ import { Box, CssBaseline, Drawer, List, ListItem, ListItemText, AppBar, Toolbar
 import HomePage from './HomePage';
 import Rules from './Rules';
 import NotificationPage from "./pages/NotificationPage"; // Import the NotificationPage component
-import DetailPage from "./components/DetailPage"
+import DetailPage from "./components/DetailPage"; // Import the DetailPage component
 import { AuthContext } from './AuthContext'; // Import the AuthContext
 
 const drawerWidth = 240;
