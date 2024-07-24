@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from '../Auth/AuthContext';
 
 function LoginPage() {
   const [isRegister, setIsRegister] = useState(false);
@@ -32,6 +33,7 @@ function LoginPage() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { setCredential } = useContext(AuthContext)
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -49,7 +51,9 @@ function LoginPage() {
           password: formData.loginPassword,
         }
       );
+      console.log(response.data)
       localStorage.setItem("access_token", response.data.access_token);
+      setCredential(response.data.access_token);
       console.log("Login successful", response.data);
       navigate("/");
     } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     AppBar, Toolbar, IconButton, Typography, Input, Box, Drawer,
     List, ListItem, ListItemText, Button, Divider
@@ -9,24 +9,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaCircleUser } from 'react-icons/fa6';
 import axios from 'axios';
 import FilterComponent from './FilterComponent'; // Import the FilterComponent
+import { AuthContext } from '../Auth/AuthContext'; // Import the AuthContext
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { accessToken, login, logout } = useContext(AuthContext);
+    const [loginStatus, setLoginStatus] = useState('Logged out');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkLoginStatus = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/auth');
-                setIsLoggedIn(response.data.loggedIn);
-            } catch (error) {
-                console.log('Failed to check login status');
-            }
-        };
-        checkLoginStatus();
-    }, []);
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -66,13 +57,17 @@ const Navbar = () => {
     };
 
     const handleLogout = async () => {
-        try {
-            await axios.post('http://localhost:8080/api/auth');
-            setIsLoggedIn(false);
-            navigate('/');
-        } catch (error) {
-            console.log('Failed to logout');
-        }
+        //try {
+           // await axios.post('http://localhost:8080/api/auth/logout', {}, {
+          //      headers: { 'Authorization': `Bearer ${accessToken}` }
+         //   });
+         //   logout();
+         //   setLoginStatus('Logged out');
+         //   navigate('/');
+//} catch (error) {
+        //    console.log('Failed to logout');
+      //  }
+      logout();
     };
 
     const closeDrawer = () => {
@@ -158,19 +153,22 @@ const Navbar = () => {
                         sx={{ marginLeft: 2 }}
                     />
                 </Box>
-                {isLoggedIn ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <IconButton color="inherit" onClick={() => navigate('/profile')}>
-                            <FaCircleUser size={24} />
-                        </IconButton>
-                        <Button color="inherit" onClick={handleLogout}>Log out</Button>
-                    </Box>
-                ) : (
-                    <>
-                        <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
-                        <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
-                    </>
-                )}
+                
+                {accessToken ?
+                    (
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <IconButton color="inherit" onClick={() => navigate('/profile')}>
+                                <FaCircleUser size={24} />
+                            </IconButton>
+                            <Button color="inherit" onClick={handleLogout}>Log out</Button>
+                        </Box>
+                    ) :
+                    (
+                        <>
+                            <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
+                            <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
+                        </>
+                    )}
                 <IconButton color="inherit" onClick={() => navigateToDetails('example-event-id')}>
                     <InfoIcon />
                 </IconButton>
@@ -180,5 +178,3 @@ const Navbar = () => {
 }
 
 export default Navbar;
-
-
