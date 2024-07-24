@@ -8,6 +8,7 @@ import LoginPage from "../pages/loginRegister";
 import NotificationPage from "../pages/NotificationPage";
 import ParticipationHistory from '../pages/ParticipationHistory';2
 import EventDetailPage from '../components/DetailPage';
+import Profile from '../pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,15 @@ const router = createBrowserRouter([
       {
         path: "events/:id", // Add this route for event details
         element: <EventDetailPage />
-      }
+      },
+      {
+        path: "profile",
+        element: <Profile />
+      },
+      // {
+      //   path: "participation-history",
+      //   element: <ParticipationHistory />
+      // }
     ]
   }
 ]);
