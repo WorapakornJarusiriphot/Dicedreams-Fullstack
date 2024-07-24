@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     AppBar, Toolbar, IconButton, Typography, Input, Box, Drawer,
-    List, ListItem, ListItemText, Button, Divider
+    List, ListItem, ListItemText, Button, Divider, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import InfoIcon from '@mui/icons-material/Info';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCircleUser } from 'react-icons/fa6';
 import axios from 'axios';
-import FilterComponent from './FilterComponent'; // Import the FilterComponent
-import { AuthContext } from '../Auth/AuthContext'; // Import the AuthContext
+import FilterComponent from './FilterComponent';
+import { AuthContext } from '../Auth/AuthContext';
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const { accessToken, login, logout } = useContext(AuthContext);
-    const [loginStatus, setLoginStatus] = useState('Logged out');
+    const [dialogOpen, setDialogOpen] = useState(false);
     const navigate = useNavigate();
-
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -56,22 +55,21 @@ const Navbar = () => {
         navigate(`/events/${eventId}`);
     };
 
-    const handleLogout = async () => {
-        //try {
-           // await axios.post('http://localhost:8080/api/auth/logout', {}, {
-          //      headers: { 'Authorization': `Bearer ${accessToken}` }
-         //   });
-         //   logout();
-         //   setLoginStatus('Logged out');
-         //   navigate('/');
-//} catch (error) {
-        //    console.log('Failed to logout');
-      //  }
-      logout();
+    const handleLogout = () => {
+        logout();
+        setDialogOpen(false);
     };
 
     const closeDrawer = () => {
         setDrawerOpen(false);
+    };
+
+    const openDialog = () => {
+        setDialogOpen(true);
+    };
+
+    const closeDialog = () => {
+        setDialogOpen(false);
     };
 
     const drawerList = () => (
@@ -153,14 +151,13 @@ const Navbar = () => {
                         sx={{ marginLeft: 2 }}
                     />
                 </Box>
-                
                 {accessToken ?
                     (
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <IconButton color="inherit" onClick={() => navigate('/profile')}>
                                 <FaCircleUser size={24} />
                             </IconButton>
-                            <Button color="inherit" onClick={handleLogout}>Log out</Button>
+                            <Button color="inherit" onClick={openDialog}>Log out</Button>
                         </Box>
                     ) :
                     (
@@ -173,6 +170,29 @@ const Navbar = () => {
                     <InfoIcon />
                 </IconButton>
             </Toolbar>
+            <Dialog
+                open={dialogOpen}
+                onClose={closeDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Confirm Logout"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to log out?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={closeDialog} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleLogout} color="primary" autoFocus>
+                        Log out
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </AppBar>
     );
 }
