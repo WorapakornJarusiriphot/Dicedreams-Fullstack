@@ -85,6 +85,7 @@ const Profile = () => {
                 multiline
                 rows={4}
                 InputLabelProps={{
+                  readOnly: true,
                   style: { color: "white" },
                 }}
                 InputProps={{
