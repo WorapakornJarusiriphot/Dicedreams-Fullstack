@@ -6,43 +6,117 @@ import {
   Button,
   TextField,
   ButtonGroup,
+  Menu,
+  MenuItem,
+  IconButton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../profile.css";
 
+import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
-  const [open, setOpen] = useState(false);
+  const getRandomDate = () => {
+    const start = new Date(2024, 0, 1);
+    const end = new Date();
+    const date = new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    );
+    return date.toLocaleString();
+  };
+
+  const getRandomID = () => {
+    return Math.floor(Math.random() * 1000000).toString();
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const menuOpen = Boolean(anchorEl);
+  const navigate = useNavigate()
 
   const rows = [
     {
       userName: "วนัสพร กาญจน์วัฒน์",
+      nickname: "dream",
       id: "2565655",
       postName: "Werewolf",
       dateTime: "2/12/2566",
       avatar: "https://via.placeholder.com/40",
       viewLink: "/post/1",
     },
+  ];
+
+  const boardGames = [
     {
-      userName: "ณัฐวุฒิ แก้วมหา",
-      id: "11111",
-      postName: "ซาเรม 1692",
-      dateTime: "2/12/2566",
-      avatar: "https://via.placeholder.com/40",
-      viewLink: "/post/2",
+      game_name: "Monopoly",
+      game_id: getRandomID(),
+      img: "../../public/G1.png",
+      dateTime: getRandomDate(),
+      commend: "มาสร้างแลนมาร์คกันเถอะ",
+      location: "ร้าน outcast gaming",
+      player_total: 5,
+      player_amout: 2,
+    },
+    {
+      game_name: "Catan",
+      game_id: getRandomID(),
+      img: "../../public/G2.jpg",
+      dateTime: getRandomDate(),
+      commend: "มาเป็นพ่อค้ากันเถอะ",
+      location: "ร้าน outcast gaming",
+      player_total: 4,
+      player_amout: 2,
+    },
+    {
+      game_name: "Risk",
+      game_id: getRandomID(),
+      img: "../../public/G3.png",
+      dateTime: getRandomDate(),
+      commend: "มาพิชิตโลกกันเถอะ",
+      location: "ร้าน outcast gaming",
+      player_total: 6,
+      player_amout: 3,
+    },
+    {
+      game_name: "Carcassonne",
+      game_id: getRandomID(),
+      img: "../../public/G4.png",
+      dateTime: getRandomDate(),
+      commend: "มาสร้างเมืองกันเถอะ",
+      location: "ร้าน outcast gaming",
+      player_total: 4,
+      player_amout: 2,
+    },
+    {
+      game_name: "Ticket to Ride",
+      game_id: getRandomID(),
+      img: "../../public/G5.png",
+      dateTime: getRandomDate(),
+      commend: "มาสร้างรถไฟกันเถอะ",
+      location: "ร้าน outcast gaming",
+      player_total: 5,
+      player_amout: 3,
     },
   ];
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleEditProfileClick = () => {
+    navigate("/profile/edit"); 
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const options = ["เข้าร่วม", "แก้ไขชื่อ", "อื่นๆ"];
+
+  const ITEM_HEIGHT = 48;
 
   return (
     <Box sx={{ marginTop: 4 }}>
@@ -83,7 +157,7 @@ const Profile = () => {
                 defaultValue="Hello, I'm ready to play with you 👋"
                 variant="outlined"
                 multiline
-                rows={4}
+                rows={3}
                 InputLabelProps={{
                   readOnly: true,
                   style: { color: "white" },
@@ -120,7 +194,7 @@ const Profile = () => {
             sx={{
               marginLeft: 3,
               marginRight: 2,
-              marginTop: 5,
+              marginTop: 4,
               paddingBottom: 2,
             }}
           >
@@ -160,7 +234,7 @@ const Profile = () => {
                 Participation History
               </Button>
               <Button
-                onClick={handleClickOpen}
+                onClick={handleEditProfileClick}
                 sx={{
                   color: "#1944ba",
                   borderColor: "#112233",
@@ -177,73 +251,97 @@ const Profile = () => {
         </Box>
       </Box>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        maxWidth="lg"
-        fullWidth
-        sx={{ "& .MuiDialog-paper": { width: "60%", marginTop: "10%" } }}
+      <Box
+        sx={{
+          backgroundColor: "#222",
+          borderRadius: 2,
+          marginLeft: 20,
+          marginRight: 20,
+          marginTop: 9,
+        }}
       >
-        <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent>
-          <Box sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
-            <Avatar
-              src={rows[0].avatar}
-              sx={{ width: 40, height: 40, marginRight: 2 }}
-            />
-            <Typography variant="h6">{rows[0].userName}</Typography>
-            <Typography variant="body2" sx={{ marginLeft: 2 }}>
-              ID: {rows[0].id}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            margin: 2,
+            paddingTop: 2,
+            paddingBottom: 2,
+          }}
+        >
+          <Avatar
+            src={rows[0].avatar}
+            sx={{ width: 40, height: 40, marginRight: 2 }}
+          />
+          <Box>
+            <Typography variant="body1" sx={{ color: "white" }}>
+              {rows[0].userName}
+            </Typography>
+            <Typography variant="body2" sx={{ color: "gray" }}>
+              {rows[0].dateTime}
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
-            <TextField
-              fullWidth
-              label="Full Name"
-              variant="outlined"
-              sx={{ flex: 1 }}
-            />
-            <TextField
-              fullWidth
-              label="Password"
-              type="password"
-              variant="outlined"
-              sx={{ flex: 1 }}
-            />
+
+          <Box sx={{ marginLeft: "auto" }}>
+            <IconButton
+              aria-label="more"
+              id="long-button"
+              aria-controls={menuOpen ? "long-menu" : undefined}
+              aria-expanded={menuOpen ? "true" : undefined}
+              aria-haspopup="true"
+              onClick={handleMenuClick}
+              sx={{ color: "white" }}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="long-menu"
+              MenuListProps={{
+                "aria-labelledby": "long-button",
+              }}
+              anchorEl={anchorEl}
+              open={menuOpen}
+              onClose={handleMenuClose}
+              PaperProps={{
+                style: {
+                  maxHeight: ITEM_HEIGHT * 4.5,
+                  width: "20ch",
+                },
+              }}
+            >
+              {options.map((option) => (
+                <MenuItem key={option} onClick={handleMenuClose}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
-          <TextField
-            fullWidth
-            label="Bio"
-            variant="outlined"
-            multiline
-            rows={4}
-            sx={{ marginBottom: 2 }}
-          />
-          <TextField
-            fullWidth
-            label="Telephone Number"
-            variant="outlined"
-            sx={{ marginBottom: 2 }}
-          />
-          <Box
-            sx={{
-              border: "2px dashed #ccc",
-              borderRadius: 1,
-              height: 300,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            Click to upload or drag and drop for upload
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
-        </DialogActions>
-      </Dialog>
+        </Box>
+
+        <Box
+          sx={{
+            height: "20vh",
+            width: "100%",
+            backgroundImage: `url(${boardGames[0].img})`,
+            backgroundSize: "cover", 
+            backgroundPosition: "center", 
+            backgroundRepeat: "no-repeat",
+            borderRadius: "0.5rem",
+          }}
+        ></Box>
+
+        <Box
+          sx={{
+            width: "80%",
+            backgroundImage: `url(${boardGames[0].img})`,
+            backgroundSize: "contain",
+            backgroundPosition: "left",
+            backgroundRepeat: "no-repeat",
+            borderRadius: "0.5rem",
+          }}
+        ></Box>
+      </Box>
+
     </Box>
   );
 };
