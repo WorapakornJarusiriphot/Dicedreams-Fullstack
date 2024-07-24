@@ -12,7 +12,7 @@ const games = [
     'Kill Team',
 ];
 
-const FilterComponent = () => {
+const FilterComponent = ({ onSearch }) => {
     const [selectedDate, setSelectedDate] = React.useState('');
     const [selectedTime, setSelectedTime] = React.useState('');
     const [numberOfPeople, setNumberOfPeople] = React.useState('');
@@ -37,6 +37,11 @@ const FilterComponent = () => {
                 ? prevSelectedGames.filter((g) => g !== game)
                 : [...prevSelectedGames, game]
         );
+    };
+
+    const handleSearchClick = () => {
+        // Perform your search action here
+        onSearch();
     };
 
     return (
@@ -90,7 +95,7 @@ const FilterComponent = () => {
                     />
                 ))}
             </FormGroup>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleSearchClick}>
                 Search
             </Button>
         </Box>

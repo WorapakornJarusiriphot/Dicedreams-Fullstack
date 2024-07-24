@@ -30,7 +30,7 @@ export default function Post() {
             sx={{
               flex: 1,
               marginRight: '18px',
-              minWidth: { xs: '300px', sm: '500px', md: '800px', lg: '1200px' },
+              minWidth: { xs: '300px', sm: '500px', md: '700px', lg: '1050px' },
               fontSize: '16px',
               padding: '12px 16px',
               fontWeight,

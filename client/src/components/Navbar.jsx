@@ -1,31 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     AppBar, Toolbar, IconButton, Typography, Input, Box, Drawer,
-    List, ListItem, ListItemText, Button
+    List, ListItem, ListItemText, Button, Divider, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import InfoIcon from '@mui/icons-material/Info';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaCircleUser } from 'react-icons/fa6';
 import axios from 'axios';
+import FilterComponent from './FilterComponent';
+import { AuthContext } from '../Auth/AuthContext';
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const { accessToken, login, logout } = useContext(AuthContext);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const checkLoginStatus = async () => {
-            try {
-                const response = await axios.get('/api/auth/status');
-                setIsLoggedIn(response.data.loggedIn);
-            } catch (error) {
-                console.log('Failed to check login status');
-            }
-        };
-        checkLoginStatus();
-    }, []);
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -60,42 +51,64 @@ const Navbar = () => {
         navigate('/participation-history');
     };
 
-    // Update this function to accept event ID and navigate to details
     const navigateToDetails = (eventId) => {
         navigate(`/events/${eventId}`);
     };
 
-    const handleLogout = async () => {
-        try {
-            await axios.post('/api/auth/logout');
-            setIsLoggedIn(false);
-            navigate('/');
-        } catch (error) {
-            console.log('Failed to logout');
-        }
+    const handleLogout = () => {
+        logout();
+        setDialogOpen(false);
+    };
+
+    const closeDrawer = () => {
+        setDrawerOpen(false);
+    };
+
+    const openDialog = () => {
+        setDialogOpen(true);
+    };
+
+    const closeDialog = () => {
+        setDialogOpen(false);
     };
 
     const drawerList = () => (
         <Box
             sx={{ width: 250 }}
             role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
         >
             <List>
-                <ListItem button component={Link} to="/">
+                <ListItem button component={Link} to="/"
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
                     <ListItemText primary="Home" />
                 </ListItem>
-                <ListItem button onClick={navigateToParticipationHistory}>
+                <ListItem button component={Link} to='/participation-history'
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
                     <ListItemText primary="Show Participation History" />
                 </ListItem>
-                <ListItem button component={Link} to="/notifications">
+                <ListItem button component={Link} to="/notifications"
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
                     <ListItemText primary="Notifications" />
                 </ListItem>
-                <ListItem button component={Link} to="/rules">
+                <ListItem button component={Link} to="/rules"
+                    onClick={toggleDrawer(false)}
+                    onKeyDown={toggleDrawer(false)}
+                >
                     <ListItemText primary="Website Rules" />
                 </ListItem>
-                {/* Add more items if needed */}
+                <Divider />
+                <ListItem>
+                    <Typography variant="h6">Filter Events</Typography>
+                </ListItem>
+                <ListItem>
+                    <FilterComponent onSearch={closeDrawer} />
+                </ListItem>
             </List>
         </Box>
     );
@@ -138,28 +151,50 @@ const Navbar = () => {
                         sx={{ marginLeft: 2 }}
                     />
                 </Box>
-                {isLoggedIn ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <IconButton color="inherit" onClick={() => navigate('/profile')}>
-                            <FaCircleUser size={24} />
-                        </IconButton>
-                        <Button color="inherit" onClick={handleLogout}>Log out</Button>
-                    </Box>
-                ) : (
-                    <>
-                        <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
-                        <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
-                    </>
-                )}
-                {/* Update this to call navigateToDetails with a specific event ID */}
+                {accessToken ?
+                    (
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <IconButton color="inherit" onClick={() => navigate('/profile')}>
+                                <FaCircleUser size={24} />
+                            </IconButton>
+                            <Button color="inherit" onClick={openDialog}>Log out</Button>
+                        </Box>
+                    ) :
+                    (
+                        <>
+                            <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
+                            <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
+                        </>
+                    )}
                 <IconButton color="inherit" onClick={() => navigateToDetails('example-event-id')}>
                     <InfoIcon />
                 </IconButton>
             </Toolbar>
+            <Dialog
+                open={dialogOpen}
+                onClose={closeDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Confirm Logout"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to log out?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={closeDialog} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleLogout} color="primary" autoFocus>
+                        Log out
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </AppBar>
     );
 }
 
 export default Navbar;
-
-
