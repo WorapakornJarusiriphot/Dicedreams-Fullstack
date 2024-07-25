@@ -102,6 +102,9 @@ const Navbar = () => {
                 >
                     <ListItemText primary="Website Rules" />
                 </ListItem>
+                <ListItem button component={Link} to="/profile">
+                    <ListItemText primary="profile" />
+                </ListItem>
                 <Divider />
                 <ListItem>
                     <Typography variant="h6">Filter Events</Typography>

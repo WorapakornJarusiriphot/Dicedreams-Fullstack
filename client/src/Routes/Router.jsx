@@ -9,6 +9,7 @@ import NotificationPage from "../pages/NotificationPage";
 import ParticipationHistory from '../pages/ParticipationHistory';2
 import EventDetailPage from '../components/DetailPage';
 import Profile from '../pages/Profile';
+import ProfileEdit from '../pages/ProfileEdit';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "profile",
         element: <Profile />
+      },
+      {
+        path: "profile/edit",
+        element: <ProfileEdit />
       },
       // {
       //   path: "participation-history",
