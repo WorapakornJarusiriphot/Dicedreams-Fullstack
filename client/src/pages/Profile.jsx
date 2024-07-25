@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Avatar,
@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../profile.css";
+import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
@@ -34,20 +35,44 @@ const Profile = () => {
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const menuOpen = Boolean(anchorEl);
-  const navigate = useNavigate()
+  const [user, setUser] = useState(null);
 
-  const rows = [
-    {
-      userName: "วนัสพร กาญจน์วัฒน์",
-      nickname: "dream",
-      id: "2565655",
-      postName: "Werewolf",
-      dateTime: "2/12/2566",
-      avatar: "https://via.placeholder.com/40",
-      viewLink: "/post/1",
-    },
-  ];
+  const menuOpen = Boolean(anchorEl);
+  const navigate = useNavigate();
+
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+      // console.log("token -->", token);
+      const user_id = "065a9e78-50bc-4d43-acda-3080af58d155";
+      // const user_id = "5ab17ae8-707b-43f9-baf1-1ecda4c691cd"; // dream
+
+      const url = `http://localhost:8080/api/users/${user_id}`;
+      // const url = `http://localhost:8080/api/users`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data);
+      console.log("User data fetched successfully", response.data);
+    } catch (error) {
+      console.error("Error fetching user data", error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(user.username);
 
   const boardGames = [
     {
@@ -103,7 +128,7 @@ const Profile = () => {
   ];
 
   const handleEditProfileClick = () => {
-    navigate("/profile/edit"); 
+    navigate("/profile/edit");
   };
 
   const handleMenuClick = (event) => {
@@ -133,6 +158,10 @@ const Profile = () => {
           sx={{
             height: "20vh",
             width: "20%",
+            // backgroundImage: `url(${
+            //   user.user_image ? user.user_image : "../public/p1.png"
+            // })`,
+
             backgroundImage: "url(../public/p1.png)",
             backgroundSize: "contain",
             backgroundPosition: "left",
@@ -143,10 +172,10 @@ const Profile = () => {
         <br />
         <Box sx={{ marginLeft: 2, marginRight: 2, marginTop: 2 }}>
           <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
-            {rows[0].userName}
+            {user.username ? user.username : user.username}
           </Typography>
           <Typography variant="h8" gutterBottom sx={{ color: "white" }}>
-            ID: {rows[0].id}
+            ID: {user.users_id ? user.users_id : "ไม่พบข้อมูล"}
           </Typography>
 
           <Box sx={{ margin: 2 }}>
@@ -270,15 +299,15 @@ const Profile = () => {
           }}
         >
           <Avatar
-            src={rows[0].avatar}
+            src={user.avatar ? user.Avatar : "ไม่พบข้อมูล"}
             sx={{ width: 40, height: 40, marginRight: 2 }}
           />
           <Box>
             <Typography variant="body1" sx={{ color: "white" }}>
-              {rows[0].userName}
+              {boardGames[0].userName ? boardGames[0].Avatar : "ไม่พบข้อมูล"}
             </Typography>
             <Typography variant="body2" sx={{ color: "gray" }}>
-              {rows[0].dateTime}
+              {boardGames[0].dateTime ? boardGames[0].Avatar : "ไม่พบข้อมูล"}
             </Typography>
           </Box>
 
@@ -323,8 +352,8 @@ const Profile = () => {
             height: "20vh",
             width: "100%",
             backgroundImage: `url(${boardGames[0].img})`,
-            backgroundSize: "cover", 
-            backgroundPosition: "center", 
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
             borderRadius: "0.5rem",
           }}
@@ -341,7 +370,6 @@ const Profile = () => {
           }}
         ></Box>
       </Box>
-
     </Box>
   );
 };
