@@ -18,7 +18,7 @@ function App() {
         sx={{
           display: 'flex',
           minHeight: '100vh',
-          backgroundImage: 'url(BGmain.jpg)', // Replace with your image URL
+           backgroundImage: 'url(BGmain.jpg)', // Replace with your image URL
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

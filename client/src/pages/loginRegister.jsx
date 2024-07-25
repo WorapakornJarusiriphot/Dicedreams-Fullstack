@@ -4,12 +4,13 @@ import {
   Button,
   TextField,
   Typography,
+  ButtonGroup,
   Link,
   Radio,
   RadioGroup,
   FormControlLabel,
   FormLabel,
-  ButtonGroup,
+  CircularProgress,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -17,6 +18,7 @@ import { AuthContext } from '../Auth/AuthContext';
 
 function LoginPage() {
   const [isRegister, setIsRegister] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -33,7 +35,7 @@ function LoginPage() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const { setCredential } = useContext(AuthContext)
+  const { setCredential } = useContext(AuthContext);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -43,65 +45,53 @@ function LoginPage() {
   }, [location]);
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth",
-        {
-          identifier: formData.identifier,
-          password: formData.loginPassword,
-        }
-      );
-      console.log(response.data)
-      localStorage.setItem("access_token", response.data.access_token);
-      setCredential(response.data.access_token);
-      console.log("Login successful", response.data);
+      const response = await axios.post("http://localhost:8080/api/auth", {
+        identifier: formData.identifier,
+        password: formData.loginPassword,
+      });
+      const { access_token, user_id } = response.data;
+      localStorage.setItem("access_token", access_token);
+      localStorage.setItem("user_id", user_id);
+      setCredential(access_token, user_id);
       navigate("/");
     } catch (error) {
-      let message = "Error logging in";
-      if (error.response) {
-        message = error.response.data.message || "Error logging in";
-      } else if (error.request) {
-        message = "No response from server. Please try again later.";
-      } else {
-        message = "Error: " + error.message;
-      }
-      setErrorMessage(message);
-      console.error("Error logging in", error.response?.data || error.message);
+      setErrorMessage(
+        error.response?.data?.message ||
+        (error.request
+          ? "No response from server. Please try again later."
+          : "Error: " + error.message)
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRegister = async () => {
+    setLoading(true);
     try {
-      const formattedBirthday = formData.birthday.split("-").reverse().join("-"); // Ensure correct date format
-      const response = await axios.post(
-        "http://localhost:8080/api/users",
-        {
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          phone_number: formData.phone_number,
-          birthday: formattedBirthday,
-          gender: formData.gender,
-        }
-      );
-      console.log("User registered successfully", response.data);
+      const formattedBirthday = formData.birthday.split("-").reverse().join("-");
+      await axios.post("http://localhost:8080/api/users", {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        phone_number: formData.phone_number,
+        birthday: formattedBirthday,
+        gender: formData.gender,
+      });
       navigate("/login");
     } catch (error) {
-      let message = "Error registering user";
-      if (error.response) {
-        message = error.response.data.message || "Error registering user";
-      } else if (error.request) {
-        message = "No response from server. Please try again later.";
-      } else {
-        message = "Error: " + error.message;
-      }
-      setErrorMessage(message);
-      console.error(
-        "Error registering user",
-        error.response?.data || error.message
+      setErrorMessage(
+        error.response?.data?.message ||
+        (error.request
+          ? "No response from server. Please try again later."
+          : "Error: " + error.message)
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -111,18 +101,7 @@ function LoginPage() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSwitchToRegister = () => {
-    setIsRegister(true);
-  };
-
-  const handleSwitchToLogin = () => {
-    setIsRegister(false);
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -141,22 +120,20 @@ function LoginPage() {
         display="flex"
         flexDirection="column"
         alignItems="center"
-        bgcolor="rgba(0, 0, 0, 0.8)"
+        bgcolor="rgba(1, 1, 1, 0.9)"
         p={5}
         borderRadius={2}
         width="600px"
         maxWidth="100%"
       >
-        <Box display="flex" justifyContent="space-between" width="100%" mb={2}>
-          <ButtonGroup variant="text" aria-label="Basic button group">
-            <Button color="inherit" onClick={handleSwitchToLogin}>
-              <Typography color="white">Log In</Typography>
-            </Button>
-            <Button color="inherit" onClick={handleSwitchToRegister}>
-              <Typography color="white">Register</Typography>
-            </Button>
-          </ButtonGroup>
-        </Box>
+        <ButtonGroup variant="text" fullWidth>
+          <Button onClick={() => setIsRegister(false)}>
+            <Typography color="white">Log In</Typography>
+          </Button>
+          <Button onClick={() => setIsRegister(true)}>
+            <Typography color="white">Register</Typography>
+          </Button>
+        </ButtonGroup>
         {isRegister ? (
           <Box width="100%">
             <TextField
@@ -169,6 +146,7 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
+              required
             />
             <TextField
               label="Last Name"
@@ -180,6 +158,7 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
+              required
             />
             <TextField
               label="Username"
@@ -191,6 +170,7 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
+              required
             />
             <TextField
               label="Phone Number"
@@ -202,6 +182,7 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
+              required
             />
             <TextField
               label="E-mail"
@@ -213,6 +194,7 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
+              required
             />
             <TextField
               label="Password"
@@ -225,6 +207,7 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
+              required
             />
             <TextField
               label="Birthday"
@@ -237,11 +220,9 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" }, shrink: true }}
+              required
             />
-            <FormLabel
-              component="legend"
-              style={{ color: "white", marginTop: "1rem" }}
-            >
+            <FormLabel component="legend" style={{ color: "white", marginTop: "1rem" }}>
               Gender
             </FormLabel>
             <RadioGroup
@@ -253,9 +234,7 @@ function LoginPage() {
               <FormControlLabel
                 value="female"
                 control={<Radio style={{ color: "white" }} />}
-                label={
-                  <Typography style={{ color: "white" }}>Female</Typography>
-                }
+                label={<Typography style={{ color: "white" }}>Female</Typography>}
               />
               <FormControlLabel
                 value="male"
@@ -265,32 +244,20 @@ function LoginPage() {
               <FormControlLabel
                 value="not-specified"
                 control={<Radio style={{ color: "white" }} />}
-                label={
-                  <Typography style={{ color: "white" }}>
-                    Not Specified
-                  </Typography>
-                }
+                label={<Typography style={{ color: "white" }}>Not Specified</Typography>}
               />
             </RadioGroup>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              width="100%"
-              mt={2}
-            >
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleCancel}
-              >
+            {errorMessage && (
+              <Typography color="error" style={{ marginTop: "1rem" }}>
+                {errorMessage}
+              </Typography>
+            )}
+            <Box display="flex" justifyContent="space-between" width="100%" mt={2}>
+              <Button variant="contained" color="primary" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleRegister}
-              >
-                Register
+              <Button variant="contained" color="secondary" onClick={handleRegister} disabled={loading}>
+                {loading ? <CircularProgress size={24} color="inherit" /> : "Register"}
               </Button>
             </Box>
           </Box>
@@ -306,6 +273,7 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
+              required
             />
             <TextField
               label="Password"
@@ -318,37 +286,29 @@ function LoginPage() {
               onChange={handleInputChange}
               InputProps={{ style: { color: "white" } }}
               InputLabelProps={{ style: { color: "white" } }}
+              required
             />
             {errorMessage && (
               <Typography color="error" style={{ marginTop: "1rem" }}>
                 {errorMessage}
               </Typography>
             )}
-            <Link
-              href="#"
-              color="inherit"
-              underline="hover"
-              alignSelf="flex-start"
-              mb={2}
-            >
-              <Typography color="white">Forgot your password?</Typography>
-            </Link>
-            <Box display="flex" justifyContent="space-between" width="100%">
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleCancel}
-              >
+            <Box display="flex" justifyContent="space-between" width="100%" mt={2}>
+              <Button variant="contained" color="primary" onClick={handleCancel}>
                 Cancel
               </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleLogin}
-              >
-                Log In
+              <Button variant="contained" color="secondary" onClick={handleLogin} disabled={loading}>
+                {loading ? <CircularProgress size={24} color="inherit" /> : "Log In"}
               </Button>
             </Box>
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => setIsRegister(true)}
+              style={{ color: "white", marginTop: "1rem", display: "block", textAlign: "center" }}
+            >
+              Don't have an account? Register here
+            </Link>
           </Box>
         )}
       </Box>
