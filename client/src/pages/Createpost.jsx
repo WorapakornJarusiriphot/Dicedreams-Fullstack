@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -8,14 +8,14 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
+import { AuthContext } from '../Auth/AuthContext';
 
 const CreatePost = ({ addEvent }) => {
   const navigate = useNavigate();
+  const { accessToken, userId } = useContext(AuthContext);
   const [selectedDate, setSelectedDate] = useState(null);
   const [timeValue, setTimeValue] = useState(null);
   const [numberOfPlayers, setNumberOfPlayers] = useState(0);
@@ -65,31 +65,52 @@ const CreatePost = ({ addEvent }) => {
       return;
     }
 
-    const newEvent = {
-      profilePic: "url_to_profile_picture_new",
-      username: "New User",
-      postTime: dayjs().format('DD MMMM เวลา HH:mm น.'),
-      image: formValues.image,
-      title: formValues.boardGameName,
-      date: selectedDate && timeValue
-        ? `${selectedDate.format('วันddddที่ D MMMM พ.ศ. YYYY')} เวลา ${timeValue.format('HH.mm น.')}`
-        : '',
-      content: formValues.postDetails,
-      participants: 1,
-      maxParticipants: numberOfPlayers,
+    const requestData = {
+      name_games: formValues.boardGameName,
+      detail_post: formValues.postDetails,
+      num_people: numberOfPlayers,
+      date_meet: selectedDate.format('MM/DD/YYYY'),
+      time_meet: timeValue.format('HH:mm:ss'),
+      games_image: formValues.image,
+      status_post: 'active',
+      creation_date: dayjs().format('MM/DD/YYYY HH:mm:ss'),
+      users_id: userId,
     };
 
-    addEvent(newEvent); // Add the new event
-    setFormValues({
-      boardGameName: '',
-      postDetails: '',
-      image: '',
-    });
-    setSelectedDate(null);
-    setTimeValue(null);
-    setNumberOfPlayers(0);
-    setImageFile(null);
-    navigate('/');
+    console.log('Request Data:', requestData);
+
+    fetch('http://localhost:8080/api-docs/#/PostGames/post_postGame', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => { throw new Error(text) });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        addEvent(data);
+        setFormValues({
+          boardGameName: '',
+          postDetails: '',
+          image: '',
+        });
+        setSelectedDate(null);
+        setTimeValue(null);
+        setNumberOfPlayers(0);
+        setImageFile(null);
+        navigate('/');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error creating post. Please try again.');
+      });
   };
 
   const handleUploadClick = () => {
@@ -105,7 +126,6 @@ const CreatePost = ({ addEvent }) => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        backgroundColor: '#000000',
       }}
     >
       <Card sx={{ maxWidth: 600 }}>
@@ -133,7 +153,6 @@ const CreatePost = ({ addEvent }) => {
             sx={{ mb: 2 }}
             required
           />
-
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box sx={{ mb: 2 }}>
               <DatePicker
@@ -143,22 +162,17 @@ const CreatePost = ({ addEvent }) => {
                 renderInput={(params) => <TextField fullWidth {...params} required />}
               />
             </Box>
-          </LocalizationProvider>
-
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Box sx={{ mb: 2 }}>
               <Stack spacing={2} sx={{ minWidth: 305 }}>
                 <TimePicker
                   label="Choose an appointment time"
                   value={timeValue}
                   onChange={setTimeValue}
-                  referenceDate={dayjs('2022-04-17')}
                   renderInput={(params) => <TextField {...params} required />}
                 />
               </Stack>
             </Box>
           </LocalizationProvider>
-
           <TextField
             fullWidth
             type="number"
@@ -173,7 +187,6 @@ const CreatePost = ({ addEvent }) => {
             sx={{ mb: 2 }}
             required
           />
-
           <Button
             variant="contained"
             startIcon={<CloudUploadIcon />}
@@ -191,7 +204,6 @@ const CreatePost = ({ addEvent }) => {
             onChange={handleImageChange}
           />
           {imageFile && <Typography>{imageFile.name}</Typography>}
-
           <Button
             variant="outlined"
             color="primary"
@@ -208,6 +220,4 @@ const CreatePost = ({ addEvent }) => {
 };
 
 export default CreatePost;
-
-
 
