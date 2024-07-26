@@ -10,14 +10,14 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         if (accessToken) {
             const decodedToken = jwtDecode(accessToken);
-            setUserId(decodedToken.users_id); // Ensure 'users_id' matches your JWT payload
+            setUserId(decodedToken.users_id);
         }
     }, [accessToken]);
 
     const login = (token) => {
         localStorage.setItem('access_token', token);
         const decodedToken = jwtDecode(token);
-        const id = decodedToken.users_id; // Ensure 'users_id' matches your JWT payload
+        const id = decodedToken.users_id;
         localStorage.setItem('user_id', id);
         setAccessToken(token);
         setUserId(id);
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     const setCredential = (token) => {
         localStorage.setItem('access_token', token);
         const decodedToken = jwtDecode(token);
-        const id = decodedToken.users_id; // Ensure 'users_id' matches your JWT payload
+        const id = decodedToken.users_id;
         localStorage.setItem('user_id', id);
         setAccessToken(token);
         setUserId(id);
