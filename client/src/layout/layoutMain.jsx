@@ -14,7 +14,7 @@ const LayoutMain = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'transparent' }}>
       <Navbar />
-      <Box component="main" sx={{ flex: 1, p: 2, overflowY: 'auto' }}>
+      <Box component="main" sx={{ flex: 1, overflowY: 'auto', p: 2 }}>
         <Outlet context={{ addEvent }} />
         <Footer />
       </Box>

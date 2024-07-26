@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   FormLabel,
   CircularProgress,
+  useMediaQuery,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -36,6 +37,7 @@ function LoginPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { setCredential } = useContext(AuthContext);
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -109,22 +111,23 @@ function LoginPage() {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      height="100%"
-      p={10}
+      height="122vh"
       style={{
-        backgroundImage: "url(/path/to/your/background/image.png)",
+        backgroundImage: "url(./public/warhamerAoSloginpage.jpg)",
         backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
       <Box
         display="flex"
         flexDirection="column"
         alignItems="center"
-        bgcolor="rgba(1, 1, 1, 0.9)"
+        bgcolor="rgba(1, 1, 1, 0.8)"
         p={5}
         borderRadius={2}
-        width="600px"
-        maxWidth="100%"
+        width={isMobile ? "90%" : isRegister ? "700px" : "500px"}
+        maxWidth="90%"
+        sx={{ backdropFilter: "blur(10px)" }}
       >
         <ButtonGroup variant="text" fullWidth>
           <Button onClick={() => setIsRegister(false)}>
@@ -317,4 +320,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-

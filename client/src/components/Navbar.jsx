@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import InfoIcon from '@mui/icons-material/Info';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaCircleUser } from 'react-icons/fa6';
 import axios from 'axios';
 import FilterComponent from './FilterComponent';
@@ -17,6 +17,7 @@ const Navbar = () => {
     const { accessToken, login, logout } = useContext(AuthContext);
     const [dialogOpen, setDialogOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -116,62 +117,100 @@ const Navbar = () => {
         </Box>
     );
 
+    const renderFullNavbar = () => (
+        <>
+            <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={toggleDrawer(true)}
+                sx={{ mr: 2 }}
+            >
+                <MenuIcon />
+            </IconButton>
+            <Drawer
+                anchor="left"
+                open={drawerOpen}
+                onClose={toggleDrawer(false)}
+            >
+                {drawerList()}
+            </Drawer>
+            <Link to="/">
+                <img src='logoDice.png' alt="DiceDreams Logo" style={{ marginRight: '18px', height: '64px' }} />
+            </Link>
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Typography variant="h6" component="div" sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                    <span style={{ color: 'crimson', fontWeight: 'bold' }}>Dice</span>
+                    <span style={{ color: 'black', fontWeight: 'bold' }}>Dreams</span>
+                </Typography>
+            </Link>
+            <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, marginLeft: 2 }}>
+                <Input
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    onKeyDown={handleSearchSubmit}
+                    sx={{ marginLeft: 2 }}
+                />
+            </Box>
+            {accessToken ? (
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <IconButton color="inherit" onClick={() => navigate('/profile')}>
+                        <FaCircleUser size={24} />
+                    </IconButton>
+                    <Button color="inherit" onClick={openDialog}>Log out</Button>
+                </Box>
+            ) : (
+                <>
+                    <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
+                    <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
+                </>
+            )}
+            <IconButton color="inherit" onClick={() => navigateToDetails('example-event-id')}>
+                <InfoIcon />
+            </IconButton>
+        </>
+    );
+
+    const renderBasicNavbar = () => (
+        <>
+            <IconButton
+                size="large"
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={toggleDrawer(true)}
+                sx={{ mr: 2 }}
+            >
+            </IconButton>
+            <Drawer
+                anchor="left"
+                open={drawerOpen}
+                onClose={toggleDrawer(false)}
+            >
+                {drawerList()}
+            </Drawer>
+            <Link to="/">
+                <img src='logoDice.png' alt="DiceDreams Logo" style={{ marginRight: '18px', height: '64px' }} />
+            </Link>
+            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Typography variant="h6" component="div" sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                    <span style={{ color: 'crimson', fontWeight: 'bold' }}>Dice</span>
+                    <span style={{ color: 'black', fontWeight: 'bold' }}>Dreams</span>
+                </Typography>
+            </Link>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button color="inherit" onClick={() => navigate('/')}>Go to Home</Button>
+        </>
+    );
+
     return (
         <AppBar position="fixed" color="inherit">
             <Toolbar>
-                <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    onClick={toggleDrawer(true)}
-                    sx={{ mr: 2 }}
-                >
-                    <MenuIcon />
-                </IconButton>
-                <Drawer
-                    anchor="left"
-                    open={drawerOpen}
-                    onClose={toggleDrawer(false)}
-                >
-                    {drawerList()}
-                </Drawer>
-                <Link to="/">
-                    <img src='logoDice.png' alt="DiceDreams Logo" style={{ marginRight: '18px', height: '64px' }} />
-                </Link>
-                <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <Typography variant="h6" component="div" sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
-                        <span style={{ color: 'crimson', fontWeight: 'bold' }}>Dice</span>
-                        <span style={{ color: 'black', fontWeight: 'bold' }}>Dreams</span>
-                    </Typography>
-                </Link>
-                <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, marginLeft: 2 }}>
-                    <Input
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        onKeyDown={handleSearchSubmit}
-                        sx={{ marginLeft: 2 }}
-                    />
-                </Box>
-                {accessToken ?
-                    (
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <IconButton color="inherit" onClick={() => navigate('/profile')}>
-                                <FaCircleUser size={24} />
-                            </IconButton>
-                            <Button color="inherit" onClick={openDialog}>Log out</Button>
-                        </Box>
-                    ) :
-                    (
-                        <>
-                            <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
-                            <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
-                        </>
-                    )}
-                <IconButton color="inherit" onClick={() => navigateToDetails('example-event-id')}>
-                    <InfoIcon />
-                </IconButton>
+                {location.pathname === '/login' || location.pathname === '/register'
+                    ? renderBasicNavbar()
+                    : renderFullNavbar()}
             </Toolbar>
             <Dialog
                 open={dialogOpen}
