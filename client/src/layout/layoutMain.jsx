@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Footer from '../components/footer';
+import Footer from '../components/Footer';
 import { Box } from '@mui/material';
 
-const Main = () => {
+const LayoutMain = () => {
   const [events, setEvents] = useState([]);
 
   const addEvent = (newEvent) => {
@@ -12,15 +12,14 @@ const Main = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'transparent' }}>
       <Navbar />
-      <Box component="main" sx={{ flex: 1, p: 2 }}>
+      <Box component="main" sx={{ flex: 1, p: 2, overflowY: 'auto' }}>
         <Outlet context={{ addEvent }} />
+        <Footer />
       </Box>
-      <Footer />
     </Box>
   );
 };
 
-export default Main;
-
+export default LayoutMain;

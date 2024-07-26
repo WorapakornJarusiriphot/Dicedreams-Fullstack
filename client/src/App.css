@@ -16,3 +16,15 @@ body {
 .section-container{
     @apply max-w-screen-2xl container mx-auto xl:px-24 px-4
 }
+
+#root {
+    background-image: url('./BGmain.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
