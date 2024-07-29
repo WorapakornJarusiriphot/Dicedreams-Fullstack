@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { Box, CssBaseline, Drawer, List, ListItem, ListItemText, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import HomePage from './HomePage';
 import Rules from './Rules';
-import NotificationPage from "./pages/NotificationPage"; // Import the NotificationPage component
-import DetailPage from "./components/DetailPage"; // Import the DetailPage component
-import { AuthContext } from './AuthContext'; // Import the AuthContext
+import NotificationPage from "./pages/NotificationPage";
+import DetailPage from "./pages/DetailPage";
+import { AuthContext } from './Auth/AuthContext';
 
 const drawerWidth = 240;
 
@@ -16,8 +16,6 @@ function App() {
     <Router>
       <Box sx={{ display: 'flex', minHeight: '100vh' }}>
         <CssBaseline />
-        <Box
-        />
         <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
           <Toolbar>
             <Typography variant="h6" noWrap component="div">
@@ -61,7 +59,7 @@ function App() {
             <Route path="/home" element={<HomePage />} />
             <Route path="/rules" element={<Rules />} />
             <Route path="/notifications" element={<NotificationPage />} />
-            <Route path="/events/:eventId" element={<DetailPage />} /> {/* Add this route */}
+            <Route path="/events/:eventId" element={<DetailPage />} />
             <Route path="*" element={<Typography variant="h6">404 Not Found</Typography>} />
           </Routes>
         </Box>
@@ -71,3 +69,4 @@ function App() {
 }
 
 export default App;
+

@@ -14,8 +14,9 @@ const Home = () => {
         </Box>
       </Box>
     </EventProvider>
-  );  
+  );
 };
 
 export default Home;
+
 
