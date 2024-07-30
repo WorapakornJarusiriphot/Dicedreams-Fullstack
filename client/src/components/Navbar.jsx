@@ -142,7 +142,7 @@ const Navbar = () => {
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Typography variant="h6" component="div" sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                     <span style={{ color: 'crimson', fontWeight: 'bold' }}>Dice</span>
-                    <span style={{ color: 'black', fontWeight: 'bold' }}>Dreams</span>
+                    <span style={{ color: 'white', fontWeight: 'bold' }}>Dreams</span>
                 </Typography>
             </Link>
             <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, marginLeft: 2 }}>
@@ -197,7 +197,7 @@ const Navbar = () => {
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Typography variant="h6" component="div" sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
                     <span style={{ color: 'crimson', fontWeight: 'bold' }}>Dice</span>
-                    <span style={{ color: 'black', fontWeight: 'bold' }}>Dreams</span>
+                    <span style={{ color: 'white', fontWeight: 'bold' }}>Dreams</span>
                 </Typography>
             </Link>
             <Box sx={{ flexGrow: 1 }} />

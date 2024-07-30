@@ -344,9 +344,12 @@ function LoginPage() {
             </label>
             <Button
               variant="contained"
-              color="primary"
+              style={{
+                marginTop: "16px",
+                backgroundColor: "crimson",
+                color: "white"
+              }}
               fullWidth
-              style={{ marginTop: "16px" }}
               onClick={handleRegister}
               disabled={loading}
             >
@@ -395,16 +398,20 @@ function LoginPage() {
             <Typography color="error" style={{ marginTop: "16px" }}>
               {errorMessage}
             </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              style={{ marginTop: "16px" }}
-              onClick={handleLogin}
-              disabled={loading}
-            >
-              {loading ? <CircularProgress size={24} color="inherit" /> : "Log In"}
-            </Button>
+              <Button
+                variant="contained"
+                style={{
+                  marginTop: "16px",
+                  backgroundColor: "crimson",
+                  color: "white"
+                }}
+                fullWidth
+                onClick={handleLogin}
+                disabled={loading}
+              >
+                {loading ? <CircularProgress size={24} color="inherit" /> : "Log In"}
+              </Button>
+
           </Box>
         )}
         <Button
