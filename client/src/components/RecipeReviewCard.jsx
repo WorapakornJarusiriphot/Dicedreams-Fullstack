@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   Container, Grid, Typography, Paper, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
-import { getPostGames } from '../components/apiService'; // Import the API service
-import EventCard from '../components/EventCrad'; // Corrected import name
+import { getPostGames } from '../components/apiService';
+import EventCard from './EventCrad'; // Corrected import name
 
 function RecipeReviewCard() {
   const [events, setEvents] = useState([]);
@@ -38,14 +38,24 @@ function RecipeReviewCard() {
     <Container sx={{ padding: '2rem 0' }}>
       <Grid container spacing={3} justifyContent="center">
         <Grid item xs={12}>
-          <Paper sx={{ padding: '1rem', marginBottom: '2rem', textAlign: 'center' }}>
-            <Typography variant="h4" component="div" gutterBottom>
+          <Paper sx={{
+            padding: '1rem',
+            marginBottom: '2rem',
+            textAlign: 'center',
+            backgroundColor: 'rgba(85, 0, 27, 0.5)'
+          }}>
+            <Typography
+              variant="h4"
+              component="div"
+              gutterBottom
+              sx={{ color: 'white', fontWeight: 'bold' }}
+            >
               Featured Games
             </Typography>
             <Select
               value={filter}
               onChange={handleFilterChange}
-              sx={{ marginBottom: '1rem', minWidth: '150px' }}
+              sx={{ marginBottom: '1rem', minWidth: '150px', color: 'white', fontWeight: 'bold' }}
             >
               <MenuItem value="All">All</MenuItem>
               <MenuItem value="new">New</MenuItem>
@@ -59,17 +69,17 @@ function RecipeReviewCard() {
           <Alert severity="error">{error}</Alert>
         ) : (
           filteredEvents.map((event) => (
-            <Grid item key={event.post_games_id} xs={12} sm={10} md={8}> {/* Adjusted the grid sizes */}
+            <Grid item key={event.post_games_id} xs={12} sm={10} md={8}>
               <EventCard
                 profilePic={event.games_image}
-                username={event.username} // Assuming username is included in the API response
+                username={event.username}
                 postTime={event.creation_date}
                 image={event.games_image}
                 nameGames={event.name_games}
                 dateMeet={event.date_meet}
                 detailPost={event.detail_post}
                 numPeople={event.num_people}
-                maxParticipants={event.maxParticipants} // Adjust as needed if maxParticipants is a different field
+                maxParticipants={event.maxParticipants}
               />
             </Grid>
           ))
@@ -80,7 +90,6 @@ function RecipeReviewCard() {
 }
 
 export default RecipeReviewCard;
-
 
 
 

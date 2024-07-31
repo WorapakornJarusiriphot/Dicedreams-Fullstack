@@ -14,17 +14,10 @@ function App() {
 
   return (
     <Router>
-      <Box
-        sx={{
-          display: 'flex',
-          minHeight: '100vh',
-           backgroundImage: 'url(BGmain.jpg)', // Replace with your image URL
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
         <CssBaseline />
+        <Box
+        />
         <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
           <Toolbar>
             <Typography variant="h6" noWrap component="div">
@@ -61,7 +54,7 @@ function App() {
             </List>
           </Box>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, bgcolor: 'rgba(0, 0, 0, 0.5)', p: 3 }}>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
           <Routes>
             <Route path="/" element={<HomePage />} />
