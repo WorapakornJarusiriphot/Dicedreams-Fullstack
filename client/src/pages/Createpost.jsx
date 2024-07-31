@@ -12,6 +12,8 @@ import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-picker
 import Stack from '@mui/material/Stack';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Auth/AuthContext';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 const CreatePost = ({ addEvent }) => {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ const CreatePost = ({ addEvent }) => {
     image: '',
   });
   const [imageFile, setImageFile] = useState(null);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   const fileInputRef = useRef(null);
 
@@ -60,8 +63,20 @@ const CreatePost = ({ addEvent }) => {
   };
 
   const handleSubmit = () => {
-    if (!formValues.boardGameName || !formValues.postDetails || !selectedDate || !timeValue) {
-      alert('Please fill out all required fields.');
+    if (!formValues.boardGameName) {
+      setSnackbar({ open: true, message: 'Please enter the game name', severity: 'error' });
+      return;
+    }
+    if (!selectedDate) {
+      setSnackbar({ open: true, message: 'Please enter the date', severity: 'error' });
+      return;
+    }
+    if (!timeValue) {
+      setSnackbar({ open: true, message: 'Please enter the time', severity: 'error' });
+      return;
+    }
+    if (numberOfPlayers <= 0) {
+      setSnackbar({ open: true, message: 'Please enter the number of players', severity: 'error' });
       return;
     }
 
@@ -105,11 +120,12 @@ const CreatePost = ({ addEvent }) => {
         setTimeValue(null);
         setNumberOfPlayers(0);
         setImageFile(null);
+        setSnackbar({ open: true, message: 'Post created successfully!', severity: 'success' });
         navigate('/');
       })
       .catch(error => {
         console.error('Error:', error);
-        alert('Error creating post. Please try again.');
+        setSnackbar({ open: true, message: 'Error creating post. Please try again.', severity: 'error' });
       });
   };
 
@@ -117,6 +133,10 @@ const CreatePost = ({ addEvent }) => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ open: false, message: '', severity: 'success' });
   };
 
   return (
@@ -133,6 +153,7 @@ const CreatePost = ({ addEvent }) => {
           <Typography variant="h4" gutterBottom>Create a board game post</Typography>
           <TextField
             fullWidth
+            id="name_games"
             label="Board game name"
             name="boardGameName"
             value={formValues.boardGameName}
@@ -144,6 +165,7 @@ const CreatePost = ({ addEvent }) => {
           />
           <TextField
             fullWidth
+            id="detail_post"
             label="Post details"
             name="postDetails"
             value={formValues.postDetails}
@@ -151,10 +173,10 @@ const CreatePost = ({ addEvent }) => {
             placeholder="Details"
             multiline
             sx={{ mb: 2 }}
-            required
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2 }}
+              id="date_meet">
               <DatePicker
                 label="Select an appointment date"
                 value={selectedDate}
@@ -162,7 +184,8 @@ const CreatePost = ({ addEvent }) => {
                 renderInput={(params) => <TextField fullWidth {...params} required />}
               />
             </Box>
-            <Box sx={{ mb: 2 }}>
+            <Box sx={{ mb: 2 }}
+              id="time_meet">
               <Stack spacing={2} sx={{ minWidth: 305 }}>
                 <TimePicker
                   label="Choose an appointment time"
@@ -175,12 +198,13 @@ const CreatePost = ({ addEvent }) => {
           </LocalizationProvider>
           <TextField
             fullWidth
+            id="num_people"
             type="number"
             label="Number of Players"
             placeholder="Enter number of players"
             variant="outlined"
             InputLabelProps={{ shrink: true }}
-            inputProps={{ min: 0 }}
+            inputProps={{ min: 2 }}
             value={numberOfPlayers}
             onChange={handleNumberChange}
             onBlur={handleNumberChange}
@@ -199,7 +223,7 @@ const CreatePost = ({ addEvent }) => {
             ref={fileInputRef}
             accept="image/*"
             style={{ display: 'none' }}
-            id="upload-file"
+            id="games_image"
             type="file"
             onChange={handleImageChange}
           />
@@ -215,6 +239,15 @@ const CreatePost = ({ addEvent }) => {
           </Button>
         </CardContent>
       </Card>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
