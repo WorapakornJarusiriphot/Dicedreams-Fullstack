@@ -18,7 +18,7 @@ function EventCard(props) {
     } = props;
 
     return (
-        <Card sx={{ maxWidth: '100%', margin: '16px 0', backgroundColor: 'white', boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.5)' }}>
+        <Card sx={{ maxWidth: '100%', margin: '16px 0', backgroundColor: '#424242', boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.5)' }}>
             <CardHeader
                 avatar={
                     <Avatar
@@ -32,7 +32,7 @@ function EventCard(props) {
                 }
                 title={username || 'Unknown User'}
                 subheader={postTime || 'Unknown Time'}
-                sx={{ color: 'black' }}
+                sx={{ color: 'white' }}
             />
             <CardMedia
                 component="img"
@@ -40,7 +40,7 @@ function EventCard(props) {
                 image={image || ''}
                 alt="Event image"
             />
-            <CardContent sx={{ color: 'black' }}>
+            <CardContent sx={{ color: 'white' }}>
                 <Typography variant="h6" component="div">
                     {nameGames || 'Untitled Event'}
                 </Typography>
@@ -72,8 +72,8 @@ function EventCard(props) {
                     variant="outlined"
                     color="secondary"
                     sx={{
-                        borderColor: 'black',
-                        color: 'black',
+                        borderColor: 'white',
+                        color: 'white',
                         padding: '12px 24px',
                         fontSize: '1rem',
                         width: '120px'

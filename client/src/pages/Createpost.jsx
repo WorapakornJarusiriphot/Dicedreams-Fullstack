@@ -232,7 +232,7 @@ const CreatePost = ({ addEvent }) => {
             variant="outlined"
             color="primary"
             fullWidth
-            sx={{ color: 'black', borderColor: 'black' }}
+            sx={{ color: 'white', borderColor: 'white' }}
             onClick={handleSubmit}
           >
             Create Post

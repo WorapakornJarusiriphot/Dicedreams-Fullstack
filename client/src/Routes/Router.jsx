@@ -7,7 +7,7 @@ import Rules from "../pages/Rule";
 import LoginPage from "../pages/loginRegister";
 import NotificationPage from "../pages/NotificationPage";
 import ParticipationHistory from '../pages/ParticipationHistory';2
-import EventDetailPage from '../components/DetailPage';
+import EventDetailPage from '../pages/DetailPage';
 import Profile from '../pages/Profile';
 import ProfileEdit from '../pages/ProfileEdit';
 
