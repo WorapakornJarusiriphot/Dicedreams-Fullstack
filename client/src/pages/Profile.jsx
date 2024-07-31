@@ -16,24 +16,13 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../profile.css";
+import UserPosts from "../components/UPost";
+
 import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const getRandomDate = () => {
-    const start = new Date(2024, 0, 1);
-    const end = new Date();
-    const date = new Date(
-      start.getTime() + Math.random() * (end.getTime() - start.getTime())
-    );
-    return date.toLocaleString();
-  };
-
-  const getRandomID = () => {
-    return Math.floor(Math.random() * 1000000).toString();
-  };
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -47,7 +36,7 @@ const Profile = () => {
         throw new Error("No token found");
       }
       // console.log("token -->", token);
-      const user_id = "065a9e78-50bc-4d43-acda-3080af58d155";
+      const user_id = "065a9e78-50bc-4d43-acda-3080af58d155"; // test
       // const user_id = "5ab17ae8-707b-43f9-baf1-1ecda4c691cd"; // dream
 
       const url = `http://localhost:8080/api/users/${user_id}`;
@@ -74,74 +63,9 @@ const Profile = () => {
 
   console.log(user.username);
 
-  const boardGames = [
-    {
-      game_name: "Monopoly",
-      game_id: getRandomID(),
-      img: "../../public/G1.png",
-      dateTime: getRandomDate(),
-      commend: "มาสร้างแลนมาร์คกันเถอะ",
-      location: "ร้าน outcast gaming",
-      player_total: 5,
-      player_amout: 2,
-    },
-    {
-      game_name: "Catan",
-      game_id: getRandomID(),
-      img: "../../public/G2.jpg",
-      dateTime: getRandomDate(),
-      commend: "มาเป็นพ่อค้ากันเถอะ",
-      location: "ร้าน outcast gaming",
-      player_total: 4,
-      player_amout: 2,
-    },
-    {
-      game_name: "Risk",
-      game_id: getRandomID(),
-      img: "../../public/G3.png",
-      dateTime: getRandomDate(),
-      commend: "มาพิชิตโลกกันเถอะ",
-      location: "ร้าน outcast gaming",
-      player_total: 6,
-      player_amout: 3,
-    },
-    {
-      game_name: "Carcassonne",
-      game_id: getRandomID(),
-      img: "../../public/G4.png",
-      dateTime: getRandomDate(),
-      commend: "มาสร้างเมืองกันเถอะ",
-      location: "ร้าน outcast gaming",
-      player_total: 4,
-      player_amout: 2,
-    },
-    {
-      game_name: "Ticket to Ride",
-      game_id: getRandomID(),
-      img: "../../public/G5.png",
-      dateTime: getRandomDate(),
-      commend: "มาสร้างรถไฟกันเถอะ",
-      location: "ร้าน outcast gaming",
-      player_total: 5,
-      player_amout: 3,
-    },
-  ];
-
   const handleEditProfileClick = () => {
     navigate("/profile/edit");
   };
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const options = ["เข้าร่วม", "แก้ไขชื่อ", "อื่นๆ"];
-
-  const ITEM_HEIGHT = 48;
 
   return (
     <Box sx={{ marginTop: 4 }}>
@@ -149,9 +73,9 @@ const Profile = () => {
         sx={{
           backgroundColor: "#222",
           borderRadius: 2,
-          marginLeft: 20,
-          marginRight: 20,
-          marginTop: 20,
+          width: "60%", 
+          margin: "20px auto",
+          padding: 2, 
         }}
       >
         <Box
@@ -280,96 +204,7 @@ const Profile = () => {
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          backgroundColor: "#222",
-          borderRadius: 2,
-          marginLeft: 20,
-          marginRight: 20,
-          marginTop: 9,
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            margin: 2,
-            paddingTop: 2,
-            paddingBottom: 2,
-          }}
-        >
-          <Avatar
-            src={user.avatar ? user.Avatar : "ไม่พบข้อมูล"}
-            sx={{ width: 40, height: 40, marginRight: 2 }}
-          />
-          <Box>
-            <Typography variant="body1" sx={{ color: "white" }}>
-              {boardGames[0].userName ? boardGames[0].Avatar : "ไม่พบข้อมูล"}
-            </Typography>
-            <Typography variant="body2" sx={{ color: "gray" }}>
-              {boardGames[0].dateTime ? boardGames[0].Avatar : "ไม่พบข้อมูล"}
-            </Typography>
-          </Box>
-
-          <Box sx={{ marginLeft: "auto" }}>
-            <IconButton
-              aria-label="more"
-              id="long-button"
-              aria-controls={menuOpen ? "long-menu" : undefined}
-              aria-expanded={menuOpen ? "true" : undefined}
-              aria-haspopup="true"
-              onClick={handleMenuClick}
-              sx={{ color: "white" }}
-            >
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="long-menu"
-              MenuListProps={{
-                "aria-labelledby": "long-button",
-              }}
-              anchorEl={anchorEl}
-              open={menuOpen}
-              onClose={handleMenuClose}
-              PaperProps={{
-                style: {
-                  maxHeight: ITEM_HEIGHT * 4.5,
-                  width: "20ch",
-                },
-              }}
-            >
-              {options.map((option) => (
-                <MenuItem key={option} onClick={handleMenuClose}>
-                  {option}
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            height: "20vh",
-            width: "100%",
-            backgroundImage: `url(${boardGames[0].img})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            borderRadius: "0.5rem",
-          }}
-        ></Box>
-
-        <Box
-          sx={{
-            width: "80%",
-            backgroundImage: `url(${boardGames[0].img})`,
-            backgroundSize: "contain",
-            backgroundPosition: "left",
-            backgroundRepeat: "no-repeat",
-            borderRadius: "0.5rem",
-          }}
-        ></Box>
-      </Box>
+      <UserPosts user={user} />
     </Box>
   );
 };
