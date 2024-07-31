@@ -14,6 +14,8 @@ import {
   useMediaQuery,
   IconButton,
   InputAdornment,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,8 +25,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import axios from "axios";
 import { AuthContext } from "../Auth/AuthContext";
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 
 function LoginPage() {
   const [isRegister, setIsRegister] = useState(false);
@@ -140,19 +140,24 @@ function LoginPage() {
         formDataObj.append("user_image", formData.user_image);
       }
 
-      await axios.post("http://localhost:8080/api-docs/#/Users", formDataObj, {
+      await axios.post("http://localhost:8080/api-docs/#/Users/post_users", formDataObj, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      setSnackbar({ open: true, message: "I have registered as a user.", severity: "success" });
-      navigate("/login");
+      setSnackbar({ open: true, message: "Registration successful!", severity: "success" });
+      setIsRegister(false);  // Switch to login screen
     } catch (error) {
-      setErrorMessage(
+      const errorMessage =
         error.response?.data?.message ||
-        (error.request ? "No response from server. Please try again later." : "Error: " + error.message)
-      );
-      setSnackbar({ open: true, message: "Registration failed!", severity: "error" });
+        (error.request ? "No response from server. Please try again later." : "Error: " + error.message);
+      if (errorMessage.includes("already added as a member")) {
+        setSnackbar({ open: true, message: "Already added as a member", severity: "error" });
+      } else if (errorMessage.includes("have membership")) {
+        setSnackbar({ open: true, message: "Have membership", severity: "error" });
+      } else {
+        setSnackbar({ open: true, message: "Registration failed!", severity: "error" });
+      }
     } finally {
       setLoading(false);
     }
@@ -280,10 +285,10 @@ function LoginPage() {
             <TextField
               id="password"
               label="Password"
-              type={showPassword ? "text" : "password"}
               variant="filled"
               fullWidth
               margin="normal"
+              type={showPassword ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleInputChange}
@@ -291,8 +296,12 @@ function LoginPage() {
                 style: { color: "#FFFFFF" },
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={handleTogglePasswordVisibility} style={{ color: "#FFFFFF" }}>
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleTogglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff style={{ color: "#FFFFFF" }} /> : <Visibility style={{ color: "#FFFFFF" }} />}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -302,64 +311,64 @@ function LoginPage() {
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                id="birthday"
                 label="Birthday"
+                variant="filled"
+                fullWidth
+                margin="normal"
                 value={formData.birthday}
                 onChange={(newValue) => setFormData((prev) => ({ ...prev, birthday: newValue }))}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     variant="filled"
-                    fullWidth
-                    margin="normal"
-                    InputProps={{ ...params.InputProps, style: { color: "#FFFFFF" } }}
+                    InputProps={{ style: { color: "#FFFFFF" } }}
                     InputLabelProps={{ style: { color: "#FFFFFF" } }}
+                    required
                   />
                 )}
               />
             </LocalizationProvider>
-            <FormLabel component="legend" style={{ color: "#FFFFFF", marginTop: "16px" }}>Gender</FormLabel>
+            <FormLabel component="legend" style={{ marginTop: 16, color: "#FFFFFF" }}>
+              Gender
+            </FormLabel>
             <RadioGroup
-              row
-              id="gender"
+              aria-label="gender"
               name="gender"
               value={formData.gender}
               onChange={handleInputChange}
+              row
+              style={{ color: "#FFFFFF" }}
             >
-              <FormControlLabel value="male" control={<Radio style={{ color: "#FFFFFF" }} />} label="Male" />
-              <FormControlLabel value="female" control={<Radio style={{ color: "#FFFFFF" }} />} label="Female" />
-              <FormControlLabel value="other" control={<Radio style={{ color: "#FFFFFF" }} />} label="Other" />
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel value="female" control={<Radio />} label="Female" />
+              <FormControlLabel value="other" control={<Radio />} label="Other" />
             </RadioGroup>
-            <input
-              accept="image/*"
-              type="file"
-              id="user_image"
-              style={{ display: "none" }}
-              onChange={handleFileChange}
-            />
-            <label htmlFor="user_image">
-              <Button variant="contained" color="primary" component="span" fullWidth style={{ marginTop: "16px" }}>
-                Upload Profile Picture
-              </Button>
-            </label>
-            <Button
-              variant="contained"
-              style={{
-                marginTop: "16px",
-                backgroundColor: "crimson",
-                color: "white"
-              }}
-              fullWidth
-              onClick={handleRegister}
-              disabled={loading}
-            >
-              {loading ? <CircularProgress size={24} color="inherit" /> : "Register"}
+            <Button variant="contained" component="label" style={{ marginTop: 16, backgroundColor: "#FFFFFF", color: "#000000" }}>
+              Upload Profile Image
+              <input type="file" hidden onChange={handleFileChange} />
             </Button>
+            <Box display="flex" justifyContent="space-between" mt={2}>
+              <Button
+                variant="contained"
+                onClick={handleRegister}
+                style={{ backgroundColor: "crimson", color: "white" }}
+              >
+                {loading ? <CircularProgress size={24} /> : "Register"}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleCancel}
+                style={{ borderColor: "#FFFFFF", color: "#FFFFFF" }}
+              >
+                Cancel
+              </Button>
+            </Box>
           </Box>
         ) : (
           <Box width="100%">
             <TextField
-              label="Username or E-mail"
+              id="identifier"
+              label="User name or Email"
               variant="filled"
               fullWidth
               margin="normal"
@@ -371,11 +380,12 @@ function LoginPage() {
               required
             />
             <TextField
+              id="loginPassword"
               label="Password"
-              type={showPassword ? "text" : "password"}
               variant="filled"
               fullWidth
               margin="normal"
+              type={showPassword ? "text" : "password"}
               name="loginPassword"
               value={formData.loginPassword}
               onChange={handleInputChange}
@@ -383,8 +393,12 @@ function LoginPage() {
                 style: { color: "#FFFFFF" },
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={handleTogglePasswordVisibility} style={{ color: "#FFFFFF" }}>
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleTogglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff style={{ color: "#FFFFFF" }} /> : <Visibility style={{ color: "#FFFFFF" }} />}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -392,42 +406,30 @@ function LoginPage() {
               InputLabelProps={{ style: { color: "#FFFFFF" } }}
               required
             />
-            <Link href="#" color="#FFFFFF" style={{ marginTop: "16px", display: "block", textAlign: "center" }}>
-              Forgot password?
-            </Link>
-            <Typography color="error" style={{ marginTop: "16px" }}>
-              {errorMessage}
-            </Typography>
+            <Box display="flex" justifyContent="space-between" mt={2}>
               <Button
                 variant="contained"
-                style={{
-                  marginTop: "16px",
-                  backgroundColor: "crimson",
-                  color: "white"
-                }}
-                fullWidth
                 onClick={handleLogin}
-                disabled={loading}
+                style={{ backgroundColor: "crimson", color: "white" }}
               >
-                {loading ? <CircularProgress size={24} color="inherit" /> : "Log In"}
+                {loading ? <CircularProgress size={24} /> : "Log In"}
               </Button>
-
+              <Button
+                variant="outlined"
+                onClick={handleCancel}
+                style={{ borderColor: "#FFFFFF", color: "#FFFFFF" }}
+              >
+                Cancel
+              </Button>
+            </Box>
           </Box>
         )}
-        <Button
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          style={{ marginTop: "16px" }}
-          onClick={handleCancel}
-        >
-          Cancel
-        </Button>
       </Box>
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: "100%" }}>
           {snackbar.message}
