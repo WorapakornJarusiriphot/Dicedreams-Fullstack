@@ -32,6 +32,8 @@ const Navbar = () => {
 
     const handleSearchSubmit = (event) => {
         if (event.key === 'Enter') {
+
+            navigate(`/index?search=${encodeURIComponent(searchQuery)}`);
             console.log('Search query:', searchQuery);
         }
     };
