@@ -43,6 +43,7 @@ function LoginPage() {
     loginPassword: "",
     user_image: null,
   });
+  const [fileName, setFileName] = useState(""); // State to hold the file name
   const [errorMessage, setErrorMessage] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
@@ -173,7 +174,9 @@ function LoginPage() {
   };
 
   const handleFileChange = (event) => {
-    setFormData((prev) => ({ ...prev, user_image: event.target.files[0] }));
+    const file = event.target.files[0];
+    setFormData((prev) => ({ ...prev, user_image: file }));
+    setFileName(file ? file.name : ""); // Update the file name state
   };
 
   const handleTogglePasswordVisibility = () => {
@@ -347,6 +350,11 @@ function LoginPage() {
               Upload Profile Image
               <input type="file" hidden onChange={handleFileChange} />
             </Button>
+            {fileName && ( // Conditionally render the file name
+              <Typography variant="body2" style={{ marginTop: 8, color: "#FFFFFF" }}>
+                Selected file: {fileName}
+              </Typography>
+            )}
             <Box display="flex" justifyContent="space-between" mt={2}>
               <Button
                 variant="contained"

@@ -59,6 +59,7 @@ const Navbar = () => {
     const handleLogout = () => {
         logout();
         setDialogOpen(false);
+        navigate('/'); // Redirect to the main page
     };
 
     const closeDrawer = () => {

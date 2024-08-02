@@ -3,7 +3,8 @@ import {
   Container, Grid, Typography, Paper, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
 import { getPostGames } from '../components/apiService';
-import EventCard from './EventCrad'; // Corrected import name
+import EventCard from './EventCrad';
+import PostActivity from './PostActivity';
 
 function RecipeReviewCard() {
   const [events, setEvents] = useState([]);
@@ -70,6 +71,7 @@ function RecipeReviewCard() {
         ) : (
           filteredEvents.map((event) => (
             <Grid item key={event.post_games_id} xs={12} sm={10} md={8}>
+              {/* You can choose to display either EventCard or PostActivity */}
               <EventCard
                 profilePic={event.games_image}
                 username={event.username}
@@ -81,6 +83,20 @@ function RecipeReviewCard() {
                 numPeople={event.num_people}
                 maxParticipants={event.maxParticipants}
               />
+              {/* Uncomment the following block to use PostActivity instead of EventCard */}
+              
+              <PostActivity
+                profilePic={event.games_image}
+                username={event.username}
+                postTime={event.creation_date}
+                image={event.games_image}
+                nameGames={event.name_games}
+                dateMeet={event.date_meet}
+                detailPost={event.detail_post}
+                numPeople={event.num_people}
+                maxParticipants={event.maxParticipants}
+              />
+              
             </Grid>
           ))
         )}
@@ -90,6 +106,3 @@ function RecipeReviewCard() {
 }
 
 export default RecipeReviewCard;
-
-
-
