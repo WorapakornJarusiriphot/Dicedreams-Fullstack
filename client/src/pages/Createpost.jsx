@@ -91,16 +91,26 @@ const CreatePost = () => {
       return;
     }
 
+    // Format the date properly
+    const formattedDate = selectedDate.format('YYYY-MM-DD');
+
+    // Logging the selected date and formatted date
+    console.log('Selected Date:', selectedDate.toString());
+    console.log('Formatted Date:', formattedDate);
+
     const requestData = {
       name_games: formValues.name_games,
       detail_post: formValues.detail_post,
       num_people: numberOfPlayers,
-      date_meet: selectedDate.format('YYYY-MM-DD'),
+      date_meet: formattedDate,
       time_meet: timeValue.format('HH:mm:ss'),
       games_image: formValues.games_image,
       status_post: 'active',
       users_id: userId,
     };
+
+    // Logging the request data
+    console.log('Request Data:', requestData);
 
     try {
       const response = await fetch('http://localhost:8080/api/postGame', {
@@ -125,6 +135,7 @@ const CreatePost = () => {
       setSnackbar({ open: true, message: 'Error creating post. Please try again.', severity: 'error' });
     }
   };
+
 
   const handleUploadClick = () => {
     if (fileInputRef.current) {
@@ -250,3 +261,4 @@ const CreatePost = () => {
 };
 
 export default CreatePost;
+
