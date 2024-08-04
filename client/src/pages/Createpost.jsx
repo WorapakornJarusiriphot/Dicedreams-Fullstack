@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -14,6 +14,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Auth/AuthContext'; // Adjust the import path based on your file structure
+import RecipeReviewCard from '../components/RecipeReviewCard'; // Adjust the import path based on your file structure
 
 const CreatePost = () => {
   const { userId, accessToken } = useContext(AuthContext);
@@ -28,8 +29,33 @@ const CreatePost = () => {
   });
   const [imageFile, setImageFile] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [userDetails, setUserDetails] = useState({ username: '', profilePic: '' });
+  const recipeReviewCardRef = useRef(null);
 
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/user/${userId}`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setUserDetails({ username: data.username, profilePic: data.profilePic });
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    if (userId) {
+      fetchUserDetails();
+    }
+  }, [userId, accessToken]);
 
   const handleNumberChange = (event) => {
     let value = event.target.value;
@@ -91,12 +117,7 @@ const CreatePost = () => {
       return;
     }
 
-    // Format the date properly
     const formattedDate = selectedDate.format('YYYY-MM-DD');
-
-    // Logging the selected date and formatted date
-    console.log('Selected Date:', selectedDate.toString());
-    console.log('Formatted Date:', formattedDate);
 
     const requestData = {
       name_games: formValues.name_games,
@@ -107,17 +128,16 @@ const CreatePost = () => {
       games_image: formValues.games_image,
       status_post: 'active',
       users_id: userId,
+      username: userDetails.username,
+      profilePic: userDetails.profilePic
     };
-
-    // Logging the request data
-    console.log('Request Data:', requestData);
 
     try {
       const response = await fetch('http://localhost:8080/api/postGame', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`, // Use the access token from context
+          'Authorization': `Bearer ${accessToken}`,
         },
         body: JSON.stringify(requestData),
       });
@@ -126,9 +146,8 @@ const CreatePost = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const responseData = await response.json();
-      console.log('Response Data:', responseData);
       setSnackbar({ open: true, message: 'Post created successfully!', severity: 'success' });
+      recipeReviewCardRef.current.scrollToTop();
       navigate('/');
     } catch (error) {
       console.error('Error:', error);
@@ -151,14 +170,7 @@ const CreatePost = () => {
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-      }}
-    >
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '150vh' }}>
       <Card sx={{ maxWidth: 600 }}>
         <CardContent>
           <Typography variant="h4" gutterBottom>Create a board game post</Typography>
@@ -224,38 +236,46 @@ const CreatePost = () => {
             />
             <Button
               variant="contained"
+              color="primary"
+              component="span"
               startIcon={<CloudUploadIcon />}
-              sx={{ mb: 2, backgroundColor: 'crimson', color: 'white' }}
               onClick={handleUploadClick}
             >
-              Upload Image
+              Upload Board Game Image
             </Button>
             <input
-              ref={fileInputRef}
-              accept="image/*"
-              style={{ display: 'none' }}
-              id="games_image"
               type="file"
+              ref={fileInputRef}
               onChange={handleImageChange}
+              style={{ display: 'none' }}
             />
-            {imageFile && <Typography>{imageFile.name}</Typography>}
-            <Button
-              variant="outlined"
-              fullWidth
-              sx={{ backgroundColor: 'crimson', color: 'white', borderColor: 'crimson' }}
-              type="submit"
-            >
-              Create Post
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              fullWidth
-              sx={{ mt: 2, color: 'white', borderColor: 'white' }}
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
+            {formValues.games_image && (
+              <Box sx={{ mb: 2 }}>
+                <img
+                  src={formValues.games_image}
+                  alt="Preview"
+                  style={{ maxWidth: '100%', height: 'auto' }}
+                />
+              </Box>
+            )}
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ backgroundColor: 'crimson', color: 'white' }}
+                type="submit"
+              >
+                Post
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ backgroundColor: 'grey', color: 'white' }}
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            </Box>
           </form>
         </CardContent>
       </Card>
