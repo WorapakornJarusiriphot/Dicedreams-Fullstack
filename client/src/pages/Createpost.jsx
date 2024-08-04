@@ -10,21 +10,21 @@ import Typography from '@mui/material/Typography';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
-import dayjs from 'dayjs';
-import { AuthContext } from '../Auth/AuthContext';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import dayjs from 'dayjs';
+import { AuthContext } from '../Auth/AuthContext'; // Adjust the import path based on your file structure
 
-const CreatePost = ({ addEvent }) => {
+const CreatePost = () => {
+  const { userId, accessToken } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { accessToken, userId } = useContext(AuthContext);
   const [selectedDate, setSelectedDate] = useState(null);
   const [timeValue, setTimeValue] = useState(null);
   const [numberOfPlayers, setNumberOfPlayers] = useState(0);
   const [formValues, setFormValues] = useState({
-    boardGameName: '',
-    postDetails: '',
-    image: '',
+    name_games: '',
+    detail_post: '',
+    games_image: '',
   });
   const [imageFile, setImageFile] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
@@ -55,15 +55,17 @@ const CreatePost = ({ addEvent }) => {
       reader.onloadend = () => {
         setFormValues((prevValues) => ({
           ...prevValues,
-          image: reader.result,
+          games_image: reader.result,
         }));
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = () => {
-    if (!formValues.boardGameName) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!formValues.name_games) {
       setSnackbar({ open: true, message: 'Please enter the game name', severity: 'error' });
       return;
     }
@@ -80,59 +82,68 @@ const CreatePost = ({ addEvent }) => {
       return;
     }
 
+    const currentDateTime = dayjs();
+    const selectedDateTime = dayjs(selectedDate).hour(timeValue.hour()).minute(timeValue.minute());
+    const hoursDifference = selectedDateTime.diff(currentDateTime, 'hour');
+
+    if (hoursDifference < 12) {
+      setSnackbar({ open: true, message: 'Meeting time must be at least 12 hours in the future', severity: 'error' });
+      return;
+    }
+
+    // Format the date properly
+    const formattedDate = selectedDate.format('YYYY-MM-DD');
+
+    // Logging the selected date and formatted date
+    console.log('Selected Date:', selectedDate.toString());
+    console.log('Formatted Date:', formattedDate);
+
     const requestData = {
-      name_games: formValues.boardGameName,
-      detail_post: formValues.postDetails,
+      name_games: formValues.name_games,
+      detail_post: formValues.detail_post,
       num_people: numberOfPlayers,
-      date_meet: selectedDate.format('MM/DD/YYYY'),
+      date_meet: formattedDate,
       time_meet: timeValue.format('HH:mm:ss'),
-      games_image: formValues.image,
+      games_image: formValues.games_image,
       status_post: 'active',
-      creation_date: dayjs().format('MM/DD/YYYY HH:mm:ss'),
       users_id: userId,
     };
 
+    // Logging the request data
     console.log('Request Data:', requestData);
 
-    fetch('http://localhost:8080/api-docs/#/PostGames/post_postGame', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${accessToken}`
-      },
-      body: JSON.stringify(requestData),
-    })
-      .then(response => {
-        if (!response.ok) {
-          return response.text().then(text => { throw new Error(text) });
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Success:', data);
-        addEvent(data);
-        setFormValues({
-          boardGameName: '',
-          postDetails: '',
-          image: '',
-        });
-        setSelectedDate(null);
-        setTimeValue(null);
-        setNumberOfPlayers(0);
-        setImageFile(null);
-        setSnackbar({ open: true, message: 'Post created successfully!', severity: 'success' });
-        navigate('/');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setSnackbar({ open: true, message: 'Error creating post. Please try again.', severity: 'error' });
+    try {
+      const response = await fetch('http://localhost:8080/api/postGame', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`, // Use the access token from context
+        },
+        body: JSON.stringify(requestData),
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log('Response Data:', responseData);
+      setSnackbar({ open: true, message: 'Post created successfully!', severity: 'success' });
+      navigate('/');
+    } catch (error) {
+      console.error('Error:', error);
+      setSnackbar({ open: true, message: 'Error creating post. Please try again.', severity: 'error' });
+    }
   };
 
   const handleUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
+  };
+
+  const handleCancel = () => {
+    navigate('/');
   };
 
   const handleCloseSnackbar = () => {
@@ -151,92 +162,101 @@ const CreatePost = ({ addEvent }) => {
       <Card sx={{ maxWidth: 600 }}>
         <CardContent>
           <Typography variant="h4" gutterBottom>Create a board game post</Typography>
-          <TextField
-            fullWidth
-            id="name_games"
-            label="Board game name"
-            name="boardGameName"
-            value={formValues.boardGameName}
-            onChange={handleInputChange}
-            placeholder="mtg werewolf monopoly game and others"
-            multiline
-            sx={{ mb: 2 }}
-            required
-          />
-          <TextField
-            fullWidth
-            id="detail_post"
-            label="Post details"
-            name="postDetails"
-            value={formValues.postDetails}
-            onChange={handleInputChange}
-            placeholder="Details"
-            multiline
-            sx={{ mb: 2 }}
-          />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box sx={{ mb: 2 }}
-              id="date_meet">
-              <DatePicker
-                label="Select an appointment date"
-                value={selectedDate}
-                onChange={(newValue) => setSelectedDate(newValue)}
-                renderInput={(params) => <TextField fullWidth {...params} required />}
-              />
-            </Box>
-            <Box sx={{ mb: 2 }}
-              id="time_meet">
-              <Stack spacing={2} sx={{ minWidth: 305 }}>
-                <TimePicker
-                  label="Choose an appointment time"
-                  value={timeValue}
-                  onChange={setTimeValue}
-                  renderInput={(params) => <TextField {...params} required />}
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              id="name_games"
+              label="Board game name"
+              name="name_games"
+              value={formValues.name_games}
+              onChange={handleInputChange}
+              placeholder="mtg werewolf monopoly game and others"
+              multiline
+              sx={{ mb: 2 }}
+              required
+            />
+            <TextField
+              fullWidth
+              id="detail_post"
+              label="Post details"
+              name="detail_post"
+              value={formValues.detail_post}
+              onChange={handleInputChange}
+              placeholder="Details"
+              multiline
+              sx={{ mb: 2 }}
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Box sx={{ mb: 2 }} id="date_meet">
+                <DatePicker
+                  label="Select an appointment date"
+                  views={['year', 'day']}
+                  value={selectedDate}
+                  onChange={(newValue) => setSelectedDate(newValue)}
+                  renderInput={(params) => <TextField fullWidth {...params} required />}
                 />
-              </Stack>
-            </Box>
-          </LocalizationProvider>
-          <TextField
-            fullWidth
-            id="num_people"
-            type="number"
-            label="Number of Players"
-            placeholder="Enter number of players"
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            inputProps={{ min: 2 }}
-            value={numberOfPlayers}
-            onChange={handleNumberChange}
-            onBlur={handleNumberChange}
-            sx={{ mb: 2 }}
-            required
-          />
-          <Button
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-            sx={{ mb: 2 }}
-            onClick={handleUploadClick}
-          >
-            Upload Image
-          </Button>
-          <input
-            ref={fileInputRef}
-            accept="image/*"
-            style={{ display: 'none' }}
-            id="games_image"
-            type="file"
-            onChange={handleImageChange}
-          />
-          {imageFile && <Typography>{imageFile.name}</Typography>}
-          <Button
-            variant="outlined"
-            color="primary"
-            fullWidth
-            sx={{ color: 'white', borderColor: 'white' }}
-            onClick={handleSubmit}
-          >
-            Create Post
-          </Button>
+              </Box>
+              <Box sx={{ mb: 2 }} id="time_meet">
+                <Stack spacing={2} sx={{ minWidth: 305 }}>
+                  <TimePicker
+                    label="Choose an appointment time"
+                    value={timeValue}
+                    onChange={setTimeValue}
+                    renderInput={(params) => <TextField {...params} required />}
+                  />
+                </Stack>
+              </Box>
+            </LocalizationProvider>
+            <TextField
+              fullWidth
+              id="num_people"
+              type="number"
+              label="Number of Players"
+              placeholder="Enter number of players"
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ min: 2 }}
+              value={numberOfPlayers}
+              onChange={handleNumberChange}
+              onBlur={handleNumberChange}
+              sx={{ mb: 2 }}
+              required
+            />
+            <Button
+              variant="contained"
+              startIcon={<CloudUploadIcon />}
+              sx={{ mb: 2, backgroundColor: 'crimson', color: 'white' }}
+              onClick={handleUploadClick}
+            >
+              Upload Image
+            </Button>
+            <input
+              ref={fileInputRef}
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="games_image"
+              type="file"
+              onChange={handleImageChange}
+            />
+            {imageFile && <Typography>{imageFile.name}</Typography>}
+            <Button
+              variant="outlined"
+              fullWidth
+              sx={{ backgroundColor: 'crimson', color: 'white', borderColor: 'crimson' }}
+              type="submit"
+            >
+              Create Post
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              fullWidth
+              sx={{ mt: 2, color: 'white', borderColor: 'white' }}
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          </form>
         </CardContent>
       </Card>
       <Snackbar
@@ -253,4 +273,3 @@ const CreatePost = ({ addEvent }) => {
 };
 
 export default CreatePost;
-

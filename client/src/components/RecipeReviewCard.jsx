@@ -3,11 +3,11 @@ import {
   Container, Grid, Typography, Paper, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
 import { getPostGames } from '../components/apiService';
-import EventCard from './EventCrad'; // Corrected import name
+import EventCard from './EventCard'; // Corrected import name
 
 function RecipeReviewCard() {
   const [events, setEvents] = useState([]);
-  const [filter, setFilter] = useState('All');
+  const [filter, setFilter] = useState('new');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -57,7 +57,6 @@ function RecipeReviewCard() {
               onChange={handleFilterChange}
               sx={{ marginBottom: '1rem', minWidth: '150px', color: 'white', fontWeight: 'bold' }}
             >
-              <MenuItem value="All">All</MenuItem>
               <MenuItem value="new">New</MenuItem>
               <MenuItem value="old">Old</MenuItem>
             </Select>
@@ -77,6 +76,7 @@ function RecipeReviewCard() {
                 image={event.games_image}
                 nameGames={event.name_games}
                 dateMeet={event.date_meet}
+                timeMeet={event.time_meet} // Pass the timeMeet prop
                 detailPost={event.detail_post}
                 numPeople={event.num_people}
                 maxParticipants={event.maxParticipants}
