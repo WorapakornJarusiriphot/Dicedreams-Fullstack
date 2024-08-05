@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
     Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Button, Typography
 } from '@mui/material';
+import dayjs from 'dayjs';
 
 function EventCard(props) {
     const {
@@ -12,10 +13,15 @@ function EventCard(props) {
         image,
         nameGames,
         dateMeet,
+        timeMeet,
         detailPost,
         numPeople,
         maxParticipants
     } = props;
+
+    // Format the meeting date and time
+    const formattedDateMeet = dateMeet ? dayjs(dateMeet).format('DD MMM YYYY') : 'Unknown Date';
+    const formattedTimeMeet = timeMeet ? dayjs(timeMeet, 'HH:mm:ss').format('h:mm A') : 'Unknown Time';
 
     return (
         <Card sx={{ maxWidth: '100%', margin: '16px 0', backgroundColor: '#424242', boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.5)' }}>
@@ -45,7 +51,7 @@ function EventCard(props) {
                     {nameGames || 'Untitled Event'}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {dateMeet || 'Unknown Date'}
+                    {formattedDateMeet} at {formattedTimeMeet}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     {detailPost || 'No content available'}
@@ -93,9 +99,10 @@ EventCard.propTypes = {
     image: PropTypes.string,
     nameGames: PropTypes.string,
     dateMeet: PropTypes.string,
+    timeMeet: PropTypes.string, // Added prop type
     detailPost: PropTypes.string,
     numPeople: PropTypes.number,
-    maxParticipants: PropTypes.number, // Make sure this is a number
+    maxParticipants: PropTypes.number,
 };
 
 EventCard.defaultProps = {
@@ -105,6 +112,7 @@ EventCard.defaultProps = {
     image: '',
     nameGames: 'Untitled Event',
     dateMeet: 'Unknown Date',
+    timeMeet: 'Unknown Time', // Added default prop
     detailPost: 'No content available',
     numPeople: 0,
     maxParticipants: 'N/A',
