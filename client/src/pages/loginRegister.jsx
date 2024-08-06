@@ -60,7 +60,7 @@ function LoginPage() {
 
   const handleLogin = async () => {
     if (!formData.identifier || !formData.loginPassword) {
-      setSnackbar({ open: true, message: "Please enter your credentials", severity: "error" });
+      setSnackbar({ open: true, message: "ไม่กรอก E-mail หรือ Username", severity: "error" });
       return;
     }
     setLoading(true);
@@ -74,11 +74,11 @@ function LoginPage() {
       localStorage.setItem("user_id", user_id);
       setCredential(access_token, user_id);
       navigate("/");
-      setSnackbar({ open: true, message: "Login successful!", severity: "success" });
+      setSnackbar({ open: true, message: "เข้าสู่ระบบสำเร็จ!", severity: "success" });
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
-        (error.request ? "No response from server. Please try again later." : "Error: " + error.message);
+        (error.request ? "ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง" : "ข้อผิดพลาด: " + error.message);
       setSnackbar({ open: true, message: errorMessage, severity: "error" });
     } finally {
       setLoading(false);
@@ -90,28 +90,28 @@ function LoginPage() {
       { name: "first_name", label: "First Name" },
       { name: "last_name", label: "Last Name" },
       { name: "username", label: "Username" },
-      { name: "phone_number", label: "Phone Number" },
+      { name: "phone_number", label: "Telephone Number" },
       { name: "email", label: "E-mail" },
       { name: "password", label: "Password" },
-      { name: "birthday", label: "Birthday" },
+      { name: "birthday", label: "Day/month/year of birth" },
       { name: "gender", label: "Gender" },
     ];
 
     for (const field of requiredFields) {
       if (!formData[field.name]) {
-        setSnackbar({ open: true, message: `Please fill in ${field.label}`, severity: "error" });
+        setSnackbar({ open: true, message: `ไม่กรอก ${field.label}`, severity: "error" });
         return;
       }
     }
 
     if (formData.password.length <= 8) {
-      setSnackbar({ open: true, message: "Password must be more than 8 characters", severity: "error" });
+      setSnackbar({ open: true, message: "รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร", severity: "error" });
       return;
     }
 
     const age = dayjs().diff(formData.birthday, "year");
     if (age < 12) {
-      setSnackbar({ open: true, message: "You must be at least 12 years old to register", severity: "error" });
+      setSnackbar({ open: true, message: "คุณต้องมีอายุอย่างน้อย 12 ปีเพื่อสมัครสมาชิก", severity: "error" });
       return;
     }
 
@@ -140,12 +140,12 @@ function LoginPage() {
         },
       });
 
-      setSnackbar({ open: true, message: "Registration successful!", severity: "success" });
+      setSnackbar({ open: true, message: "ลงทะเบียนสำเร็จ!", severity: "success" });
       setIsRegister(false);  // Switch to login screen
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
-        (error.request ? "No response from server. Please try again later." : "Error: " + error.message);
+        (error.request ? "ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง" : "ข้อผิดพลาด: " + error.message);
       setSnackbar({ open: true, message: errorMessage, severity: "error" });
     } finally {
       setLoading(false);
@@ -247,7 +247,7 @@ function LoginPage() {
             />
             <TextField
               id="phone_number"
-              label="Phone Number"
+              label="Telephone Number"
               variant="filled"
               fullWidth
               margin="normal"
@@ -289,6 +289,7 @@ function LoginPage() {
                       aria-label="toggle password visibility"
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
+                      style={{ color: "#FFFFFF" }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -300,10 +301,9 @@ function LoginPage() {
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Birthday"
+                label="Day/month/year of birth"
                 value={formData.birthday}
-                onChange={(newValue) => setFormData({ ...formData, birthday: newValue })}
-                format="YYYY-MM-DD"
+                onChange={(newValue) => setFormData((prev) => ({ ...prev, birthday: newValue }))}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -326,49 +326,36 @@ function LoginPage() {
               value={formData.gender}
               onChange={handleInputChange}
               row
-              sx={{ justifyContent: "center", mb: 2 }}
             >
-              <FormControlLabel
-                value="male"
-                control={<Radio sx={{ color: "#FFFFFF" }} />}
-                label={<Typography style={{ color: "#FFFFFF" }}>Male</Typography>}
-              />
-              <FormControlLabel
-                value="female"
-                control={<Radio sx={{ color: "#FFFFFF" }} />}
-                label={<Typography style={{ color: "#FFFFFF" }}>Female</Typography>}
-              />
-              <FormControlLabel
-                value="other"
-                control={<Radio sx={{ color: "#FFFFFF" }} />}
-                label={<Typography style={{ color: "#FFFFFF" }}>Other</Typography>}
-              />
+              <FormControlLabel value="Male" control={<Radio style={{ color: "#FFFFFF" }} />} label="Male" />
+              <FormControlLabel value="Female" control={<Radio style={{ color: "#FFFFFF" }} />} label="Female" />
+              <FormControlLabel value="Other" control={<Radio style={{ color: "#FFFFFF" }} />} label="Other" />
             </RadioGroup>
-            <Button
-              variant="contained"
-              color="primary"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-              fullWidth
-              sx={{ marginBottom: "10px" }}
-            >
-              Upload Profile Image
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                hidden
-              />
-            </Button>
-            {formData.user_image && (
-              <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
-                <img
-                  src={URL.createObjectURL(formData.user_image)}
-                  alt="Profile Preview"
-                  style={{ maxWidth: "200px", maxHeight: "200px", marginBottom: "10px" }}
+            <Box display="flex" alignItems="center" mt={2}>
+              <Button
+                variant="contained"
+                component="label"
+                startIcon={<CloudUploadIcon />}
+                style={{ color: "#FFFFFF" }}
+              >
+                อัปโหลดรูปภาพ
+                <input
+                  type="file"
+                  hidden
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
                 />
-              </Box>
-            )}
+              </Button>
+              {formData.user_image && (
+                <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
+                  <img
+                    src={URL.createObjectURL(formData.user_image)}
+                    alt="Profile Preview"
+                    style={{ maxWidth: "200px", maxHeight: "200px", marginBottom: "10px" }}
+                  />
+                </Box>
+              )}
+            </Box>
             <Box display="flex" justifyContent="space-between">
               <Button
                 variant="contained"
@@ -408,7 +395,7 @@ function LoginPage() {
           <Box width="100%">
             <TextField
               id="identifier"
-              label="Username or Email"
+              label="E-mail or Username"
               variant="filled"
               fullWidth
               margin="normal"
@@ -437,6 +424,7 @@ function LoginPage() {
                       aria-label="toggle password visibility"
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
+                      style={{ color: "#FFFFFF" }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -456,7 +444,7 @@ function LoginPage() {
                     marginRight: "10px",
                     backgroundColor: "crimson",
                     color: "#FFFFFF",
-                    
+
                     '&:hover': {
                       backgroundColor: "darkred",
                     },
@@ -484,12 +472,8 @@ function LoginPage() {
           </Box>
         )}
       </Box>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: "100%" }}>
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
           {snackbar.message}
         </Alert>
       </Snackbar>
