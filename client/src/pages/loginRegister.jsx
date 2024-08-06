@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   Box,
   Button,
   TextField,
   Typography,
   ButtonGroup,
-  Link,
   Radio,
   RadioGroup,
   FormControlLabel,
@@ -25,6 +24,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import axios from "axios";
 import { AuthContext } from "../Auth/AuthContext";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 function LoginPage() {
   const [isRegister, setIsRegister] = useState(false);
@@ -49,6 +49,7 @@ function LoginPage() {
   const { setCredential } = useContext(AuthContext);
   const isMobile = useMediaQuery("(max-width:600px)");
   const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -58,12 +59,8 @@ function LoginPage() {
   }, [location]);
 
   const handleLogin = async () => {
-    if (!formData.identifier) {
-      setSnackbar({ open: true, message: "Please enter user name or email", severity: "error" });
-      return;
-    }
-    if (!formData.loginPassword) {
-      setSnackbar({ open: true, message: "Please enter password", severity: "error" });
+    if (!formData.identifier || !formData.loginPassword) {
+      setSnackbar({ open: true, message: "ไม่กรอก E-mail หรือ Username", severity: "error" });
       return;
     }
     setLoading(true);
@@ -77,18 +74,12 @@ function LoginPage() {
       localStorage.setItem("user_id", user_id);
       setCredential(access_token, user_id);
       navigate("/");
-      setSnackbar({ open: true, message: "Login successful!", severity: "success" });
+      setSnackbar({ open: true, message: "เข้าสู่ระบบสำเร็จ!", severity: "success" });
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
-        (error.request ? "No response from server. Please try again later." : "Error: " + error.message);
-      if (errorMessage.includes("Password is incorrect")) {
-        setSnackbar({ open: true, message: "Password is incorrect", severity: "error" });
-      } else if (errorMessage.includes("User name or email is incorrect")) {
-        setSnackbar({ open: true, message: "User name or email is incorrect", severity: "error" });
-      } else {
-        setSnackbar({ open: true, message: errorMessage, severity: "error" });
-      }
+        (error.request ? "ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง" : "ข้อผิดพลาด: " + error.message);
+      setSnackbar({ open: true, message: errorMessage, severity: "error" });
     } finally {
       setLoading(false);
     }
@@ -99,28 +90,28 @@ function LoginPage() {
       { name: "first_name", label: "First Name" },
       { name: "last_name", label: "Last Name" },
       { name: "username", label: "Username" },
-      { name: "phone_number", label: "Phone Number" },
+      { name: "phone_number", label: "Telephone Number" },
       { name: "email", label: "E-mail" },
       { name: "password", label: "Password" },
-      { name: "birthday", label: "Birthday" },
+      { name: "birthday", label: "Day/month/year of birth" },
       { name: "gender", label: "Gender" },
     ];
 
     for (const field of requiredFields) {
       if (!formData[field.name]) {
-        setSnackbar({ open: true, message: `Please fill in ${field.label}`, severity: "error" });
+        setSnackbar({ open: true, message: `ไม่กรอก ${field.label}`, severity: "error" });
         return;
       }
     }
 
     if (formData.password.length <= 8) {
-      setSnackbar({ open: true, message: "Password must be more than 8 characters", severity: "error" });
+      setSnackbar({ open: true, message: "รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร", severity: "error" });
       return;
     }
 
     const age = dayjs().diff(formData.birthday, "year");
     if (age < 12) {
-      setSnackbar({ open: true, message: "You must be at least 12 years old to register", severity: "error" });
+      setSnackbar({ open: true, message: "คุณต้องมีอายุอย่างน้อย 12 ปีเพื่อสมัครสมาชิก", severity: "error" });
       return;
     }
 
@@ -139,25 +130,23 @@ function LoginPage() {
       if (formData.user_image) {
         formDataObj.append("user_image", formData.user_image);
       }
+      for (const pair of formDataObj.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
 
-      await axios.post("http://localhost:8080/api-docs/#/Users/post_users", formDataObj, {
+      const response = await axios.post("http://localhost:8080/api/Users", formDataObj, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      setSnackbar({ open: true, message: "Registration successful!", severity: "success" });
+
+      setSnackbar({ open: true, message: "ลงทะเบียนสำเร็จ!", severity: "success" });
       setIsRegister(false);  // Switch to login screen
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
-        (error.request ? "No response from server. Please try again later." : "Error: " + error.message);
-      if (errorMessage.includes("already added as a member")) {
-        setSnackbar({ open: true, message: "Already added as a member", severity: "error" });
-      } else if (errorMessage.includes("have membership")) {
-        setSnackbar({ open: true, message: "Have membership", severity: "error" });
-      } else {
-        setSnackbar({ open: true, message: "Registration failed!", severity: "error" });
-      }
+        (error.request ? "ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง" : "ข้อผิดพลาด: " + error.message);
+      setSnackbar({ open: true, message: errorMessage, severity: "error" });
     } finally {
       setLoading(false);
     }
@@ -258,7 +247,7 @@ function LoginPage() {
             />
             <TextField
               id="phone_number"
-              label="Phone Number"
+              label="Telephone Number"
               variant="filled"
               fullWidth
               margin="normal"
@@ -285,10 +274,10 @@ function LoginPage() {
             <TextField
               id="password"
               label="Password"
+              type={showPassword ? "text" : "password"}
               variant="filled"
               fullWidth
               margin="normal"
-              type={showPassword ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleInputChange}
@@ -300,8 +289,9 @@ function LoginPage() {
                       aria-label="toggle password visibility"
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
+                      style={{ color: "#FFFFFF" }}
                     >
-                      {showPassword ? <VisibilityOff style={{ color: "#FFFFFF" }} /> : <Visibility style={{ color: "#FFFFFF" }} />}
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -311,16 +301,15 @@ function LoginPage() {
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Birthday"
-                variant="filled"
-                fullWidth
-                margin="normal"
+                label="Day/month/year of birth"
                 value={formData.birthday}
                 onChange={(newValue) => setFormData((prev) => ({ ...prev, birthday: newValue }))}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     variant="filled"
+                    fullWidth
+                    margin="normal"
                     InputProps={{ style: { color: "#FFFFFF" } }}
                     InputLabelProps={{ style: { color: "#FFFFFF" } }}
                     required
@@ -328,7 +317,7 @@ function LoginPage() {
                 )}
               />
             </LocalizationProvider>
-            <FormLabel component="legend" style={{ marginTop: 16, color: "#FFFFFF" }}>
+            <FormLabel component="legend" style={{ color: "#FFFFFF" }}>
               Gender
             </FormLabel>
             <RadioGroup
@@ -337,28 +326,66 @@ function LoginPage() {
               value={formData.gender}
               onChange={handleInputChange}
               row
-              style={{ color: "#FFFFFF" }}
             >
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel value="female" control={<Radio />} label="Female" />
-              <FormControlLabel value="other" control={<Radio />} label="Other" />
+              <FormControlLabel value="Male" control={<Radio style={{ color: "#FFFFFF" }} />} label="Male" />
+              <FormControlLabel value="Female" control={<Radio style={{ color: "#FFFFFF" }} />} label="Female" />
+              <FormControlLabel value="Other" control={<Radio style={{ color: "#FFFFFF" }} />} label="Other" />
             </RadioGroup>
-            <Button variant="contained" component="label" style={{ marginTop: 16, backgroundColor: "#FFFFFF", color: "#000000" }}>
-              Upload Profile Image
-              <input type="file" hidden onChange={handleFileChange} />
-            </Button>
-            <Box display="flex" justifyContent="space-between" mt={2}>
+            <Box display="flex" alignItems="center" mt={2}>
               <Button
                 variant="contained"
+                component="label"
+                startIcon={<CloudUploadIcon />}
+                style={{ color: "#FFFFFF" }}
+              >
+                อัปโหลดรูปภาพ
+                <input
+                  type="file"
+                  hidden
+                  onChange={handleFileChange}
+                  ref={fileInputRef}
+                />
+              </Button>
+              {formData.user_image && (
+                <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
+                  <img
+                    src={URL.createObjectURL(formData.user_image)}
+                    alt="Profile Preview"
+                    style={{ maxWidth: "200px", maxHeight: "200px", marginBottom: "10px" }}
+                  />
+                </Box>
+              )}
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Button
+                variant="contained"
+                fullWidth
                 onClick={handleRegister}
-                style={{ backgroundColor: "crimson", color: "white" }}
+                disabled={loading}
+                sx={{
+                  marginRight: "10px",
+                  backgroundColor: "crimson",
+                  color: "#FFFFFF",
+                  '&:hover': {
+                    backgroundColor: "darkred",
+                  },
+                }}
               >
                 {loading ? <CircularProgress size={24} /> : "Register"}
               </Button>
               <Button
                 variant="outlined"
+                fullWidth
                 onClick={handleCancel}
-                style={{ borderColor: "#FFFFFF", color: "#FFFFFF" }}
+                sx={{
+                  marginLeft: "10px",
+                  color: "#FFFFFF",
+                  borderColor: "#FFFFFF",
+                  '&:hover': {
+                    borderColor: "#FFFFFF",
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
               >
                 Cancel
               </Button>
@@ -368,7 +395,7 @@ function LoginPage() {
           <Box width="100%">
             <TextField
               id="identifier"
-              label="User name or Email"
+              label="E-mail or Username"
               variant="filled"
               fullWidth
               margin="normal"
@@ -382,10 +409,10 @@ function LoginPage() {
             <TextField
               id="loginPassword"
               label="Password"
+              type={showPassword ? "text" : "password"}
               variant="filled"
               fullWidth
               margin="normal"
-              type={showPassword ? "text" : "password"}
               name="loginPassword"
               value={formData.loginPassword}
               onChange={handleInputChange}
@@ -397,8 +424,9 @@ function LoginPage() {
                       aria-label="toggle password visibility"
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
+                      style={{ color: "#FFFFFF" }}
                     >
-                      {showPassword ? <VisibilityOff style={{ color: "#FFFFFF" }} /> : <Visibility style={{ color: "#FFFFFF" }} />}
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -406,32 +434,46 @@ function LoginPage() {
               InputLabelProps={{ style: { color: "#FFFFFF" } }}
               required
             />
-            <Box display="flex" justifyContent="space-between" mt={2}>
-              <Button
-                variant="contained"
-                onClick={handleLogin}
-                style={{ backgroundColor: "crimson", color: "white" }}
-              >
-                {loading ? <CircularProgress size={24} /> : "Log In"}
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={handleCancel}
-                style={{ borderColor: "#FFFFFF", color: "#FFFFFF" }}
-              >
-                Cancel
-              </Button>
-            </Box>
+              <Box display="flex" justifyContent="space-between">
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={handleLogin}
+                  disabled={loading}
+                  sx={{
+                    marginRight: "10px",
+                    backgroundColor: "crimson",
+                    color: "#FFFFFF",
+
+                    '&:hover': {
+                      backgroundColor: "darkred",
+                    },
+                  }}
+                >
+                  {loading ? <CircularProgress size={24} /> : "Log In"}
+                </Button>
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  onClick={handleCancel}
+                  sx={{
+                    marginLeft: "10px",
+                    color: "#FFFFFF",
+                    borderColor: "#FFFFFF",
+                    '&:hover': {
+                      borderColor: "#FFFFFF",
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    },
+                  }}
+                >
+                  Cancel
+                </Button>
+              </Box>
           </Box>
         )}
       </Box>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: "100%" }}>
+      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
           {snackbar.message}
         </Alert>
       </Snackbar>
