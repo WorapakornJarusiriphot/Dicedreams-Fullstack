@@ -1,14 +1,28 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, Typography, Button, Avatar, Box, TextField, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const DetailsPage = () => {
     const { eventId } = useParams();
+    const [event, setEvent] = useState(null);
     const [chatMessage, setChatMessage] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
-
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const loadEventDetails = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/api/postGame/${eventId}`);
+                setEvent(response.data);
+            } catch (error) {
+                console.error('Failed to fetch event details', error);
+            }
+        };
+
+        loadEventDetails();
+    }, [eventId]);
 
     const handleJoinEvent = useCallback(() => {
         // Implement join event logic here
@@ -29,23 +43,38 @@ const DetailsPage = () => {
         navigate('/home'); // Navigate to the homepage
     };
 
-    // Sample participants data
-    const participants = [
-        { id: 1, name: 'Alice', avatar: '/path/to/avatar1.jpg' },
-        { id: 2, name: 'Bob', avatar: '/path/to/avatar2.jpg' },
-        // Add more participants here
-    ];
+    if (!event) {
+        return <Typography>Loading...</Typography>; // Placeholder while loading event data
+    }
+
+    const {
+        profilePic,
+        username,
+        postTime,
+        image,
+        nameGames,
+        dateMeet,
+        timeMeet,
+        detailPost,
+        numPeople,
+        maxParticipants,
+        participants
+    } = event;
+
+    // Format the meeting date and time
+    const formattedDateMeet = dateMeet ? new Date(dateMeet).toLocaleDateString() : 'Unknown Date';
+    const formattedTimeMeet = timeMeet ? new Date(`1970-01-01T${timeMeet}Z`).toLocaleTimeString() : 'Unknown Time';
 
     return (
         <Box sx={{ p: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', color: 'white' }}>
             {/* Event Summary */}
             <Card sx={{ width: '100%', maxWidth: 800, mb: 2, backgroundColor: 'black', color: 'white' }}>
                 <CardContent>
-                    <Typography variant="h4" gutterBottom>UNO</Typography>
-                    <Typography variant="subtitle1">วันศุกร์ที่ 1 มีนาคม พ.ศ. 2567 เวลา 15.00 น.</Typography>
-                    <Typography variant="subtitle1">หาผู้เล่นเพื่อร่วม UNO ชาวไร้เดียงสา สีลม 4-5 คน</Typography>
-                    <Typography variant="subtitle1">สถานที่: ร้าน outcast gaming</Typography>
-                    <Typography variant="subtitle1">จำนวนคนถึงไป: 3/5</Typography>
+                    <Typography variant="h4" gutterBottom>{nameGames || 'Untitled Event'}</Typography>
+                    <Typography variant="subtitle1">{`${formattedDateMeet} at ${formattedTimeMeet}`}</Typography>
+                    <Typography variant="subtitle1">{detailPost || 'No content available'}</Typography>
+                    <Typography variant="subtitle1">{`สถานที่: ${event.location || 'Unknown Location'}`}</Typography>
+                    <Typography variant="subtitle1">{`จำนวนคนถึงไป: ${numPeople || 0}/${maxParticipants || 'N/A'}`}</Typography>
                     <Button variant="contained" color="secondary" onClick={handleJoinEvent} sx={{ mt: 2, mr: 2 }}>Join</Button>
                     <Button variant="contained" color="secondary" onClick={handleReturnHome} sx={{ mt: 2 }}>Return to Home</Button>
                 </CardContent>

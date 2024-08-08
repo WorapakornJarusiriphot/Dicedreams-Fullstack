@@ -122,32 +122,47 @@ function LoginPage() {
 
     setLoading(true);
     try {
-      const formattedBirthday = formData.birthday.format("MM/DD/YYYY");
-      const formDataObj = new FormData();
-      formDataObj.append("first_name", formData.first_name);
-      formDataObj.append("last_name", formData.last_name);
-      formDataObj.append("username", formData.username);
-      formDataObj.append("email", formData.email);
-      formDataObj.append("password", formData.password);
-      formDataObj.append("phone_number", formData.phone_number);
-      formDataObj.append("birthday", formattedBirthday);
-      formDataObj.append("gender", formData.gender);
-      if (formData.user_image) {
-        formDataObj.append("user_image", formData.user_image);
-      }
-      for (let pair of formDataObj.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
+      const formattedBirthday = dayjs(formData.birthday).format("MM/DD/YYYY");
+      const dataToSend = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        phone_number: formData.phone_number,
+        birthday: formattedBirthday,
+        gender: formData.gender,
+        user_image: formData.user_image,
+      };
 
-      const response = await axios.post("http://localhost:8080/api/Users", formDataObj, {
+      const response = await axios.post("http://localhost:8080/api/users", dataToSend, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       });
 
       setAlert({ open: true, message: "ลงทะเบียนสำเร็จ!", severity: "success" });
+
+      // Clear the form data and reset alert message after successful registration
+      setFormData({
+        first_name: "",
+        last_name: "",
+        username: "",
+        phone_number: "",
+        email: "",
+        password: "",
+        birthday: dayjs(),
+        gender: "",
+        identifier: "",
+        loginPassword: "",
+        user_image: null,
+        user_image_preview: null,
+      });
+      setTimeout(() => setAlert({ open: false, message: "", severity: "success" }), 6000);
+
       setIsRegister(false);  // Switch to login screen
     } catch (error) {
+      console.log(error.response.data); // Logs the full server response
       const errorMessage =
         error.response?.data?.message ||
         (error.request ? "ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง" : "ข้อผิดพลาด: " + error.message);
@@ -156,6 +171,9 @@ function LoginPage() {
       setLoading(false);
     }
   };
+
+
+
 
   const handleCancel = () => {
     navigate("/");

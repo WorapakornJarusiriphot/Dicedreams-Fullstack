@@ -33,7 +33,7 @@ const CreatePost = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/user/${userId}`, {
+        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
           headers: {
             'Authorization': `Bearer ${accessToken}`
           }
@@ -133,7 +133,7 @@ const CreatePost = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/postGame', {
+      const response = await fetch('http://localhost:8080/api/PostGame', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
