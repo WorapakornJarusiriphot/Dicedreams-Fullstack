@@ -42,6 +42,7 @@ function LoginPage() {
     identifier: "",
     loginPassword: "",
     user_image: null,
+    user_image_preview: null,
   });
   const location = useLocation();
   const navigate = useNavigate();
@@ -121,7 +122,7 @@ function LoginPage() {
 
     setLoading(true);
     try {
-      const formattedBirthday = formData.birthday.format("YYYY-MM-DD");
+      const formattedBirthday = formData.birthday.format("MM/DD/YYYY");
       const formDataObj = new FormData();
       formDataObj.append("first_name", formData.first_name);
       formDataObj.append("last_name", formData.last_name);
@@ -133,6 +134,9 @@ function LoginPage() {
       formDataObj.append("gender", formData.gender);
       if (formData.user_image) {
         formDataObj.append("user_image", formData.user_image);
+      }
+      for (let pair of formDataObj.entries()) {
+        console.log(pair[0] + ": " + pair[1]);
       }
 
       const response = await axios.post("http://localhost:8080/api/Users", formDataObj, {
@@ -163,7 +167,14 @@ function LoginPage() {
   };
 
   const handleFileChange = (event) => {
-    setFormData((prev) => ({ ...prev, user_image: event.target.files[0] }));
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData((prev) => ({ ...prev, user_image: file, user_image_preview: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleTogglePasswordVisibility = () => {
@@ -173,6 +184,7 @@ function LoginPage() {
   const handleCloseAlert = () => {
     setAlert({ open: false, message: "", severity: "success" });
   };
+
 
 
   return (
@@ -329,37 +341,51 @@ function LoginPage() {
               style={{ color: "#FFFFFF" }}
             >
               <FormControlLabel
-                value="male"
+                value="ชาย"
                 control={<Radio style={{ color: "#FFFFFF" }} />}
-                label="Male"
+                label="ชาย"
               />
               <FormControlLabel
-                value="female"
+                value="หญิง"
                 control={<Radio style={{ color: "#FFFFFF" }} />}
-                label="Female"
+                label="หญิง"
               />
               <FormControlLabel
-                value="other"
+                value="ไม่ระบุ"
                 control={<Radio style={{ color: "#FFFFFF" }} />}
-                label="Other"
+                label="ไม่ระบุ"
               />
             </RadioGroup>
-            <Button
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-              fullWidth
-              sx={{ mt: 2, color: "#FFFFFF", backgroundColor: "#1976d2" }}
-            >
-              Upload Image
-              <input
-                type="file"
-                accept="image/*"
-                hidden
-                onChange={handleFileChange}
-                ref={fileInputRef}
-              />
-            </Button>
+            <input
+              accept="image/*"
+              style={{ display: "none" }}
+              id="user_image"
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange} // Modified to use the new handler
+            />
+            <label htmlFor="user_image">
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<CloudUploadIcon />}
+                component="span"
+                fullWidth
+                style={{ marginTop: 16 }}
+              >
+                Upload Image
+              </Button>
+            </label>
+            {formData.user_image_preview && ( // Added to display the image preview
+              <Box mt={2} display="flex" justifyContent="center">
+                <img
+                  src={formData.user_image_preview}
+                  alt="Preview"
+                  style={{ maxWidth: "100%", maxHeight: 200 }}
+                />
+              </Box>
+            )}
+
             <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
               <Button
                 variant="contained"
