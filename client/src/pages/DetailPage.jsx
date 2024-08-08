@@ -14,7 +14,7 @@ const DetailsPage = () => {
     useEffect(() => {
         const loadEventDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/PostGame/${eventId}`);
+                const response = await axios.get(`http://localhost:8080/api/postGame/${eventId}`);
                 setEvent(response.data);
             } catch (error) {
                 console.error('Failed to fetch event details', error);

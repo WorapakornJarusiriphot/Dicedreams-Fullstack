@@ -132,7 +132,7 @@ function LoginPage() {
         phone_number: formData.phone_number,
         birthday: formattedBirthday,
         gender: formData.gender,
-        user_image: formData.user_image, // Remove this if you're not sending an image
+        user_image: formData.user_image,
       };
 
       const response = await axios.post("http://localhost:8080/api/users", dataToSend, {
@@ -142,6 +142,24 @@ function LoginPage() {
       });
 
       setAlert({ open: true, message: "ลงทะเบียนสำเร็จ!", severity: "success" });
+
+      // Clear the form data and reset alert message after successful registration
+      setFormData({
+        first_name: "",
+        last_name: "",
+        username: "",
+        phone_number: "",
+        email: "",
+        password: "",
+        birthday: dayjs(),
+        gender: "",
+        identifier: "",
+        loginPassword: "",
+        user_image: null,
+        user_image_preview: null,
+      });
+      setTimeout(() => setAlert({ open: false, message: "", severity: "success" }), 6000);
+
       setIsRegister(false);  // Switch to login screen
     } catch (error) {
       console.log(error.response.data); // Logs the full server response
@@ -153,6 +171,7 @@ function LoginPage() {
       setLoading(false);
     }
   };
+
 
 
 
