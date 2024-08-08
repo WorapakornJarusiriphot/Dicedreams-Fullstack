@@ -19,6 +19,11 @@ const ProfileEdit = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [bio, setBio] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [dragging, setDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -31,29 +36,28 @@ const ProfileEdit = () => {
   const updateUser = async () => {
     try {
       const token = localStorage.getItem("access_token");
+      const user_id = localStorage.getItem("user_id");
       if (!token) {
         throw new Error("No token found");
       }
 
-      const user_id = user.users_id;
-      const fullName = `${user.first_name} ${user.last_name}`;
-      const phoneNumber = user.phone_number;
-      const bio = user.user_bio;
-      const userImage = user.user_image; // Use the new image URL if available
+      const fullName = `${firstName} ${lastName}`;
       let birthDay = transformDateFormat(user.birthday);
 
       const updatedUserData = {
         users_id: user_id || "no_data_now",
-        first_name: user.first_name || "no_data_now",
-        last_name: user.last_name || "no_data_now",
+        first_name: firstName || "no_data_now",
+        last_name: lastName || "no_data_now",
         username: user.username || "no_data_now",
         email: user.email || "no_data_now",
         birthday: birthDay || "no_data_now",
         phone_number: phoneNumber || "no_data_now",
         gender: user.gender || "no_data_now",
-        user_image: userImage || "no_data_now",
+        user_image: user.user_image || "no_data_now",
+        bio: bio || "no_data_now",
       };
 
+      console.log("---->", updatedUserData);
       const response = await axios.put(
         `http://localhost:8080/api/users/${user_id}`,
         updatedUserData,
@@ -66,7 +70,7 @@ const ProfileEdit = () => {
       );
 
       console.log("User updated successfully", response.data);
-      navigate("/profile");
+      // navigate("/profile");
     } catch (error) {
       console.error("Error updating user", error);
     }
@@ -86,44 +90,54 @@ const ProfileEdit = () => {
     setShowUploadBar(true);
 
     if (file.size > 3000000) {
-      alert("ขนาดไฟล์เกิน 3 MB")  
-      return
+      alert("ขนาดไฟล์เกิน 3 MB");
+      return;
     }
-    if (!['image/jpeg', 'image/svg+xml', 'image/png', 'image/jpg', 'image/gif'].includes(file.type)) {
+
+    if (
+      ![
+        "image/jpeg",
+        "image/svg+xml",
+        "image/png",
+        "image/jpg",
+        "image/gif",
+      ].includes(file.type)
+    ) {
       alert("กรุณาเลือกไฟล์ตามนามสกุลที่ระบุ");
       return;
     }
-    
 
     try {
+      const user_id = localStorage.getItem("user_id");
       const token = localStorage.getItem("access_token");
       if (!token) {
         throw new Error("No token found");
       }
 
       let birthDay = transformDateFormat(user.birthday);
-      
-      const formData =  {
-        users_id: user.users_id || "no_data_now",
-        first_name: user.first_name || "no_data_now",
-        last_name: user.last_name || "no_data_now",
+
+      const formData = {
+        id: user_id || "no_data_now",
+        first_name: firstName || "no_data_now",
+        last_name: lastName || "no_data_now",
         username: user.username || "no_data_now",
         email: user.email || "no_data_now",
         birthday: birthDay || "no_data_now",
-        phone_number: user.phone_number || "no_data_now",
+        phone_number: phoneNumber || "no_data_now",
         gender: user.gender || "no_data_now",
-        user_image: file || "no_data_now",
+        user_image: file.name || "no_data_now", // test
+        // user_image: file || "no_data_now", // use
       };
 
       console.log("formData-->", formData);
 
       const response = await axios.put(
-        `http://localhost:8080/api/users/${user.users_id}`,
+        `http://localhost:8080/api/users/${user_id}`,
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
           onUploadProgress: (progressEvent) => {
             const { loaded, total } = progressEvent;
@@ -170,6 +184,7 @@ const ProfileEdit = () => {
 
     if (files.length > 0) {
       const file = files[0];
+      console.log(files);
       handleFileUpload(file);
     }
   };
@@ -181,10 +196,12 @@ const ProfileEdit = () => {
   const getUser = async () => {
     try {
       const token = localStorage.getItem("access_token");
+      const user_id = localStorage.getItem("user_id");
+      // const user_id = "065a9e78-50bc-4d43-acda-3080af58d155"; // test
+
       if (!token) {
         throw new Error("No token found");
       }
-      const user_id = "065a9e78-50bc-4d43-acda-3080af58d155"; // test
       const url = `http://localhost:8080/api/users/${user_id}`;
       const response = await axios.get(url, {
         headers: {
@@ -192,6 +209,10 @@ const ProfileEdit = () => {
         },
       });
       setUser(response.data);
+      setFirstName(response.data.first_name);
+      setLastName(response.data.last_name);
+      setBio(response.data.bio);
+      setPhoneNumber(response.data.phone_number);
       console.log("User data fetched successfully", response.data);
     } catch (error) {
       console.error("Error fetching user data", error);
@@ -252,9 +273,10 @@ const ProfileEdit = () => {
         <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
           <TextField
             fullWidth
-            label="Full Name"
+            label="First Name"
             variant="outlined"
-            defaultValue={user.first_name + " " + user.last_name}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             sx={{
               flex: 1,
               "& .MuiInputLabel-root": {
@@ -278,10 +300,10 @@ const ProfileEdit = () => {
           />
           <TextField
             fullWidth
-            label="Password"
-            type="text"
+            label="Last Name"
             variant="outlined"
-            defaultValue={user.password ? user.password : "ไม่พบข้อมูล"}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             sx={{
               flex: 1,
               "& .MuiInputLabel-root": {
@@ -304,157 +326,129 @@ const ProfileEdit = () => {
             }}
           />
         </Box>
-        <TextField
-          fullWidth
-          label="Bio"
-          variant="outlined"
-          defaultValue={user.user_bio ? user.user_bio : "ไม่พบข้อมูล"}
-          multiline
-          rows={4}
-          sx={{
-            marginBottom: 2,
-            "& .MuiInputLabel-root": {
-              color: "white",
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "white",
+        <Box sx={{ marginBottom: 2 }}>
+          <TextField
+            fullWidth
+            label="Bio"
+            variant="outlined"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+            sx={{
+              "& .MuiInputLabel-root": {
+                color: "white",
               },
-              "&:hover fieldset": {
-                borderColor: "white",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
               },
-              "&.Mui-focused fieldset": {
-                borderColor: "white",
+              "& .MuiInputBase-input": {
+                color: "white",
               },
-            },
-            "& .MuiInputBase-input": {
-              color: "white",
-            },
-          }}
-        />
-        <TextField
-          fullWidth
-          label="Telephone Number"
-          variant="outlined"
-          defaultValue={user.phone_number ? user.phone_number : null}
-          sx={{
-            marginBottom: 2,
-            "& .MuiInputLabel-root": {
-              color: "white",
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "white",
+            }}
+          />
+        </Box>
+        <Box sx={{ marginBottom: 2 }}>
+          <TextField
+            fullWidth
+            label="Phone Number"
+            variant="outlined"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            sx={{
+              "& .MuiInputLabel-root": {
+                color: "white",
               },
-              "&:hover fieldset": {
-                borderColor: "white",
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": {
+                  borderColor: "white",
+                },
+                "&:hover fieldset": {
+                  borderColor: "white",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "white",
+                },
               },
-              "&.Mui-focused fieldset": {
-                borderColor: "white",
+              "& .MuiInputBase-input": {
+                color: "white",
               },
-            },
-            "& .MuiInputBase-input": {
-              color: "white",
-            },
-          }}
-        />
-
+            }}
+          />
+        </Box>
         <Box
-          sx={{
-            border: "2px dashed white",
-            borderRadius: 1,
-            height: 300,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            backgroundColor: dragging ? "rgba(255,255,255,0.1)" : "transparent",
-          }}
           onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
           onDrop={handleDrop}
+          onDragLeave={handleDragLeave}
+          sx={{
+            padding: 2,
+            backgroundColor: dragging ? "rgba(255, 255, 255, 0.1)" : "black",
+            border: "2px dashed white",
+            borderRadius: 2,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            cursor: "pointer",
+            marginBottom: 2,
+          }}
           onClick={chooseFile}
         >
-          <Box sx={{ textAlign: "center" }}>
-            <IconButton
-              color="primary"
-              component="label"
-              sx={{ textAlign: "center" }}
-            >
-              <UploadIcon sx={{ color: "white" }} />
-              <Input
-                type="file"
-                hidden
-                inputRef={fileInputRef}
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  handleFileUpload(file);
-                }}
-              />
+          <UploadIcon sx={{ color: "white", fontSize: 40 }} />
+          <Typography sx={{ color: "white", marginTop: 1 }}>
+            Drag and drop an image here
+          </Typography>
+          <Typography sx={{ color: "white", marginTop: 1 }}>
+            Or click to select an image
+          </Typography>
+          <input
+            ref={fileInputRef}
+            type="file"
+            style={{ display: "none" }}
+            onChange={(e) => handleFileUpload(e.target.files[0])}
+          />
+        </Box>
+        {showUploadBar && (
+          <Box
+            sx={{
+              marginBottom: 2,
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <LinearProgress
+              variant="determinate"
+              value={uploadProgress}
+              sx={{ flex: 1 }}
+            />
+            <IconButton onClick={handleCloseUploadBar}>
+              <CloseIcon sx={{ color: "white" }} />
             </IconButton>
-            <Typography color="white">
-              Click to upload or drag and drop
-            </Typography>
-            <Typography color="white">
-              SVG, PNG, JPG or GIF (max. 3MB)
-            </Typography>
           </Box>
-        </Box>
-
-        <Box>
-          {showUploadBar && (
-            <Box sx={{ position: "relative", marginTop: 4 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  backgroundColor: "#f0f0f0",
-                  borderRadius: 1,
-                  padding: 1,
-                  marginBottom: 2,
-                }}
-              >
-                <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                  {uploading ? "Uploading..." : "Upload Complete"}
-                </Typography>
-                <Box sx={{ width: "100%", marginRight: 1 }}>
-                  <Box
-                    sx={{
-                      width: `${uploadProgress}%`,
-                      backgroundColor: uploading ? "primary.main" : "green",
-                      height: 4,
-                    }}
-                  />
-                </Box>
-                <IconButton onClick={handleCloseUploadBar}>
-                  <CloseIcon />
-                </IconButton>
-              </Box>
-              {uploadError && (
-                <Typography color="error" variant="body2">
-                  {uploadError}
-                </Typography>
-              )}
-            </Box>
-          )}
-
-          {uploadedImageUrl && (
-            <Box sx={{ marginTop: 4, background: "red" }}>
-              <Typography variant="h6" sx={{ color: "white" }}>
-                Uploaded Image:
-              </Typography>
-              <Avatar
-                src={uploadedImageUrl}
-                sx={{ width: 60, height: 60, marginTop: 1 }}
-                alt="Uploaded Avatar"
-              />
-            </Box>
-          )}
-        </Box>
+        )}
+        {uploading && (
+          <Box sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
+            <CircularProgress sx={{ marginRight: 2 }} />
+            <Typography sx={{ color: "white" }}>Uploading...</Typography>
+          </Box>
+        )}
+        {uploadError && (
+          <Box sx={{ marginBottom: 2 }}>
+            <Typography sx={{ color: "red" }}>{uploadError}</Typography>
+          </Box>
+        )}
       </Box>
 
-      <Box sx={{ marginLeft: 40, marginRight: 40, marginTop: 2 }}>
+      <Box
+        sx={{ marginLeft: 40, marginRight: 40, marginTop: 2, marginBottom: 10 }}
+      >
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Button
             onClick={() => navigate("/profile")}

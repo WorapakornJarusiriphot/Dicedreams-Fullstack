@@ -179,7 +179,7 @@ exports.update = async (req, res, next) => {
       });
     } else {
       res.status(500).send({
-        message: "Error updating User with id=" + users_id,
+        message: `Error updating User with id=${req.params.id}`,
       });
     }
   }

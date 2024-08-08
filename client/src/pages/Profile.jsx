@@ -19,7 +19,6 @@ import "../profile.css";
 import UserPosts from "../components/UPost";
 
 import axios from "axios";
-
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -31,12 +30,14 @@ const Profile = () => {
 
   const getUser = async () => {
     try {
+      
       const token = localStorage.getItem("access_token");
+      const user_id = localStorage.getItem("user_id");
       if (!token) {
         throw new Error("No token found");
       }
       // console.log("token -->", token);
-      const user_id = "065a9e78-50bc-4d43-acda-3080af58d155"; // test
+      // const user_id = "065a9e78-50bc-4d43-acda-3080af58d155"; // test
       // const user_id = "5ab17ae8-707b-43f9-baf1-1ecda4c691cd"; // dream
 
       const url = `http://localhost:8080/api/users/${user_id}`;
@@ -82,11 +83,12 @@ const Profile = () => {
           sx={{
             height: "20vh",
             width: "20%",
+
             // backgroundImage: `url(${
-            //   user.user_image ? user.user_image : "../public/p1.png"
+            //   user.user_image ? user.user_image : "../public/p1.png" // use
             // })`,
 
-            backgroundImage: "url(../public/p1.png)",
+            backgroundImage: "url(../public/p1.png)",  // test
             backgroundSize: "contain",
             backgroundPosition: "left",
             backgroundRepeat: "no-repeat",
