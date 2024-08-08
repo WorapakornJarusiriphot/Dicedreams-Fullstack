@@ -139,7 +139,7 @@ function LoginPage() {
         console.log(pair[0] + ": " + pair[1]);
       }
 
-      const response = await axios.post("http://localhost:8080/api/Users", formDataObj, {
+      const response = await axios.post("http://localhost:8080/api/users", formDataObj, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
