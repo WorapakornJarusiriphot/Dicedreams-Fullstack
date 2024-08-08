@@ -43,12 +43,11 @@ function LoginPage() {
     loginPassword: "",
     user_image: null,
   });
-  const [errorMessage, setErrorMessage] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const { setCredential } = useContext(AuthContext);
   const isMobile = useMediaQuery("(max-width:600px)");
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
+  const [alert, setAlert] = useState({ open: false, message: "", severity: "success" });
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -59,10 +58,15 @@ function LoginPage() {
   }, [location]);
 
   const handleLogin = async () => {
-    if (!formData.identifier || !formData.loginPassword) {
-      setSnackbar({ open: true, message: "ไม่กรอก E-mail หรือ Username", severity: "error" });
+    if (!formData.identifier) {
+      setAlert({ open: true, message: "กรอก E-mail หรือ Username ไม่ถูกต้อง", severity: "error" });
       return;
     }
+    if (!formData.loginPassword) {
+      setAlert({ open: true, message: "กรอก Password ไม่ถูกต้อง", severity: "error" });
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await axios.post("http://localhost:8080/api/auth", {
@@ -74,12 +78,12 @@ function LoginPage() {
       localStorage.setItem("user_id", user_id);
       setCredential(access_token, user_id);
       navigate("/");
-      setSnackbar({ open: true, message: "เข้าสู่ระบบสำเร็จ!", severity: "success" });
+      setAlert({ open: true, message: "เข้าสู่ระบบสำเร็จ!", severity: "success" });
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
         (error.request ? "ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง" : "ข้อผิดพลาด: " + error.message);
-      setSnackbar({ open: true, message: errorMessage, severity: "error" });
+      setAlert({ open: true, message: errorMessage, severity: "error" });
     } finally {
       setLoading(false);
     }
@@ -99,19 +103,19 @@ function LoginPage() {
 
     for (const field of requiredFields) {
       if (!formData[field.name]) {
-        setSnackbar({ open: true, message: `ไม่กรอก ${field.label}`, severity: "error" });
+        setAlert({ open: true, message: `ไม่กรอก ${field.label}`, severity: "error" });
         return;
       }
     }
 
     if (formData.password.length <= 8) {
-      setSnackbar({ open: true, message: "รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร", severity: "error" });
+      setAlert({ open: true, message: "รหัสผ่านต้องมีความยาวมากกว่า 8 ตัวอักษร", severity: "error" });
       return;
     }
 
     const age = dayjs().diff(formData.birthday, "year");
     if (age < 12) {
-      setSnackbar({ open: true, message: "คุณต้องมีอายุอย่างน้อย 12 ปีเพื่อสมัครสมาชิก", severity: "error" });
+      setAlert({ open: true, message: "คุณต้องมีอายุอย่างน้อย 12 ปีเพื่อสมัครสมาชิก", severity: "error" });
       return;
     }
 
@@ -130,9 +134,6 @@ function LoginPage() {
       if (formData.user_image) {
         formDataObj.append("user_image", formData.user_image);
       }
-      for (const pair of formDataObj.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-      }
 
       const response = await axios.post("http://localhost:8080/api/Users", formDataObj, {
         headers: {
@@ -140,13 +141,13 @@ function LoginPage() {
         },
       });
 
-      setSnackbar({ open: true, message: "ลงทะเบียนสำเร็จ!", severity: "success" });
+      setAlert({ open: true, message: "ลงทะเบียนสำเร็จ!", severity: "success" });
       setIsRegister(false);  // Switch to login screen
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
         (error.request ? "ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง" : "ข้อผิดพลาด: " + error.message);
-      setSnackbar({ open: true, message: errorMessage, severity: "error" });
+      setAlert({ open: true, message: errorMessage, severity: "error" });
     } finally {
       setLoading(false);
     }
@@ -169,9 +170,10 @@ function LoginPage() {
     setShowPassword((prev) => !prev);
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar({ open: false, message: "", severity: "success" });
+  const handleCloseAlert = () => {
+    setAlert({ open: false, message: "", severity: "success" });
   };
+
 
   return (
     <Box
@@ -274,11 +276,11 @@ function LoginPage() {
             <TextField
               id="password"
               label="Password"
-              type={showPassword ? "text" : "password"}
               variant="filled"
               fullWidth
               margin="normal"
               name="password"
+              type={showPassword ? "text" : "password"}
               value={formData.password}
               onChange={handleInputChange}
               InputProps={{
@@ -286,7 +288,6 @@ function LoginPage() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
                       style={{ color: "#FFFFFF" }}
@@ -312,7 +313,6 @@ function LoginPage() {
                     margin="normal"
                     InputProps={{ style: { color: "#FFFFFF" } }}
                     InputLabelProps={{ style: { color: "#FFFFFF" } }}
-                    required
                   />
                 )}
               />
@@ -326,43 +326,48 @@ function LoginPage() {
               value={formData.gender}
               onChange={handleInputChange}
               row
+              style={{ color: "#FFFFFF" }}
             >
-              <FormControlLabel value="Male" control={<Radio style={{ color: "#FFFFFF" }} />} label="Male" />
-              <FormControlLabel value="Female" control={<Radio style={{ color: "#FFFFFF" }} />} label="Female" />
-              <FormControlLabel value="Other" control={<Radio style={{ color: "#FFFFFF" }} />} label="Other" />
+              <FormControlLabel
+                value="male"
+                control={<Radio style={{ color: "#FFFFFF" }} />}
+                label="Male"
+              />
+              <FormControlLabel
+                value="female"
+                control={<Radio style={{ color: "#FFFFFF" }} />}
+                label="Female"
+              />
+              <FormControlLabel
+                value="other"
+                control={<Radio style={{ color: "#FFFFFF" }} />}
+                label="Other"
+              />
             </RadioGroup>
-            <Box display="flex" alignItems="center" mt={2}>
-              <Button
-                variant="contained"
-                component="label"
-                startIcon={<CloudUploadIcon />}
-                style={{ color: "#FFFFFF" }}
-              >
-                อัปโหลดรูปภาพ
-                <input
-                  type="file"
-                  hidden
-                  onChange={handleFileChange}
-                  ref={fileInputRef}
-                />
-              </Button>
-              {formData.user_image && (
-                <Box display="flex" flexDirection="column" alignItems="center" mt={2}>
-                  <img
-                    src={URL.createObjectURL(formData.user_image)}
-                    alt="Profile Preview"
-                    style={{ maxWidth: "200px", maxHeight: "200px", marginBottom: "10px" }}
-                  />
-                </Box>
-              )}
-            </Box>
-            <Box display="flex" justifyContent="space-between">
+            <Button
+              variant="contained"
+              component="label"
+              startIcon={<CloudUploadIcon />}
+              fullWidth
+              sx={{ mt: 2, color: "#FFFFFF", backgroundColor: "#1976d2" }}
+            >
+              Upload Image
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleFileChange}
+                ref={fileInputRef}
+              />
+            </Button>
+            <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
               <Button
                 variant="contained"
                 fullWidth
                 onClick={handleRegister}
                 disabled={loading}
                 sx={{
+                  
                   marginRight: "10px",
                   backgroundColor: "crimson",
                   color: "#FFFFFF",
@@ -409,11 +414,11 @@ function LoginPage() {
             <TextField
               id="loginPassword"
               label="Password"
-              type={showPassword ? "text" : "password"}
               variant="filled"
               fullWidth
               margin="normal"
               name="loginPassword"
+              type={showPassword ? "text" : "password"}
               value={formData.loginPassword}
               onChange={handleInputChange}
               InputProps={{
@@ -421,7 +426,6 @@ function LoginPage() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
                       style={{ color: "#FFFFFF" }}
@@ -434,7 +438,7 @@ function LoginPage() {
               InputLabelProps={{ style: { color: "#FFFFFF" } }}
               required
             />
-              <Box display="flex" justifyContent="space-between">
+              <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
                 <Button
                   variant="contained"
                   fullWidth
@@ -472,9 +476,14 @@ function LoginPage() {
           </Box>
         )}
       </Box>
-      <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
-          {snackbar.message}
+      <Snackbar
+        open={alert.open}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: "100%" }}>
+          {alert.message}
         </Alert>
       </Snackbar>
     </Box>

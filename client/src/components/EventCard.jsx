@@ -4,6 +4,7 @@ import {
     Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Button, Typography
 } from '@mui/material';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 function EventCard(props) {
     const {
@@ -19,9 +20,19 @@ function EventCard(props) {
         maxParticipants
     } = props;
 
+    const navigate = useNavigate();
+
     // Format the meeting date and time
     const formattedDateMeet = dateMeet ? dayjs(dateMeet).format('DD MMM YYYY') : 'Unknown Date';
     const formattedTimeMeet = timeMeet ? dayjs(timeMeet, 'HH:mm:ss').format('h:mm A') : 'Unknown Time';
+
+    const handleJoinClick = () => {
+        navigate(`/events/${props.eventId}`);
+    };
+
+    const handleChatClick = () => {
+        navigate(`/events/${props.eventId}`);
+    };
 
     return (
         <Card sx={{ maxWidth: '100%', margin: '16px 0', backgroundColor: '#424242', boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.5)' }}>
@@ -71,6 +82,7 @@ function EventCard(props) {
                         fontSize: '1rem',
                         width: '120px'
                     }}
+                    onClick={handleJoinClick}
                 >
                     Join
                 </Button>
@@ -84,6 +96,7 @@ function EventCard(props) {
                         fontSize: '1rem',
                         width: '120px'
                     }}
+                    onClick={handleChatClick}
                 >
                     Chat
                 </Button>
@@ -99,10 +112,11 @@ EventCard.propTypes = {
     image: PropTypes.string,
     nameGames: PropTypes.string,
     dateMeet: PropTypes.string,
-    timeMeet: PropTypes.string, // Added prop type
+    timeMeet: PropTypes.string,
     detailPost: PropTypes.string,
     numPeople: PropTypes.number,
     maxParticipants: PropTypes.number,
+    eventId: PropTypes.string.isRequired, // Add eventId prop
 };
 
 EventCard.defaultProps = {
@@ -112,12 +126,10 @@ EventCard.defaultProps = {
     image: '',
     nameGames: 'Untitled Event',
     dateMeet: 'Unknown Date',
-    timeMeet: 'Unknown Time', // Added default prop
+    timeMeet: 'Unknown Time',
     detailPost: 'No content available',
     numPeople: 0,
     maxParticipants: 'N/A',
 };
 
 export default EventCard;
-
-

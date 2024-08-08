@@ -169,9 +169,7 @@ const Navbar = () => {
                     <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
                 </>
             )}
-            <IconButton color="inherit" onClick={() => navigateToDetails('example-event-id')}>
-                <InfoIcon />
-            </IconButton>
+           
         </>
     );
 

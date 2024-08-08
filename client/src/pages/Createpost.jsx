@@ -10,11 +10,9 @@ import Typography from '@mui/material/Typography';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
-import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import dayjs from 'dayjs';
-import { AuthContext } from '../Auth/AuthContext'; // Adjust the import path based on your file structure
-import RecipeReviewCard from '../components/RecipeReviewCard'; // Adjust the import path based on your file structure
+import { AuthContext } from '../Auth/AuthContext';
 
 const CreatePost = () => {
   const { userId, accessToken } = useContext(AuthContext);
@@ -28,10 +26,8 @@ const CreatePost = () => {
     games_image: '',
   });
   const [imageFile, setImageFile] = useState(null);
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [alertMessage, setAlertMessage] = useState({ open: false, message: '', severity: '' });
   const [userDetails, setUserDetails] = useState({ username: '', profilePic: '' });
-  const recipeReviewCardRef = useRef(null);
-
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -92,19 +88,23 @@ const CreatePost = () => {
     e.preventDefault();
 
     if (!formValues.name_games) {
-      setSnackbar({ open: true, message: 'Please enter the game name', severity: 'error' });
+      setAlertMessage({ open: true, message: 'ไม่กรอก Game name', severity: 'error' });
       return;
     }
     if (!selectedDate) {
-      setSnackbar({ open: true, message: 'Please enter the date', severity: 'error' });
+      setAlertMessage({ open: true, message: 'ไม่เลือก Date', severity: 'error' });
       return;
     }
     if (!timeValue) {
-      setSnackbar({ open: true, message: 'Please enter the time', severity: 'error' });
+      setAlertMessage({ open: true, message: 'ไม่เลือก Time', severity: 'error' });
       return;
     }
     if (numberOfPlayers <= 0) {
-      setSnackbar({ open: true, message: 'Please enter the number of players', severity: 'error' });
+      setAlertMessage({ open: true, message: 'ไม่กรอก Number of people', severity: 'error' });
+      return;
+    }
+    if (!formValues.games_image) {
+      setAlertMessage({ open: true, message: 'ไม่อัพโหลด Image', severity: 'error' });
       return;
     }
 
@@ -113,7 +113,7 @@ const CreatePost = () => {
     const hoursDifference = selectedDateTime.diff(currentDateTime, 'hour');
 
     if (hoursDifference < 12) {
-      setSnackbar({ open: true, message: 'Meeting time must be at least 12 hours in the future', severity: 'error' });
+      setAlertMessage({ open: true, message: 'Meeting time must be at least 12 hours in the future', severity: 'error' });
       return;
     }
 
@@ -146,12 +146,11 @@ const CreatePost = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      setSnackbar({ open: true, message: 'Post created successfully!', severity: 'success' });
-      recipeReviewCardRef.current.scrollToTop();
+      setAlertMessage({ open: false, message: '', severity: '' });
       navigate('/');
     } catch (error) {
       console.error('Error:', error);
-      setSnackbar({ open: true, message: 'Error creating post. Please try again.', severity: 'error' });
+      setAlertMessage({ open: true, message: 'Error creating post. Please try again.', severity: 'error' });
     }
   };
 
@@ -165,16 +164,16 @@ const CreatePost = () => {
     navigate('/');
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar({ open: false, message: '', severity: 'success' });
+  const handleCloseAlert = () => {
+    setAlertMessage({ open: false, message: '', severity: '' });
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '150vh' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh', position: 'relative' }}>
       <Card sx={{ maxWidth: 600 }}>
         <CardContent>
           <Typography variant="h4" gutterBottom>Create a board game post</Typography>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <TextField
               fullWidth
               id="name_games"
@@ -246,32 +245,22 @@ const CreatePost = () => {
             <input
               type="file"
               ref={fileInputRef}
-              onChange={handleImageChange}
+              accept="image/*"
               style={{ display: 'none' }}
+              onChange={handleImageChange}
             />
-            {formValues.games_image && (
-              <Box sx={{ mb: 2 }}>
-                <img
-                  src={formValues.games_image}
-                  alt="Preview"
-                  style={{ maxWidth: '100%', height: 'auto' }}
-                />
-              </Box>
-            )}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
               <Button
                 variant="contained"
-                color="primary"
-                sx={{ backgroundColor: 'crimson', color: 'white' }}
                 type="submit"
+                sx={{ backgroundColor: 'crimson', color: '#FFFFFF', '&:hover': { backgroundColor: 'darkred' } }}
               >
-                Post
+                Submit
               </Button>
               <Button
-                variant="contained"
-                color="secondary"
-                sx={{ backgroundColor: 'grey', color: 'white' }}
+                variant="outlined"
                 onClick={handleCancel}
+                sx={{ color: '#FFFFFF', borderColor: '#FFFFFF', '&:hover': { borderColor: '#FFFFFF', backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}
               >
                 Cancel
               </Button>
@@ -279,15 +268,22 @@ const CreatePost = () => {
           </form>
         </CardContent>
       </Card>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
-          {snackbar.message}
+      {alertMessage.open && (
+        <Alert
+          severity={alertMessage.severity}
+          onClose={handleCloseAlert}
+          sx={{
+            position: 'fixed',
+            bottom: 16,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 1000,
+            width: 'fit-content',
+          }}
+        >
+          {alertMessage.message}
         </Alert>
-      </Snackbar>
+      )}
     </Box>
   );
 };

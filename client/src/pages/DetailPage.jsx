@@ -1,13 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { Card, CardContent, Typography, Button, Avatar, Box, TextField, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { useParams } from 'react-router-dom'; // Import useHistory
+import { useParams, useNavigate } from 'react-router-dom';
 
 const DetailsPage = () => {
     const { eventId } = useParams();
     const [chatMessage, setChatMessage] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
 
+    const navigate = useNavigate();
 
     const handleJoinEvent = useCallback(() => {
         // Implement join event logic here
@@ -25,7 +26,7 @@ const DetailsPage = () => {
     };
 
     const handleReturnHome = () => {
-        history.push('/home'); // Navigate to the homepage
+        navigate('/home'); // Navigate to the homepage
     };
 
     // Sample participants data
