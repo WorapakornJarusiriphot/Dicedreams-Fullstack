@@ -20,10 +20,10 @@ Search Google
     sleep    ${Delay}
     Click Button   id=identifier
     Input Text      name=identifier    Worapakorn5
-    sleep    ${Delay}
     Click Button   id=loginPassword
     Input Text      name=loginPassword    111111
     sleep    ${Delay}
      Click Button    xpath=//div[@id='root']/div/main/div/div/div[2]/div[3]/button
      sleep    ${Delay}
+     Capture Page Screenshot
     Close Browser
