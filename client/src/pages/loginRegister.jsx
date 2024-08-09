@@ -123,6 +123,24 @@ function LoginPage() {
     setLoading(true);
     try {
       const formattedBirthday = dayjs(formData.birthday).format("MM/DD/YYYY");
+
+      // Convert image to Base64
+      const convertImageToBase64 = (imageFile) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(imageFile);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = (error) => reject(error);
+        });
+      };
+
+      const base64Image = formData.user_image
+        ? await convertImageToBase64(formData.user_image)
+        : null;
+
+      // Log the Base64 string
+      console.log(base64Image);
+
       const dataToSend = {
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -132,7 +150,7 @@ function LoginPage() {
         phone_number: formData.phone_number,
         birthday: formattedBirthday,
         gender: formData.gender,
-        user_image: formData.user_image,
+        user_image: base64Image,
       };
 
       const response = await axios.post("http://localhost:8080/api/users", dataToSend, {
@@ -171,9 +189,6 @@ function LoginPage() {
       setLoading(false);
     }
   };
-
-
-
 
   const handleCancel = () => {
     navigate("/");
