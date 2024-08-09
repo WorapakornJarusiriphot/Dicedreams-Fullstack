@@ -1,92 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-08-08T20:36:10.727578" rpa="false" schemaversion="5">
-<suite id="s1" name="Login" source="/Users/macbook/Desktop/TestDiceDream/Dicedreams-Fullstack/test/Login.robot">
-<test id="s1-t1" name="Search Google" line="9">
+<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-08-09T14:42:57.702814" rpa="false" schemaversion="5">
+<suite id="s1" name="Post" source="/Users/macbook/Desktop/TestDiceDream/Dicedreams-Fullstack/test/Post.robot">
+<test id="s1-t1" name="Search Google" line="16">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-08-08T20:36:11.174699" level="INFO">Opening browser 'chrome' to base url 'http://localhost:5173/'.</msg>
+<msg time="2024-08-09T14:42:58.235950" level="INFO">Opening browser 'chrome' to base url 'http://localhost:5173/'.</msg>
 <arg>${URL}</arg>
 <arg>${Browser}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-08-08T20:36:11.174312" elapsed="37.054855"/>
+<status status="PASS" start="2024-08-09T14:42:58.190435" elapsed="50.723780"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-08-08T20:36:48.303403" level="INFO">Clicking button 'css=.MuiButton-text'.</msg>
+<msg time="2024-08-09T14:43:49.070992" level="INFO">Clicking button 'css=.MuiButton-text'.</msg>
 <arg>css=.MuiButton-text</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-08-08T20:36:48.281481" elapsed="5.515363"/>
+<status status="PASS" start="2024-08-09T14:43:48.941676" elapsed="1.445104"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
-<msg time="2024-08-08T20:36:54.847478" level="INFO">Slept 1 second.</msg>
+<msg time="2024-08-09T14:43:51.407584" level="INFO">Slept 1 second.</msg>
 <arg>${Delay}</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-08-08T20:36:53.817404" elapsed="1.030271"/>
+<status status="PASS" start="2024-08-09T14:43:50.387994" elapsed="1.019867"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-08-08T20:36:54.849639" level="INFO">Clicking button 'id=identifier'.</msg>
-<arg>id=identifier</arg>
+<msg time="2024-08-09T14:43:51.409525" level="INFO">Clicking button 'id=name_games'.</msg>
+<msg time="2024-08-09T14:43:53.670177" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-3.png"&gt;&lt;img src="selenium-screenshot-3.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-08-09T14:43:53.672955" level="FAIL">Button with locator 'id=name_games' not found.</msg>
+<arg>id=name_games</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-08-08T20:36:54.848287" elapsed="5.351843"/>
+<status status="FAIL" start="2024-08-09T14:43:51.408926" elapsed="2.314725">Button with locator 'id=name_games' not found.</status>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-08-08T20:37:00.328500" level="INFO">Typing text 'Worapakorn5' into text field 'name=identifier'.</msg>
-<arg>name=identifier</arg>
-<arg>Worapakorn5</arg>
+<arg>id=name_games</arg>
+<arg>หมาป่า</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-08-08T20:37:00.296139" elapsed="1.226353"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-08-08T20:37:02.524546" level="INFO">Slept 1 second.</msg>
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-08-08T20:37:01.523152" elapsed="1.001761"/>
+<status status="NOT RUN" start="2024-08-09T14:43:53.725667" elapsed="0.000100"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-08-08T20:37:02.526058" level="INFO">Clicking button 'id=loginPassword'.</msg>
-<arg>id=loginPassword</arg>
+<arg>id=detail_post</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-08-08T20:37:02.525574" elapsed="0.178342"/>
+<status status="NOT RUN" start="2024-08-09T14:43:53.749934" elapsed="0.000144"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-08-08T20:37:02.710675" level="INFO">Typing text '111111' into text field 'name=loginPassword'.</msg>
-<arg>name=loginPassword</arg>
-<arg>111111</arg>
+<arg>id=detail_post</arg>
+<arg>ต้องการจำนวนมากมาเกินที่กำหนดได้</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-08-08T20:37:02.706035" elapsed="0.454067"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-08-08T20:37:04.165343" level="INFO">Slept 1 second.</msg>
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-08-08T20:37:03.162605" elapsed="1.003492"/>
+<status status="NOT RUN" start="2024-08-09T14:43:53.752691" elapsed="0.000097"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-08-08T20:37:04.171367" level="INFO">Clicking button 'xpath=//div[@id='root']/div/main/div/div/div[2]/div[3]/button'.</msg>
+<arg>css=#date_meet path</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-09T14:43:53.753112" elapsed="0.000061"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=(//button[@type='button'])[25]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-09T14:43:53.754779" elapsed="0.000596"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=num_people</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-09T14:43:53.759569" elapsed="0.000134"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>id=num_people</arg>
+<arg>7</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-09T14:43:53.762054" elapsed="0.000326"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//div[@id='root']/div/main/div/div/div/form/span</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-09T14:43:53.763440" elapsed="0.000070"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>css=input:nth-child(7)</arg>
+<arg>C:\fakepath\สีเหลือง สีฟ้า ภาพประกอบ น่ารัก Desktop Wallpaper.png</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-09T14:43:53.763748" elapsed="0.000049"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2024-08-09T14:43:53.785827" elapsed="0.000854"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
 <arg>xpath=//div[@id='root']/div/main/div/div/div[2]/div[3]/button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-08-08T20:37:04.170742" elapsed="0.175398"/>
+<status status="NOT RUN" start="2024-08-09T14:43:53.788405" elapsed="0.000126"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
-<msg time="2024-08-08T20:37:05.369483" level="INFO">Slept 1 second.</msg>
 <arg>${Delay}</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-08-08T20:37:04.363997" elapsed="1.006366"/>
+<status status="NOT RUN" start="2024-08-09T14:43:53.789096" elapsed="0.000123"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="NOT RUN" start="2024-08-09T14:43:53.792000" elapsed="0.000589"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary">
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2024-08-08T20:37:05.372672" elapsed="0.954472"/>
+<status status="NOT RUN" start="2024-08-09T14:43:53.793107" elapsed="0.000081"/>
 </kw>
-<status status="PASS" start="2024-08-08T20:36:11.172981" elapsed="55.156105"/>
+<status status="FAIL" start="2024-08-09T14:42:58.184420" elapsed="55.642727">Button with locator 'id=name_games' not found.</status>
 </test>
-<status status="PASS" start="2024-08-08T20:36:10.730825" elapsed="55.657680"/>
+<status status="FAIL" start="2024-08-09T14:42:57.705907" elapsed="56.133440"/>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="0" skip="0">All Tests</stat>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="1" fail="0" skip="0" id="s1" name="Login">Login</stat>
+<stat pass="0" fail="1" skip="0" id="s1" name="Post">Post</stat>
 </suite>
 </statistics>
 <errors>
