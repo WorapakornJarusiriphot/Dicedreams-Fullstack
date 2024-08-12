@@ -12,40 +12,38 @@ const DetailsPage = () => {
 
     useEffect(() => {
         console.log('Access Token:', accessToken);
-        console.log('Post Games ID:', post_games_id);
 
         if (!accessToken) {
-            console.log('No access token found, redirecting to login...');
             navigate('/login');
             return;
         }
 
         if (!post_games_id) {
-            console.error('No post_games_id found');
             setError('No event ID provided');
             return;
         }
 
         const fetchEventDetails = async () => {
-            console.log('Fetching event details...');
             try {
-                const response = await fetch(`http://localhost:8080/api/postGames/${post_games_id}`, {
+                console.log(`Fetching details for event ID: ${post_games_id}`);
+
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/api/postGames/${post_games_id}`, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`
                     }
                 });
 
-                console.log('Response Status:', response.status);
                 if (!response.ok) {
                     const errorText = await response.text();
+                    console.error('Failed to fetch event details:', errorText);
                     throw new Error(`Failed to fetch event details: ${errorText}`);
                 }
 
                 const data = await response.json();
-                console.log('Event Details Data:', data);
+                console.log('Fetched Event Details:', data);
                 setEventDetails(data);
             } catch (err) {
-                console.error('Error fetching event details:', err);
+                console.error('Error:', err.message);
                 setError(err.message);
             }
         };
@@ -53,29 +51,31 @@ const DetailsPage = () => {
         fetchEventDetails();
     }, [post_games_id, accessToken, navigate]);
 
-    // Extract query parameters
-    const queryParams = new URLSearchParams(location.search);
-    const action = queryParams.get('action');
-
     useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const action = queryParams.get('action');
+        console.log('Query Params Action:', action);
+
         if (action === 'join') {
-            console.log('Join button clicked');
+            console.log('Join action triggered');
             // Handle join action
         } else if (action === 'chat') {
-            console.log('Chat button clicked');
+            console.log('Chat action triggered');
             // Handle chat action
         }
-    }, [action]);
+    }, [location.search]);
 
     if (!accessToken) {
         return <p>Redirecting to login...</p>;
     }
 
     if (error) {
+        console.log('Error State:', error);
         return <p>Error: {error}</p>;
     }
 
     if (!eventDetails) {
+        console.log('Loading event details...');
         return <p>Loading...</p>;
     }
 

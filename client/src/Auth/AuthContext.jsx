@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode }from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 export const AuthContext = createContext();
 
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUserProfile = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/users/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
                 }

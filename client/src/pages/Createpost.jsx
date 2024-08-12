@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Auth/AuthContext';
@@ -152,7 +153,6 @@ const CreatePost = () => {
         <CardContent>
           <Typography variant="h4" gutterBottom>Create a board game post</Typography>
           <form onSubmit={handleSubmit} noValidate>
-            {/* Form fields remain the same */}
             <TextField
               fullWidth
               id="name_games"
@@ -226,18 +226,50 @@ const CreatePost = () => {
               onChange={handleImageChange}
             />
             {previewImage && <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', marginBottom: '10px' }} />}
-            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-              <Button type="submit" variant="contained" color="primary" fullWidth>Create post</Button>
-              <Button variant="outlined" color="secondary" fullWidth onClick={handleCancel}>Cancel</Button>
+            <Stack direction="row" spacing={38} sx={{ mt: 2 }}>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  backgroundColor: 'crimson',
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: '#b22222',
+                  },
+                  fullWidth: true,
+                }}
+              >
+                Create post
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{
+                  color: 'white',
+                  borderColor: 'white',
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  fullWidth: true,
+                }}
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
             </Stack>
-            {alertMessage.open && (
-              <Alert severity={alertMessage.severity} onClose={handleCloseAlert} sx={{ mt: 2 }}>
-                {alertMessage.message}
-              </Alert>
-            )}
           </form>
         </CardContent>
       </Card>
+      <Snackbar
+        open={alertMessage.open}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseAlert} severity={alertMessage.severity} sx={{ width: '100%' }}>
+          {alertMessage.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

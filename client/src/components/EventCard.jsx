@@ -25,7 +25,6 @@ function EventCard(props) {
 
     const navigate = useNavigate();
 
-    // Format the meeting date and time
     const formattedDateMeet = dateMeet ? dayjs(dateMeet).format('DD MMM YYYY') : 'Unknown Date';
     const formattedTimeMeet = timeMeet ? dayjs(timeMeet, 'HH:mm:ss').format('h:mm A') : 'Unknown Time';
 
@@ -119,7 +118,7 @@ EventCard.propTypes = {
     detailPost: PropTypes.string,
     numPeople: PropTypes.number,
     maxParticipants: PropTypes.number,
-    eventId: PropTypes.string.isRequired, // Add eventId prop
+    eventId: PropTypes.string.isRequired,
 };
 
 export default EventCard;
