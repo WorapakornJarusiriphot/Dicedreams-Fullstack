@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -10,12 +10,13 @@ import Typography from '@mui/material/Typography';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker, TimePicker } from '@mui/x-date-pickers';
 import Stack from '@mui/material/Stack';
+import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Auth/AuthContext';
 
 const CreatePost = () => {
-  const { userId, accessToken } = useContext(AuthContext);
+  const { userId, accessToken, username, profilePic } = useContext(AuthContext);
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(null);
   const [timeValue, setTimeValue] = useState(null);
@@ -26,32 +27,9 @@ const CreatePost = () => {
     games_image: '',
   });
   const [imageFile, setImageFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [alertMessage, setAlertMessage] = useState({ open: false, message: '', severity: '' });
-  const [userDetails, setUserDetails] = useState({ username: '', profilePic: '' });
   const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
-          }
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setUserDetails({ username: data.username, profilePic: data.profilePic });
-      } catch (error) {
-        console.error('Error fetching user details:', error);
-      }
-    };
-
-    if (userId) {
-      fetchUserDetails();
-    }
-  }, [userId, accessToken]);
 
   const handleNumberChange = (event) => {
     let value = event.target.value;
@@ -79,6 +57,7 @@ const CreatePost = () => {
           ...prevValues,
           games_image: reader.result,
         }));
+        setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -128,8 +107,8 @@ const CreatePost = () => {
       games_image: formValues.games_image,
       status_post: 'active',
       users_id: userId,
-      username: userDetails.username,
-      profilePic: userDetails.profilePic
+      username, // Directly use username from context
+      profilePic, // Directly use profilePic from context
     };
 
     try {
@@ -169,8 +148,8 @@ const CreatePost = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh', position: 'relative' }}>
-      <Card sx={{ maxWidth: 600 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '120vh', position: 'relative', p: 4 }}>
+      <Card sx={{ maxWidth: 600, width: '100%', boxShadow: 3, p: 2, mt: 4, mb: 4 }}>
         <CardContent>
           <Typography variant="h4" gutterBottom>Create a board game post</Typography>
           <form onSubmit={handleSubmit} noValidate>
@@ -201,89 +180,96 @@ const CreatePost = () => {
               <Box sx={{ mb: 2 }} id="date_meet">
                 <DatePicker
                   label="Select an appointment date"
-                  views={['year', 'day']}
+                  views={['year', 'month', 'day']}
                   value={selectedDate}
-                  onChange={(newValue) => setSelectedDate(newValue)}
-                  renderInput={(params) => <TextField fullWidth {...params} required />}
+                  onChange={(date) => setSelectedDate(date)}
+                  renderInput={(params) => <TextField fullWidth {...params} />}
+                  required
                 />
               </Box>
               <Box sx={{ mb: 2 }} id="time_meet">
-                <Stack spacing={2} sx={{ minWidth: 305 }}>
-                  <TimePicker
-                    label="Choose an appointment time"
-                    value={timeValue}
-                    onChange={setTimeValue}
-                    renderInput={(params) => <TextField {...params} required />}
-                  />
-                </Stack>
+                <TimePicker
+                  label="Select a time"
+                  value={timeValue}
+                  onChange={(time) => setTimeValue(time)}
+                  renderInput={(params) => <TextField fullWidth {...params} />}
+                  required
+                />
               </Box>
             </LocalizationProvider>
             <TextField
               fullWidth
               id="num_people"
+              label="Number of participants"
               type="number"
-              label="Number of Players"
-              placeholder="Enter number of players"
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ min: 2 }}
               value={numberOfPlayers}
               onChange={handleNumberChange}
-              onBlur={handleNumberChange}
               sx={{ mb: 2 }}
+              InputProps={{ inputProps: { min: 0 } }}
               required
             />
             <Button
               variant="contained"
-              color="primary"
               component="span"
               startIcon={<CloudUploadIcon />}
               onClick={handleUploadClick}
+              sx={{ mb: 2 }}
+              fullWidth
             >
-              Upload Board Game Image
+              Upload Image
             </Button>
             <input
               type="file"
-              ref={fileInputRef}
               accept="image/*"
               style={{ display: 'none' }}
+              ref={fileInputRef}
               onChange={handleImageChange}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+            {previewImage && <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', marginBottom: '10px' }} />}
+            <Stack direction="row" spacing={38} sx={{ mt: 2 }}>
               <Button
-                variant="contained"
                 type="submit"
-                sx={{ backgroundColor: 'crimson', color: '#FFFFFF', '&:hover': { backgroundColor: 'darkred' } }}
+                variant="contained"
+                sx={{
+                  backgroundColor: 'crimson',
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: '#b22222',
+                  },
+                  fullWidth: true,
+                }}
               >
-                Submit
+                Create post
               </Button>
               <Button
                 variant="outlined"
+                sx={{
+                  color: 'white',
+                  borderColor: 'white',
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                  fullWidth: true,
+                }}
                 onClick={handleCancel}
-                sx={{ color: '#FFFFFF', borderColor: '#FFFFFF', '&:hover': { borderColor: '#FFFFFF', backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}
               >
                 Cancel
               </Button>
-            </Box>
+            </Stack>
           </form>
         </CardContent>
       </Card>
-      {alertMessage.open && (
-        <Alert
-          severity={alertMessage.severity}
-          onClose={handleCloseAlert}
-          sx={{
-            position: 'fixed',
-            bottom: 16,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 1000,
-            width: 'fit-content',
-          }}
-        >
+      <Snackbar
+        open={alertMessage.open}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseAlert} severity={alertMessage.severity} sx={{ width: '100%' }}>
           {alertMessage.message}
         </Alert>
-      )}
+      </Snackbar>
     </Box>
   );
 };
