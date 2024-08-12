@@ -3,7 +3,7 @@ import {
   Container, Grid, Typography, Paper, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
 import { getPostGames } from '../components/apiService';
-import EventCard from './EventCard'; // Corrected import name
+import EventCard from './EventCard';
 
 function RecipeReviewCard() {
   const [events, setEvents] = useState([]);
@@ -15,6 +15,7 @@ function RecipeReviewCard() {
     const fetchEvents = async () => {
       try {
         const data = await getPostGames();
+        console.log("Fetched Events:", data); // Log fetched events
         setEvents(data);
       } catch (error) {
         setError('Error fetching events: ' + error.message);
@@ -70,16 +71,18 @@ function RecipeReviewCard() {
           filteredEvents.map((event) => (
             <Grid item key={event.post_games_id} xs={12} sm={10} md={8}>
               <EventCard
-                profilePic={event.games_image}
-                username={event.username}
+                userId={event.user_id} // Pass the userId prop
+                profilePic={event.user_image} // Use the user_image from API response
+                username={event.username} // Use the username from API response
                 postTime={event.creation_date}
                 image={event.games_image}
                 nameGames={event.name_games}
                 dateMeet={event.date_meet}
-                timeMeet={event.time_meet} // Pass the timeMeet prop
+                timeMeet={event.time_meet}
                 detailPost={event.detail_post}
                 numPeople={event.num_people}
                 maxParticipants={event.maxParticipants}
+                eventId={event.post_games_id} // Pass eventId for navigation
               />
             </Grid>
           ))
@@ -90,6 +93,3 @@ function RecipeReviewCard() {
 }
 
 export default RecipeReviewCard;
-
-
-

@@ -1,17 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
     Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Button, Typography
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../Auth/AuthContext';
+import axios from 'axios';
 
 function EventCard(props) {
-    const { username: authUsername, profilePic: authProfilePic } = useContext(AuthContext);
     const {
-        profilePic = authProfilePic,
-        username = authUsername,
+        userId,
         postTime,
         image,
         nameGames,
@@ -20,10 +18,36 @@ function EventCard(props) {
         detailPost,
         numPeople,
         maxParticipants,
-        eventId
+        eventId,
+        username: passedUsername, // Rename prop to avoid conflict
+        profilePic: passedProfilePic, // Rename prop to avoid conflict
     } = props;
 
+    const [username, setUsername] = useState(passedUsername || '');
+    const [profilePic, setProfilePic] = useState(passedProfilePic || '');
+
     const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log("EventCard userId:", userId); // Log userId when component renders
+        if (!passedUsername && !passedProfilePic) {
+            const fetchUserDetails = async (id) => {
+                try {
+                    const response = await axios.get(`http://localhost:8080/api/users/${id}`);
+                    const { username, user_image } = response.data;
+                    console.log("Fetched EventCard User Details:", { username, user_image }); // Log fetched details
+                    setUsername(username);
+                    setProfilePic(user_image);
+                } catch (error) {
+                    console.error('Failed to fetch user details', error);
+                }
+            };
+
+            if (userId) {
+                fetchUserDetails(userId);
+            }
+        }
+    }, [userId, passedUsername, passedProfilePic]);
 
     const formattedDateMeet = dateMeet ? dayjs(dateMeet).format('DD MMM YYYY') : 'Unknown Date';
     const formattedTimeMeet = timeMeet ? dayjs(timeMeet, 'HH:mm:ss').format('h:mm A') : 'Unknown Time';
@@ -50,7 +74,7 @@ function EventCard(props) {
                     </Avatar>
                 }
                 title={username || 'Unknown User'}
-                subheader={postTime || 'Unknown Time'}
+                subheader={postTime ? dayjs(postTime).format('DD MMM YYYY h:mm A') : 'Unknown Time'}
                 sx={{ color: 'white' }}
             />
             <CardMedia
@@ -108,8 +132,7 @@ function EventCard(props) {
 }
 
 EventCard.propTypes = {
-    profilePic: PropTypes.string,
-    username: PropTypes.string,
+    userId: PropTypes.string.isRequired,
     postTime: PropTypes.string,
     image: PropTypes.string,
     nameGames: PropTypes.string,
@@ -119,6 +142,8 @@ EventCard.propTypes = {
     numPeople: PropTypes.number,
     maxParticipants: PropTypes.number,
     eventId: PropTypes.string.isRequired,
+    username: PropTypes.string, // Optional
+    profilePic: PropTypes.string, // Optional
 };
 
 export default EventCard;

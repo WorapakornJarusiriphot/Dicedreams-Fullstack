@@ -426,7 +426,7 @@ function LoginPage() {
                 onClick={handleRegister}
                 disabled={loading}
                 sx={{
-                  
+
                   marginRight: "10px",
                   backgroundColor: "crimson",
                   color: "#FFFFFF",
@@ -497,41 +497,41 @@ function LoginPage() {
               InputLabelProps={{ style: { color: "#FFFFFF" } }}
               required
             />
-              <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  onClick={handleLogin}
-                  disabled={loading}
-                  sx={{
-                    marginRight: "10px",
-                    backgroundColor: "crimson",
-                    color: "#FFFFFF",
+            <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={handleLogin}
+                disabled={loading}
+                sx={{
+                  marginRight: "10px",
+                  backgroundColor: "crimson",
+                  color: "#FFFFFF",
 
-                    '&:hover': {
-                      backgroundColor: "darkred",
-                    },
-                  }}
-                >
-                  {loading ? <CircularProgress size={24} /> : "Log In"}
-                </Button>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  onClick={handleCancel}
-                  sx={{
-                    marginLeft: "10px",
-                    color: "#FFFFFF",
+                  '&:hover': {
+                    backgroundColor: "darkred",
+                  },
+                }}
+              >
+                {loading ? <CircularProgress size={24} /> : "Log In"}
+              </Button>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={handleCancel}
+                sx={{
+                  marginLeft: "10px",
+                  color: "#FFFFFF",
+                  borderColor: "#FFFFFF",
+                  '&:hover': {
                     borderColor: "#FFFFFF",
-                    '&:hover': {
-                      borderColor: "#FFFFFF",
-                      backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    },
-                  }}
-                >
-                  Cancel
-                </Button>
-              </Box>
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
+              >
+                Cancel
+              </Button>
+            </Box>
           </Box>
         )}
       </Box>
