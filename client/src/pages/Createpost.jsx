@@ -106,8 +106,8 @@ const CreatePost = () => {
       games_image: formValues.games_image,
       status_post: 'active',
       users_id: userId,
-      username: username, // Directly use username from context
-      profilePic: profilePic, // Directly use profilePic from context
+      username, // Directly use username from context
+      profilePic, // Directly use profilePic from context
     };
 
     try {
@@ -180,70 +180,62 @@ const CreatePost = () => {
               <Box sx={{ mb: 2 }} id="date_meet">
                 <DatePicker
                   label="Select an appointment date"
-                  views={['year', 'day']}
+                  views={['year', 'month', 'day']}
                   value={selectedDate}
-                  onChange={(newValue) => setSelectedDate(newValue)}
-                  renderInput={(params) => <TextField fullWidth {...params} required />}
+                  onChange={(date) => setSelectedDate(date)}
+                  renderInput={(params) => <TextField fullWidth {...params} />}
+                  required
                 />
               </Box>
               <Box sx={{ mb: 2 }} id="time_meet">
-                <Stack spacing={2} sx={{ minWidth: 305 }}>
-                  <TimePicker
-                    label="Choose an appointment time"
-                    value={timeValue}
-                    onChange={setTimeValue}
-                    renderInput={(params) => <TextField {...params} required />}
-                  />
-                </Stack>
+                <TimePicker
+                  label="Select a time"
+                  value={timeValue}
+                  onChange={(time) => setTimeValue(time)}
+                  renderInput={(params) => <TextField fullWidth {...params} />}
+                  required
+                />
               </Box>
             </LocalizationProvider>
             <TextField
               fullWidth
               id="num_people"
+              label="Number of participants"
               type="number"
-              label="Number of Players"
-              placeholder="Enter number of players"
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ min: 2 }}
               value={numberOfPlayers}
               onChange={handleNumberChange}
-              onBlur={handleNumberChange}
               sx={{ mb: 2 }}
+              InputProps={{ inputProps: { min: 0 } }}
               required
             />
             <Button
               variant="contained"
-              color="primary"
               component="span"
               startIcon={<CloudUploadIcon />}
               onClick={handleUploadClick}
+              sx={{ mb: 2 }}
+              fullWidth
             >
-              Upload Board Game Image
+              Upload Image
             </Button>
             <input
               type="file"
-              ref={fileInputRef}
               accept="image/*"
               style={{ display: 'none' }}
+              ref={fileInputRef}
               onChange={handleImageChange}
             />
-            {previewImage && (
-              <Box mt={2} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
-              </Box>
+            {previewImage && <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', marginBottom: '10px' }} />}
+            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+              <Button type="submit" variant="contained" color="primary" fullWidth>Create post</Button>
+              <Button variant="outlined" color="secondary" fullWidth onClick={handleCancel}>Cancel</Button>
+            </Stack>
+            {alertMessage.open && (
+              <Alert severity={alertMessage.severity} onClose={handleCloseAlert} sx={{ mt: 2 }}>
+                {alertMessage.message}
+              </Alert>
             )}
-
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
-              <Button type="submit" variant="contained" color="primary">Create Post</Button>
-              <Button variant="outlined" onClick={handleCancel}>Cancel</Button>
-            </Box>
           </form>
-          {alertMessage.open && (
-            <Alert severity={alertMessage.severity} onClose={handleCloseAlert} sx={{ mt: 2 }}>
-              {alertMessage.message}
-            </Alert>
-          )}
         </CardContent>
       </Card>
     </Box>

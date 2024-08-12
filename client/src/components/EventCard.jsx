@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
     Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Button, Typography
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../Auth/AuthContext';
 
 function EventCard(props) {
+    const { username: authUsername, profilePic: authProfilePic } = useContext(AuthContext);
     const {
-        profilePic,
-        username,
+        profilePic = authProfilePic,
+        username = authUsername,
         postTime,
         image,
         nameGames,
@@ -17,7 +19,8 @@ function EventCard(props) {
         timeMeet,
         detailPost,
         numPeople,
-        maxParticipants
+        maxParticipants,
+        eventId
     } = props;
 
     const navigate = useNavigate();
@@ -27,11 +30,11 @@ function EventCard(props) {
     const formattedTimeMeet = timeMeet ? dayjs(timeMeet, 'HH:mm:ss').format('h:mm A') : 'Unknown Time';
 
     const handleJoinClick = () => {
-        navigate(`/events/${props.eventId}`);
+        navigate(`/events/${eventId}?action=join`);
     };
 
     const handleChatClick = () => {
-        navigate(`/events/${props.eventId}`);
+        navigate(`/events/${eventId}?action=chat`);
     };
 
     return (
@@ -68,7 +71,7 @@ function EventCard(props) {
                     {detailPost || 'No content available'}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    จำนวนคนตอบไป: {numPeople || 0}/{maxParticipants || 'N/A'}
+                    Participants: {numPeople || 0}/{maxParticipants || '1'}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing sx={{ justifyContent: 'space-between', padding: '16px' }}>
@@ -117,19 +120,6 @@ EventCard.propTypes = {
     numPeople: PropTypes.number,
     maxParticipants: PropTypes.number,
     eventId: PropTypes.string.isRequired, // Add eventId prop
-};
-
-EventCard.defaultProps = {
-    profilePic: '',
-    username: 'Unknown User',
-    postTime: 'Unknown Time',
-    image: '',
-    nameGames: 'Untitled Event',
-    dateMeet: 'Unknown Date',
-    timeMeet: 'Unknown Time',
-    detailPost: 'No content available',
-    numPeople: 0,
-    maxParticipants: 'N/A',
 };
 
 export default EventCard;
