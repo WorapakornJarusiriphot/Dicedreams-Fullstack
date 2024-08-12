@@ -1,20 +1,26 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Card, CardContent, Typography, Button, Avatar, Box, TextField, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../Auth/AuthContext'; // Ensure this context provides the token and userId
 
 const DetailsPage = () => {
     const { eventId } = useParams();
     const [event, setEvent] = useState(null);
     const [chatMessage, setChatMessage] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
+    const { userId, accessToken } = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         const loadEventDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/postGame/${eventId}`);
+                const response = await axios.get(`http://localhost:8080/api/postGame/${eventId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
                 setEvent(response.data);
             } catch (error) {
                 console.error('Failed to fetch event details', error);
@@ -22,7 +28,17 @@ const DetailsPage = () => {
         };
 
         loadEventDetails();
-    }, [eventId]);
+    }, [eventId, accessToken]);
+
+    // Check if the user is authorized to view/edit this post
+    useEffect(() => {
+        if (event && userId) {
+            if (event.users_id !== userId) {
+                alert('Unauthorized. Please log in.');
+                navigate('/login'); // Redirect to login if unauthorized
+            }
+        }
+    }, [event, userId, navigate]);
 
     const handleJoinEvent = useCallback(() => {
         // Implement join event logic here
@@ -41,6 +57,11 @@ const DetailsPage = () => {
 
     const handleReturnHome = () => {
         navigate('/home'); // Navigate to the homepage
+    };
+
+    const handleEditPost = () => {
+        // Navigate to the edit post page
+        navigate(`/edit/${eventId}`);
     };
 
     if (!event) {
@@ -73,10 +94,13 @@ const DetailsPage = () => {
                     <Typography variant="h4" gutterBottom>{nameGames || 'Untitled Event'}</Typography>
                     <Typography variant="subtitle1">{`${formattedDateMeet} at ${formattedTimeMeet}`}</Typography>
                     <Typography variant="subtitle1">{detailPost || 'No content available'}</Typography>
-                    <Typography variant="subtitle1">{`สถานที่: ${event.location || 'Unknown Location'}`}</Typography>
-                    <Typography variant="subtitle1">{`จำนวนคนถึงไป: ${numPeople || 0}/${maxParticipants || 'N/A'}`}</Typography>
+                    <Typography variant="subtitle1">{`Location: ${event.location || 'Unknown Location'}`}</Typography>
+                    <Typography variant="subtitle1">{`Number of Players: ${numPeople || 0}/${maxParticipants || 'N/A'}`}</Typography>
                     <Button variant="contained" color="secondary" onClick={handleJoinEvent} sx={{ mt: 2, mr: 2 }}>Join</Button>
                     <Button variant="contained" color="secondary" onClick={handleReturnHome} sx={{ mt: 2 }}>Return to Home</Button>
+                    {event.users_id === userId && (
+                        <Button variant="contained" color="primary" onClick={handleEditPost} sx={{ mt: 2 }}>Edit Post</Button>
+                    )}
                 </CardContent>
             </Card>
 

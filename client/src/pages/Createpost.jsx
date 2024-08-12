@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -15,7 +15,7 @@ import dayjs from 'dayjs';
 import { AuthContext } from '../Auth/AuthContext';
 
 const CreatePost = () => {
-  const { userId, accessToken } = useContext(AuthContext);
+  const { userId, accessToken, username, profilePic } = useContext(AuthContext);
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(null);
   const [timeValue, setTimeValue] = useState(null);
@@ -26,32 +26,9 @@ const CreatePost = () => {
     games_image: '',
   });
   const [imageFile, setImageFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [alertMessage, setAlertMessage] = useState({ open: false, message: '', severity: '' });
-  const [userDetails, setUserDetails] = useState({ username: '', profilePic: '' });
   const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
-          }
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        setUserDetails({ username: data.username, profilePic: data.profilePic });
-      } catch (error) {
-        console.error('Error fetching user details:', error);
-      }
-    };
-
-    if (userId) {
-      fetchUserDetails();
-    }
-  }, [userId, accessToken]);
 
   const handleNumberChange = (event) => {
     let value = event.target.value;
@@ -79,6 +56,7 @@ const CreatePost = () => {
           ...prevValues,
           games_image: reader.result,
         }));
+        setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -128,8 +106,8 @@ const CreatePost = () => {
       games_image: formValues.games_image,
       status_post: 'active',
       users_id: userId,
-      username: userDetails.username,
-      profilePic: userDetails.profilePic
+      username: username, // Directly use username from context
+      profilePic: profilePic, // Directly use profilePic from context
     };
 
     try {
@@ -169,11 +147,12 @@ const CreatePost = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh', position: 'relative' }}>
-      <Card sx={{ maxWidth: 600 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '120vh', position: 'relative', p: 4 }}>
+      <Card sx={{ maxWidth: 600, width: '100%', boxShadow: 3, p: 2, mt: 4, mb: 4 }}>
         <CardContent>
           <Typography variant="h4" gutterBottom>Create a board game post</Typography>
           <form onSubmit={handleSubmit} noValidate>
+            {/* Form fields remain the same */}
             <TextField
               fullWidth
               id="name_games"
@@ -249,41 +228,24 @@ const CreatePost = () => {
               style={{ display: 'none' }}
               onChange={handleImageChange}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-              <Button
-                variant="contained"
-                type="submit"
-                sx={{ backgroundColor: 'crimson', color: '#FFFFFF', '&:hover': { backgroundColor: 'darkred' } }}
-              >
-                Submit
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={handleCancel}
-                sx={{ color: '#FFFFFF', borderColor: '#FFFFFF', '&:hover': { borderColor: '#FFFFFF', backgroundColor: 'rgba(255, 255, 255, 0.1)' } }}
-              >
-                Cancel
-              </Button>
+            {previewImage && (
+              <Box mt={2} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', height: 'auto' }} />
+              </Box>
+            )}
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 3 }}>
+              <Button type="submit" variant="contained" color="primary">Create Post</Button>
+              <Button variant="outlined" onClick={handleCancel}>Cancel</Button>
             </Box>
           </form>
+          {alertMessage.open && (
+            <Alert severity={alertMessage.severity} onClose={handleCloseAlert} sx={{ mt: 2 }}>
+              {alertMessage.message}
+            </Alert>
+          )}
         </CardContent>
       </Card>
-      {alertMessage.open && (
-        <Alert
-          severity={alertMessage.severity}
-          onClose={handleCloseAlert}
-          sx={{
-            position: 'fixed',
-            bottom: 16,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 1000,
-            width: 'fit-content',
-          }}
-        >
-          {alertMessage.message}
-        </Alert>
-      )}
     </Box>
   );
 };
