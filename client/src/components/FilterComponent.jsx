@@ -45,13 +45,18 @@ const FilterComponent = ({ onSearch }) => {
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: 300, gap: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}>
+        <Box
+            id="filter-component"
+            sx={{ display: 'flex', flexDirection: 'column', width: 300, gap: 2, p: 2, bgcolor: 'background.paper', borderRadius: 1 }}
+        >
             <TextField
+                id="search-input"
                 label="Search for User, Store or Game"
                 variant="outlined"
                 fullWidth
             />
             <TextField
+                id="number-of-people-input"
                 label="Number of People"
                 variant="outlined"
                 fullWidth
@@ -59,6 +64,7 @@ const FilterComponent = ({ onSearch }) => {
                 onChange={handleNumberOfPeopleChange}
             />
             <TextField
+                id="date-input"
                 label="Select Date"
                 type="date"
                 variant="outlined"
@@ -70,6 +76,7 @@ const FilterComponent = ({ onSearch }) => {
                 onChange={handleDateChange}
             />
             <TextField
+                id="time-input"
                 label="Select Time"
                 type="time"
                 variant="outlined"
@@ -80,12 +87,13 @@ const FilterComponent = ({ onSearch }) => {
                 value={selectedTime}
                 onChange={handleTimeChange}
             />
-            <FormGroup>
+            <FormGroup id="game-checkbox-group">
                 {games.map((game) => (
                     <FormControlLabel
                         key={game}
                         control={
                             <Checkbox
+                                id={`game-checkbox-${game}`}
                                 checked={selectedGames.includes(game)}
                                 onChange={handleGameChange}
                                 name={game}
@@ -95,7 +103,12 @@ const FilterComponent = ({ onSearch }) => {
                     />
                 ))}
             </FormGroup>
-            <Button variant="contained" color="primary" onClick={handleSearchClick}>
+            <Button
+                id="search-button"
+                variant="contained"
+                color="primary"
+                onClick={handleSearchClick}
+            >
                 Search
             </Button>
         </Box>

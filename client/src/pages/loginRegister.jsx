@@ -218,8 +218,6 @@ function LoginPage() {
     setAlert({ open: false, message: "", severity: "success" });
   };
 
-
-
   return (
     <Box
       display="flex"
@@ -244,10 +242,10 @@ function LoginPage() {
         sx={{ backdropFilter: "blur(10px)" }}
       >
         <ButtonGroup variant="text" fullWidth>
-          <Button onClick={() => setIsRegister(false)}>
+          <Button onClick={() => setIsRegister(false)} id="login-button">
             <Typography style={{ color: "#FFFFFF" }}>Log In</Typography>
           </Button>
-          <Button onClick={() => setIsRegister(true)}>
+          <Button onClick={() => setIsRegister(true)} id="register-button">
             <Typography style={{ color: "#FFFFFF" }}>Register</Typography>
           </Button>
         </ButtonGroup>
@@ -358,11 +356,12 @@ function LoginPage() {
                     margin="normal"
                     InputProps={{ style: { color: "#FFFFFF" } }}
                     InputLabelProps={{ style: { color: "#FFFFFF" } }}
+                    id="birthday"
                   />
                 )}
               />
             </LocalizationProvider>
-            <FormLabel component="legend" style={{ color: "#FFFFFF" }}>
+            <FormLabel component="legend" style={{ color: "#FFFFFF" }} id="gender-label">
               Gender
             </FormLabel>
             <RadioGroup
@@ -372,21 +371,25 @@ function LoginPage() {
               onChange={handleInputChange}
               row
               style={{ color: "#FFFFFF" }}
+              id="gender-group"
             >
               <FormControlLabel
                 value="ชาย"
                 control={<Radio style={{ color: "#FFFFFF" }} />}
                 label="ชาย"
+                id="gender-male"
               />
               <FormControlLabel
                 value="หญิง"
                 control={<Radio style={{ color: "#FFFFFF" }} />}
                 label="หญิง"
+                id="gender-female"
               />
               <FormControlLabel
                 value="ไม่ระบุ"
                 control={<Radio style={{ color: "#FFFFFF" }} />}
                 label="ไม่ระบุ"
+                id="gender-not-specified"
               />
             </RadioGroup>
             <input
@@ -395,7 +398,7 @@ function LoginPage() {
               id="user_image"
               type="file"
               ref={fileInputRef}
-              onChange={handleFileChange} // Modified to use the new handler
+              onChange={handleFileChange}
             />
             <label htmlFor="user_image">
               <Button
@@ -405,6 +408,7 @@ function LoginPage() {
                 component="span"
                 fullWidth
                 style={{ marginTop: 16 }}
+                id="upload-image-button"
               >
                 Upload Image
               </Button>
@@ -415,6 +419,7 @@ function LoginPage() {
                   src={formData.user_image_preview}
                   alt="Preview"
                   style={{ maxWidth: "100%", maxHeight: 200 }}
+                  id="image-preview"
                 />
               </Box>
             )}
@@ -426,7 +431,6 @@ function LoginPage() {
                 onClick={handleRegister}
                 disabled={loading}
                 sx={{
-                  
                   marginRight: "10px",
                   backgroundColor: "crimson",
                   color: "#FFFFFF",
@@ -434,6 +438,7 @@ function LoginPage() {
                     backgroundColor: "darkred",
                   },
                 }}
+                id="register-submit"
               >
                 {loading ? <CircularProgress size={24} /> : "Register"}
               </Button>
@@ -450,6 +455,7 @@ function LoginPage() {
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                   },
                 }}
+                id="cancel-register"
               >
                 Cancel
               </Button>
@@ -497,41 +503,42 @@ function LoginPage() {
               InputLabelProps={{ style: { color: "#FFFFFF" } }}
               required
             />
-              <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  onClick={handleLogin}
-                  disabled={loading}
-                  sx={{
-                    marginRight: "10px",
-                    backgroundColor: "crimson",
-                    color: "#FFFFFF",
-
-                    '&:hover': {
-                      backgroundColor: "darkred",
-                    },
-                  }}
-                >
-                  {loading ? <CircularProgress size={24} /> : "Log In"}
-                </Button>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  onClick={handleCancel}
-                  sx={{
-                    marginLeft: "10px",
-                    color: "#FFFFFF",
+            <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={handleLogin}
+                disabled={loading}
+                sx={{
+                  marginRight: "10px",
+                  backgroundColor: "crimson",
+                  color: "#FFFFFF",
+                  '&:hover': {
+                    backgroundColor: "darkred",
+                  },
+                }}
+                id="login-submit"
+              >
+                {loading ? <CircularProgress size={24} /> : "Log In"}
+              </Button>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={handleCancel}
+                sx={{
+                  marginLeft: "10px",
+                  color: "#FFFFFF",
+                  borderColor: "#FFFFFF",
+                  '&:hover': {
                     borderColor: "#FFFFFF",
-                    '&:hover': {
-                      borderColor: "#FFFFFF",
-                      backgroundColor: "rgba(255, 255, 255, 0.1)",
-                    },
-                  }}
-                >
-                  Cancel
-                </Button>
-              </Box>
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
+                id="cancel-login"
+              >
+                Cancel
+              </Button>
+            </Box>
           </Box>
         )}
       </Box>

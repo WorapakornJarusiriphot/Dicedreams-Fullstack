@@ -148,10 +148,10 @@ const CreatePost = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '120vh', position: 'relative', p: 4 }}>
-      <Card sx={{ maxWidth: 600, width: '100%', boxShadow: 3, p: 2, mt: 4, mb: 4 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '120vh', position: 'relative', p: 4 }} id="create-post-container">
+      <Card sx={{ maxWidth: 600, width: '100%', boxShadow: 3, p: 2, mt: 4, mb: 4 }} id="create-post-card">
         <CardContent>
-          <Typography variant="h4" gutterBottom>Create a board game post</Typography>
+          <Typography variant="h4" gutterBottom id="create-post-title">Create a board game post</Typography>
           <form onSubmit={handleSubmit} noValidate>
             <TextField
               fullWidth
@@ -164,6 +164,7 @@ const CreatePost = () => {
               multiline
               sx={{ mb: 2 }}
               required
+              inputProps={{ 'data-testid': 'name-games-input' }}
             />
             <TextField
               fullWidth
@@ -175,6 +176,7 @@ const CreatePost = () => {
               placeholder="Details"
               multiline
               sx={{ mb: 2 }}
+              inputProps={{ 'data-testid': 'detail-post-input' }}
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Box sx={{ mb: 2 }} id="date_meet">
@@ -185,6 +187,7 @@ const CreatePost = () => {
                   onChange={(date) => setSelectedDate(date)}
                   renderInput={(params) => <TextField fullWidth {...params} />}
                   required
+                  inputProps={{ 'data-testid': 'date-picker' }}
                 />
               </Box>
               <Box sx={{ mb: 2 }} id="time_meet">
@@ -194,6 +197,7 @@ const CreatePost = () => {
                   onChange={(time) => setTimeValue(time)}
                   renderInput={(params) => <TextField fullWidth {...params} />}
                   required
+                  inputProps={{ 'data-testid': 'time-picker' }}
                 />
               </Box>
             </LocalizationProvider>
@@ -207,6 +211,7 @@ const CreatePost = () => {
               sx={{ mb: 2 }}
               InputProps={{ inputProps: { min: 0 } }}
               required
+              inputProps={{ 'data-testid': 'num-people-input' }}
             />
             <Button
               variant="contained"
@@ -215,6 +220,7 @@ const CreatePost = () => {
               onClick={handleUploadClick}
               sx={{ mb: 2 }}
               fullWidth
+              id="upload-image-button"
             >
               Upload Image
             </Button>
@@ -224,8 +230,9 @@ const CreatePost = () => {
               style={{ display: 'none' }}
               ref={fileInputRef}
               onChange={handleImageChange}
+              id="file-input"
             />
-            {previewImage && <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', marginBottom: '10px' }} />}
+            {previewImage && <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', marginBottom: '10px' }} id="image-preview" />}
             <Stack direction="row" spacing={38} sx={{ mt: 2 }}>
               <Button
                 type="submit"
@@ -238,6 +245,7 @@ const CreatePost = () => {
                   },
                   fullWidth: true,
                 }}
+                id="create-post-button"
               >
                 Create post
               </Button>
@@ -253,6 +261,7 @@ const CreatePost = () => {
                   fullWidth: true,
                 }}
                 onClick={handleCancel}
+                id="cancel-button"
               >
                 Cancel
               </Button>
@@ -265,6 +274,7 @@ const CreatePost = () => {
         autoHideDuration={6000}
         onClose={handleCloseAlert}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        id="snackbar"
       >
         <Alert onClose={handleCloseAlert} severity={alertMessage.severity} sx={{ width: '100%' }}>
           {alertMessage.message}
