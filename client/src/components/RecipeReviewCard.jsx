@@ -36,20 +36,24 @@ function RecipeReviewCard() {
       events;
 
   return (
-    <Container sx={{ padding: '2rem 0' }}>
-      <Grid container spacing={3} justifyContent="center">
+    <Container sx={{ padding: '2rem 0' }} id="recipe-review-container">
+      <Grid container spacing={3} justifyContent="center" id="recipe-review-grid">
         <Grid item xs={12}>
-          <Paper sx={{
-            padding: '1rem',
-            marginBottom: '2rem',
-            textAlign: 'center',
-            backgroundColor: 'rgba(85, 0, 27, 0.5)'
-          }}>
+          <Paper
+            sx={{
+              padding: '1rem',
+              marginBottom: '2rem',
+              textAlign: 'center',
+              backgroundColor: 'rgba(85, 0, 27, 0.5)'
+            }}
+            id="recipe-review-paper"
+          >
             <Typography
               variant="h4"
               component="div"
               gutterBottom
               sx={{ color: 'white', fontWeight: 'bold' }}
+              id="recipe-review-title"
             >
               Featured Games
             </Typography>
@@ -57,23 +61,24 @@ function RecipeReviewCard() {
               value={filter}
               onChange={handleFilterChange}
               sx={{ marginBottom: '1rem', minWidth: '150px', color: 'white', fontWeight: 'bold' }}
+              id="filter-select"
             >
-              <MenuItem value="new">New</MenuItem>
-              <MenuItem value="old">Old</MenuItem>
+              <MenuItem value="new" id="filter-new">New</MenuItem>
+              <MenuItem value="old" id="filter-old">Old</MenuItem>
             </Select>
           </Paper>
         </Grid>
         {loading ? (
-          <CircularProgress />
+          <CircularProgress id="loading-spinner" />
         ) : error ? (
-          <Alert severity="error">{error}</Alert>
+          <Alert severity="error" id="error-alert">{error}</Alert>
         ) : (
           filteredEvents.map((event) => (
-            <Grid item key={event.post_games_id} xs={12} sm={10} md={8}>
+            <Grid item key={event.post_games_id} xs={12} sm={10} md={8} id={`event-card-grid-${event.post_games_id}`}>
               <EventCard
-                userId={event.user_id} // Pass the userId prop
-                profilePic={event.user_image} // Use the user_image from API response
-                username={event.username} // Use the username from API response
+                userId={event.users_id}
+                profilePic={event.user_image} // Make sure this is returned by your API
+                username={event.username} // Ensure this is included in the API response
                 postTime={event.creation_date}
                 image={event.games_image}
                 nameGames={event.name_games}
@@ -82,7 +87,8 @@ function RecipeReviewCard() {
                 detailPost={event.detail_post}
                 numPeople={event.num_people}
                 maxParticipants={event.maxParticipants}
-                eventId={event.post_games_id} // Pass eventId for navigation
+                eventId={event.post_games_id}
+                id={`event-card-${event.post_games_id}`}
               />
             </Grid>
           ))

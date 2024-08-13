@@ -19,8 +19,8 @@ function EventCard(props) {
         numPeople,
         maxParticipants,
         eventId,
-        username: passedUsername, // Rename prop to avoid conflict
-        profilePic: passedProfilePic, // Rename prop to avoid conflict
+        username: passedUsername,
+        profilePic: passedProfilePic,
     } = props;
 
     const [username, setUsername] = useState(passedUsername || '');
@@ -29,13 +29,11 @@ function EventCard(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("EventCard userId:", userId); // Log userId when component renders
         if (!passedUsername && !passedProfilePic) {
             const fetchUserDetails = async (id) => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/api/users/${id}`);
+                    const response = await axios.get(`http://localhost:8080/api/postGame/${id}`);
                     const { username, user_image } = response.data;
-                    console.log("Fetched EventCard User Details:", { username, user_image }); // Log fetched details
                     setUsername(username);
                     setProfilePic(user_image);
                 } catch (error) {
@@ -61,14 +59,19 @@ function EventCard(props) {
     };
 
     return (
-        <Card sx={{ maxWidth: '100%', margin: '16px 0', backgroundColor: '#424242', boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.5)' }}>
+        <Card
+            id={`event-card-${eventId}`}
+            sx={{ maxWidth: '100%', margin: '16px 0', backgroundColor: '#424242', boxShadow: '0px 6px 4px rgba(0, 0, 0, 0.5)' }}
+        >
             <CardHeader
+                id={`event-card-header-${eventId}`}
                 avatar={
                     <Avatar
                         sx={{ bgcolor: 'red' }}
                         aria-label="profile-picture"
                         src={profilePic || ''}
                         alt={`${username ? username[0] : 'U'}'s profile picture`}
+                        id={`event-avatar-${eventId}`}
                     >
                         {username ? username[0] : 'U'}
                     </Avatar>
@@ -82,18 +85,19 @@ function EventCard(props) {
                 sx={{ width: '100%', height: 'auto' }}
                 image={image || ''}
                 alt="Event image"
+                id={`event-image-${eventId}`}
             />
-            <CardContent sx={{ color: 'white' }}>
-                <Typography variant="h6" component="div">
+            <CardContent id={`event-card-content-${eventId}`} sx={{ color: 'white' }}>
+                <Typography variant="h6" component="div" id={`event-name-${eventId}`}>
                     {nameGames || 'Untitled Event'}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" id={`event-date-time-${eventId}`}>
                     {formattedDateMeet} at {formattedTimeMeet}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" id={`event-detail-${eventId}`}>
                     {detailPost || 'No content available'}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" id={`event-participants-${eventId}`}>
                     Participants: {numPeople || 0}/{maxParticipants || '1'}
                 </Typography>
             </CardContent>
@@ -109,6 +113,7 @@ function EventCard(props) {
                         width: '120px'
                     }}
                     onClick={handleJoinClick}
+                    id={`join-button-${eventId}`}
                 >
                     Join
                 </Button>
@@ -123,6 +128,7 @@ function EventCard(props) {
                         width: '120px'
                     }}
                     onClick={handleChatClick}
+                    id={`chat-button-${eventId}`}
                 >
                     Chat
                 </Button>
@@ -142,8 +148,8 @@ EventCard.propTypes = {
     numPeople: PropTypes.number,
     maxParticipants: PropTypes.number,
     eventId: PropTypes.string.isRequired,
-    username: PropTypes.string, // Optional
-    profilePic: PropTypes.string, // Optional
+    username: PropTypes.string,
+    profilePic: PropTypes.string,
 };
 
 export default EventCard;

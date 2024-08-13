@@ -79,41 +79,63 @@ const Navbar = () => {
         <Box
             sx={{ width: 250 }}
             role="presentation"
+            id="drawer-list"
         >
             <List>
-                <ListItem button component={Link} to="/"
+                <ListItem
+                    button
+                    component={Link}
+                    to="/"
                     onClick={toggleDrawer(false)}
                     onKeyDown={toggleDrawer(false)}
+                    id="home-link"
                 >
                     <ListItemText primary="Home" />
                 </ListItem>
-                <ListItem button component={Link} to='/participation-history'
+                <ListItem
+                    button
+                    component={Link}
+                    to='/participation-history'
                     onClick={toggleDrawer(false)}
                     onKeyDown={toggleDrawer(false)}
+                    id="participation-history-link"
                 >
                     <ListItemText primary="Show Participation History" />
                 </ListItem>
-                <ListItem button component={Link} to="/notifications"
+                <ListItem
+                    button
+                    component={Link}
+                    to="/notifications"
                     onClick={toggleDrawer(false)}
                     onKeyDown={toggleDrawer(false)}
+                    id="notifications-link"
                 >
                     <ListItemText primary="Notifications" />
                 </ListItem>
-                <ListItem button component={Link} to="/rules"
+                <ListItem
+                    button
+                    component={Link}
+                    to="/rules"
                     onClick={toggleDrawer(false)}
                     onKeyDown={toggleDrawer(false)}
+                    id="rules-link"
                 >
                     <ListItemText primary="Website Rules" />
                 </ListItem>
-                <ListItem button component={Link} to="/profile">
-                    <ListItemText primary="profile" />
+                <ListItem
+                    button
+                    component={Link}
+                    to="/profile"
+                    id="profile-link"
+                >
+                    <ListItemText primary="Profile" />
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <Typography variant="h6">Filter Events</Typography>
+                    <Typography variant="h6" id="filter-events-title">Filter Events</Typography>
                 </ListItem>
                 <ListItem>
-                    <FilterComponent onSearch={closeDrawer} />
+                    <FilterComponent onSearch={closeDrawer} id="filter-component" />
                 </ListItem>
             </List>
         </Box>
@@ -128,6 +150,7 @@ const Navbar = () => {
                 aria-label="menu"
                 onClick={toggleDrawer(true)}
                 sx={{ mr: 2 }}
+                id="menu-button"
             >
                 <MenuIcon />
             </IconButton>
@@ -135,14 +158,20 @@ const Navbar = () => {
                 anchor="left"
                 open={drawerOpen}
                 onClose={toggleDrawer(false)}
+                id="drawer"
             >
                 {drawerList()}
             </Drawer>
-            <Link to="/">
-                <img src='logoDice.png' alt="DiceDreams Logo" style={{ marginRight: '18px', height: '64px' }} />
+            <Link to="/" id="logo-link">
+                <img src='logoDice.png' alt="DiceDreams Logo" id="logo-image" style={{ marginRight: '18px', height: '64px' }} />
             </Link>
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <Typography variant="h6" component="div" sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                    id="navbar-title"
+                >
                     <span style={{ color: 'crimson', fontWeight: 'bold' }}>Dice</span>
                     <span style={{ color: 'white', fontWeight: 'bold' }}>Dreams</span>
                 </Typography>
@@ -154,22 +183,22 @@ const Navbar = () => {
                     onChange={handleSearchChange}
                     onKeyDown={handleSearchSubmit}
                     sx={{ marginLeft: 2 }}
+                    id="search-input"
                 />
             </Box>
             {accessToken ? (
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <IconButton color="inherit" onClick={() => navigate('/profile')}>
+                    <IconButton color="inherit" onClick={() => navigate('/profile')} id="profile-button">
                         <FaCircleUser size={24} />
                     </IconButton>
-                    <Button color="inherit" onClick={openDialog}>Log out</Button>
+                    <Button color="inherit" onClick={openDialog} id="logout-button">Log out</Button>
                 </Box>
             ) : (
                 <>
-                    <Button color="inherit" onClick={navigateToLogin}>Log in</Button>
-                    <Button variant="contained" color="primary" onClick={navigateToRegister}>Register</Button>
+                    <Button color="inherit" onClick={navigateToLogin} id="login-button">Log in</Button>
+                    <Button variant="contained" color="primary" onClick={navigateToRegister} id="register-button">Register</Button>
                 </>
             )}
-           
         </>
     );
 
@@ -182,31 +211,39 @@ const Navbar = () => {
                 aria-label="menu"
                 onClick={toggleDrawer(true)}
                 sx={{ mr: 2 }}
+                id="basic-menu-button"
             >
+                <MenuIcon />
             </IconButton>
             <Drawer
                 anchor="left"
                 open={drawerOpen}
                 onClose={toggleDrawer(false)}
+                id="basic-drawer"
             >
                 {drawerList()}
             </Drawer>
-            <Link to="/">
-                <img src='logoDice.png' alt="DiceDreams Logo" style={{ marginRight: '18px', height: '64px' }} />
+            <Link to="/" id="basic-logo-link">
+                <img src='logoDice.png' alt="DiceDreams Logo" id="basic-logo-image" style={{ marginRight: '18px', height: '64px' }} />
             </Link>
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <Typography variant="h6" component="div" sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+                <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                    id="basic-navbar-title"
+                >
                     <span style={{ color: 'crimson', fontWeight: 'bold' }}>Dice</span>
                     <span style={{ color: 'white', fontWeight: 'bold' }}>Dreams</span>
                 </Typography>
             </Link>
             <Box sx={{ flexGrow: 1 }} />
-            <Button color="inherit" onClick={() => navigate('/')}>Go to Home</Button>
+            <Button color="inherit" onClick={() => navigate('/')} id="home-button">Go to Home</Button>
         </>
     );
 
     return (
-        <AppBar position="fixed" color="inherit">
+        <AppBar position="fixed" color="inherit" id="navbar">
             <Toolbar>
                 {location.pathname === '/login' || location.pathname === '/register'
                     ? renderBasicNavbar()
@@ -217,6 +254,7 @@ const Navbar = () => {
                 onClose={closeDialog}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
+                id="logout-dialog"
             >
                 <DialogTitle id="alert-dialog-title">
                     {"Confirm Logout"}
@@ -227,10 +265,10 @@ const Navbar = () => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={closeDialog} color="primary">
+                    <Button onClick={closeDialog} color="primary" id="cancel-logout-button">
                         Cancel
                     </Button>
-                    <Button onClick={handleLogout} color="primary" autoFocus>
+                    <Button onClick={handleLogout} color="primary" autoFocus id="confirm-logout-button">
                         Log out
                     </Button>
                 </DialogActions>

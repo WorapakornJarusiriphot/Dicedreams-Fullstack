@@ -26,9 +26,9 @@ export default function Post() {
   };
 
   return (
-    <div className="py-24 flex flex-col justify-center items-center">
-      <FormControl className="section-container">
-        <FormLabel className="subtitle" sx={{ fontFamily: 'Mount Light' }}>
+    <div className="py-24 flex flex-col justify-center items-center" id="post-container">
+      <FormControl className="section-container" id="post-form">
+        <FormLabel className="subtitle" sx={{ fontFamily: 'Mount Light' }} id="post-form-label">
           Let's create a party for fun
         </FormLabel>
         <Tooltip
@@ -49,6 +49,7 @@ export default function Post() {
             ],
           }}
           classes={{ tooltip: 'bg-yellow-500 text-black' }}
+          id="post-tooltip"
         >
           <Box
             sx={{
@@ -64,6 +65,7 @@ export default function Post() {
               cursor: 'pointer'
             }}
             onClick={handlePostClick}
+            id="post-box"
           >
             <InputBase
               multiline
@@ -82,10 +84,12 @@ export default function Post() {
                 borderRadius: '5px',
                 fontFamily: 'Mount Light'
               }}
+              id="post-input"
             />
             <Button
               variant="contained"
-              sx={{ backgroundColor: 'crimson', height: '100px', pointerEvents: 'none' ,color:"white"}}  // To prevent the button from being focused
+              sx={{ backgroundColor: 'crimson', height: '100px', pointerEvents: 'none', color: "white" }}  // To prevent the button from being focused
+              id="post-button"
             >
               Post
             </Button>
@@ -97,14 +101,14 @@ export default function Post() {
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        id="post-snackbar"
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }} id="post-alert">
           {snackbar.message}
         </Alert>
       </Snackbar>
     </div>
   );
 }
-
 
 
