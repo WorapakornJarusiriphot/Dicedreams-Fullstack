@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         element: <ParticipationHistory />
       },
       {
-        path: "events/:id", // Add this route for event details
+        path: "events/:id",
         element: <EventDetailPage />
       },
       {

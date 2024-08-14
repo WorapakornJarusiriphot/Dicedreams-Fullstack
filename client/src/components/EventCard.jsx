@@ -32,7 +32,7 @@ function EventCard(props) {
         if (!passedUsername && !passedProfilePic) {
             const fetchUserDetails = async (id) => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/api/postGame/${id}`);
+                    const response = await axios.get(`http://localhost:8080/api-docs/#/PostGames/${id}`);
                     const { username, user_image } = response.data;
                     setUsername(username);
                     setProfilePic(user_image);

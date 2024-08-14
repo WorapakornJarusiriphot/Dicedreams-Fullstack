@@ -1,20 +1,41 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../Auth/AuthContext';
 
 const DetailsPage = () => {
-    const { eventId } = useParams();
+    const { id } = useParams(); // The event ID from the URL
     const [event, setEvent] = useState(null);
     const [chatMessage, setChatMessage] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
     const navigate = useNavigate();
 
+    const { userId } = useContext(AuthContext);
+
     useEffect(() => {
+        console.log('DetailsPage mounted');
+        console.log('Event ID:', id);
+        console.log('User ID:', userId);
+
+        if (!id || !userId) {
+            console.error('Event ID or User ID is missing.');
+            return;
+        }
+
         const loadEventDetails = async () => {
             try {
-                console.log('Fetching event details for eventId:', eventId);
-                const response = await axios.get(`http://localhost:8080/api/postGame/${eventId}`);
-                console.log('Event details fetched:', response.data);
+                console.log('Fetching event details...');
+
+                // Assume the token is stored in AuthContext or localStorage
+                const token = localStorage.getItem('authToken') || '';
+
+                const response = await axios.get(`http://localhost:8080/api/postGame/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  // Add your token here
+                        'users_id': userId,
+                    },
+                });
+                console.log('Event details received:', response.data);
                 setEvent(response.data);
             } catch (error) {
                 console.error('Failed to fetch event details', error);
@@ -22,88 +43,75 @@ const DetailsPage = () => {
         };
 
         loadEventDetails();
-    }, [eventId]);
+    }, [id, userId]);
+
 
     const handleJoinEvent = useCallback(() => {
+        console.log('Join event button clicked for eventId:', id);
         // Implement join event logic here
-        console.log('Join event button clicked for eventId:', eventId);
-    }, [eventId]);
+    }, [id]);
 
     const handleChatChange = (event) => {
+        console.log('Chat message changed:', event.target.value);
         setChatMessage(event.target.value);
-        console.log('Chat message updated:', event.target.value);
     };
 
     const handleChatSubmit = () => {
+        console.log('Chat message submitted:', chatMessage);
         if (chatMessage.trim() !== '') {
             setChatHistory([...chatHistory, chatMessage]);
-            console.log('Chat history updated:', [...chatHistory, chatMessage]);
             setChatMessage('');
         }
     };
 
     const handleReturnHome = () => {
-        console.log('Returning to home page');
-        navigate('/home'); // Navigate to the homepage
+        console.log('Returning to Home');
+        navigate('/home');
     };
 
     if (!event) {
-        console.log('Loading event data...');
-        return <p>Loading...</p>; // Placeholder while loading event data
+        console.log('Event data not yet loaded');
+        return <p>Loading...</p>;
     }
 
     const {
-        profilePic,
-        username,
-        postTime,
-        image,
-        nameGames,
-        dateMeet,
-        timeMeet,
-        detailPost,
-        numPeople,
-        maxParticipants,
-        participants
+        name_games,
+        detail_post,
+        num_people,
+        date_meet,
+        time_meet,
+        games_image,
+        creation_date,
+        status_post,
+        users_id,
     } = event;
 
-    // Format the meeting date and time
-    const formattedDateMeet = dateMeet ? new Date(dateMeet).toLocaleDateString() : 'Unknown Date';
-    const formattedTimeMeet = timeMeet ? new Date(`1970-01-01T${timeMeet}Z`).toLocaleTimeString() : 'Unknown Time';
+    const formattedDateMeet = date_meet ? new Date(date_meet).toLocaleDateString() : 'Unknown Date';
+    const formattedTimeMeet = time_meet ? new Date(`1970-01-01T${time_meet}Z`).toLocaleTimeString() : 'Unknown Time';
 
-    console.log('Rendering event details:', {
-        nameGames,
-        formattedDateMeet,
-        formattedTimeMeet,
-        detailPost,
-        numPeople,
-        maxParticipants,
-        participants
+    console.log('Rendered event details:', {
+        name_games,
+        detail_post,
+        num_people,
+        date_meet,
+        time_meet,
+        games_image,
+        creation_date,
+        status_post,
+        users_id,
     });
 
     return (
         <div>
-            {/* Event Summary */}
             <div>
-                <h2>{nameGames || 'Untitled Event'}</h2>
+                <h2>{name_games || 'Untitled Event'}</h2>
                 <p>{`${formattedDateMeet} at ${formattedTimeMeet}`}</p>
-                <p>{detailPost || 'No content available'}</p>
-                <p>{`Location: ${event.location || 'Unknown Location'}`}</p>
-                <p>{`Participants: ${numPeople || 0}/${maxParticipants || 'N/A'}`}</p>
+                <p>{detail_post || 'No content available'}</p>
+                <p>{`Participants: ${num_people || 0}/${event.maxParticipants || 'N/A'}`}</p>
                 <button onClick={handleJoinEvent}>Join</button>
                 <button onClick={handleReturnHome}>Return to Home</button>
             </div>
 
-            {/* Participants Section */}
-            <div>
-                <h3>Participants</h3>
-                <div>
-                    {participants.map((participant) => (
-                        <img key={participant.id} alt={participant.name} src={participant.avatar || '/path/to/defaultAvatar.jpg'} />
-                    ))}
-                </div>
-            </div>
-
-            {/* Chat Section */}
             <div>
                 <h3>Chat</h3>
                 <ul>
