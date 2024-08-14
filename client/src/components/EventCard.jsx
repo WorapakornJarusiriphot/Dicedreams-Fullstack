@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
     Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Button, Typography
@@ -6,6 +6,7 @@ import {
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../Auth/AuthContext';  // Import the AuthContext
 
 function EventCard(props) {
     const {
@@ -27,6 +28,7 @@ function EventCard(props) {
     const [profilePic, setProfilePic] = useState(passedProfilePic || '');
 
     const navigate = useNavigate();
+    const { user, accessToken, role } = useContext(AuthContext);  // Extract user, accessToken, and role from AuthContext
 
     useEffect(() => {
         if (!passedUsername && !passedProfilePic) {
@@ -51,11 +53,21 @@ function EventCard(props) {
     const formattedTimeMeet = timeMeet ? dayjs(timeMeet, 'HH:mm:ss').format('h:mm A') : 'Unknown Time';
 
     const handleJoinClick = () => {
-        navigate(`/events/${eventId}?action=join`);
+        if (user && accessToken && role === 'user') {
+            navigate(`/events/${eventId}?action=join`);
+        } else {
+            alert('You need to be logged in with a user role to join an event.');
+            navigate('/login');
+        }
     };
 
     const handleChatClick = () => {
-        navigate(`/events/${eventId}?action=chat`);
+        if (user && accessToken && role === 'user') {
+            navigate(`/events/${eventId}?action=chat`);
+        } else {
+            alert('You need to be logged in with a user role to chat in an event.');
+            navigate('/login');
+        }
     };
 
     return (

@@ -1,76 +1,49 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { AuthContext } from '../Auth/AuthContext';
 
 const DetailsPage = () => {
-    const { id } = useParams(); // The event ID from the URL
-    const [event, setEvent] = useState(null);
-    const [chatMessage, setChatMessage] = useState('');
-    const [chatHistory, setChatHistory] = useState([]);
+    const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const { userId } = useContext(AuthContext);
+    const { userId, accessToken, role } = location.state || {};
+
+    const [event, setEvent] = useState(null);
 
     useEffect(() => {
-        console.log('DetailsPage mounted');
-        console.log('Event ID:', id);
-        console.log('User ID:', userId);
+        if (!userId || !accessToken || !role) {
+            alert('Please log in to access this page.');
+            navigate('/login');
+            return;
+        }
 
-        if (!id || !userId) {
-            console.error('Event ID or User ID is missing.');
+        if (role !== 'user') {
+            alert('You do not have permission to access this page.');
+            navigate('/');
             return;
         }
 
         const loadEventDetails = async () => {
             try {
-                console.log('Fetching event details...');
-
-                // Assume the token is stored in AuthContext or localStorage
-                const token = localStorage.getItem('authToken') || '';
-
                 const response = await axios.get(`http://localhost:8080/api/postGame/${id}`, {
                     headers: {
-                        'Authorization': `Bearer ${token}`,  // Add your token here
+                        'Authorization': `Bearer ${accessToken}`,
                         'users_id': userId,
                     },
                 });
-                console.log('Event details received:', response.data);
                 setEvent(response.data);
             } catch (error) {
                 console.error('Failed to fetch event details', error);
+                alert('Failed to fetch event details. Please try again later.');
+                navigate('/');
             }
         };
 
         loadEventDetails();
-    }, [id, userId]);
-
-
-    const handleJoinEvent = useCallback(() => {
-        console.log('Join event button clicked for eventId:', id);
-        // Implement join event logic here
-    }, [id]);
-
-    const handleChatChange = (event) => {
-        console.log('Chat message changed:', event.target.value);
-        setChatMessage(event.target.value);
-    };
-
-    const handleChatSubmit = () => {
-        console.log('Chat message submitted:', chatMessage);
-        if (chatMessage.trim() !== '') {
-            setChatHistory([...chatHistory, chatMessage]);
-            setChatMessage('');
-        }
-    };
-
-    const handleReturnHome = () => {
-        console.log('Returning to Home');
-        navigate('/home');
-    };
+    }, [id, userId, accessToken, role, navigate]);
 
     if (!event) {
-        console.log('Event data not yet loaded');
         return <p>Loading...</p>;
     }
 
@@ -80,60 +53,15 @@ const DetailsPage = () => {
         num_people,
         date_meet,
         time_meet,
-        games_image,
-        creation_date,
-        status_post,
-        users_id,
     } = event;
-
-    const formattedDateMeet = date_meet ? new Date(date_meet).toLocaleDateString() : 'Unknown Date';
-    const formattedTimeMeet = time_meet ? new Date(`1970-01-01T${time_meet}Z`).toLocaleTimeString() : 'Unknown Time';
-
-    console.log('Rendered event details:', {
-        name_games,
-        detail_post,
-        num_people,
-        date_meet,
-        time_meet,
-        games_image,
-        creation_date,
-        status_post,
-        users_id,
-    });
 
     return (
         <div>
-            <div>
-                <h2>{name_games || 'Untitled Event'}</h2>
-                <p>{`${formattedDateMeet} at ${formattedTimeMeet}`}</p>
-                <p>{detail_post || 'No content available'}</p>
-                <p>{`Participants: ${num_people || 0}/${event.maxParticipants || 'N/A'}`}</p>
-                <button onClick={handleJoinEvent}>Join</button>
-                <button onClick={handleReturnHome}>Return to Home</button>
-            </div>
-
-            <div>
-                <h3>Chat</h3>
-                <ul>
-                    {chatHistory.map((message, index) => (
-                        <li key={index}>{message}</li>
-                    ))}
-                </ul>
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Add a chat..."
-                        value={chatMessage}
-                        onChange={handleChatChange}
-                        onKeyPress={(event) => {
-                            if (event.key === 'Enter') {
-                                handleChatSubmit();
-                            }
-                        }}
-                    />
-                    <button onClick={handleChatSubmit}>Send</button>
-                </div>
-            </div>
+            <h2>{name_games || 'Untitled Event'}</h2>
+            <p>{`${new Date(date_meet).toLocaleDateString()} at ${new Date(`1970-01-01T${time_meet}Z`).toLocaleTimeString()}`}</p>
+            <p>{detail_post || 'No content available'}</p>
+            <p>{`Participants: ${num_people || 0}`}</p>
+            <button onClick={() => navigate('/')}>Return to Home</button>
         </div>
     );
 };
