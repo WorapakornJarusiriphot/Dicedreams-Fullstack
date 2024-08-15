@@ -11,7 +11,7 @@ import { AuthContext } from '../Auth/AuthContext';
 
 function EventCard(props) {
     const {
-        userId,
+        userId, // The users_id from the post_games table
         postTime,
         image,
         nameGames,
@@ -21,8 +21,6 @@ function EventCard(props) {
         numPeople,
         maxParticipants,
         eventId,
-        username,
-        profilePic,
     } = props;
 
     const navigate = useNavigate();
@@ -30,6 +28,8 @@ function EventCard(props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
+    const [username, setUsername] = useState(null);
+    const [profilePic, setProfilePic] = useState(null);
 
     const handleMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -61,7 +61,11 @@ function EventCard(props) {
     useEffect(() => {
         const fetchUserDetails = async (id) => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/users/${id}`);
+                const response = await axios.get(`http://localhost:8080/api/users/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
                 const { username, user_image } = response.data;
                 setUsername(username);
                 setProfilePic(user_image);
@@ -70,10 +74,10 @@ function EventCard(props) {
             }
         };
 
-        if (!username && !profilePic && userId) {
+        if (userId) {
             fetchUserDetails(userId);
         }
-    }, [userId, username, profilePic]);
+    }, [userId, accessToken]);
 
     const formattedDateMeet = dateMeet ? dayjs(dateMeet).format('DD MMM YYYY') : 'Unknown Date';
     const formattedTimeMeet = timeMeet ? dayjs(timeMeet, 'HH:mm:ss').format('h:mm A') : 'Unknown Time';
@@ -212,8 +216,6 @@ EventCard.propTypes = {
     numPeople: PropTypes.number,
     maxParticipants: PropTypes.number,
     eventId: PropTypes.string.isRequired,
-    username: PropTypes.string,
-    profilePic: PropTypes.string,
 };
 
 export default EventCard;
