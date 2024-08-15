@@ -102,11 +102,12 @@ const DetailsPage = () => {
                         <Button
                             variant="outlined"
                             color="primary"
-                            onClick={() => navigate(`/edit-event/${id}`)}
+                            onClick={() => navigate(`/edit-event/${id}`)} // This navigates to the EditGamePostPage
                             sx={{ marginTop: 3, marginLeft: 2 }}
                         >
                             Edit Post
                         </Button>
+
                         <Button
                             variant="contained"
                             color="error"

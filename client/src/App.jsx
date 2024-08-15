@@ -1,24 +1,44 @@
-  import React, { useContext } from 'react';
-  import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-  import { AuthProvider } from './Auth/AuthContext';
-  import EventCard from './EventCard';
-  import DetailsPage from './DetailsPage';
-  import HomePage from './HomePage';
-  import LoginPage from './LoginPage';
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './Auth/AuthContext';
+import Main from './layout/layoutMain';
+import Home from './pages/Home';
+import Post from './components/Post';
+import CreatePost from './pages/Createpost';
+import Rules from './pages/Rule';
+import LoginPage from './pages/loginRegister';
+import NotificationPage from './pages/NotificationPage';
+import ParticipationHistory from './pages/ParticipationHistory';
+import EventDetailPage from './pages/DetailPage';
+import Profile from './pages/Profile';
+import ProfileEdit from './pages/ProfileEdit';
+import Index from './pages/Index';
+import EditGamePostPage from './pages/EditGamePostPage'; // Import your EditGamePostPage
 
-  const App = () => {
-    return (
-      <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/events/:post_games_id" element={<DetailsPage />} />
-          </Routes>
-        </Router>
-      </AuthProvider>
-    );
-  };
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Main />}>
+            <Route index element={<Home />} />
+            <Route path="rules" element={<Rules />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="post" element={<Post />} />
+            <Route path="create-post" element={<CreatePost />} />
+            <Route path="notifications" element={<NotificationPage />} />
+            <Route path="participation-history" element={<ParticipationHistory />} />
+            <Route path="events/:id" element={<EventDetailPage />} />
+            <Route path="edit-event/:id" element={<EditGamePostPage />} /> {/* Add this route */}
+            <Route path="profile" element={<Profile />} />
+            <Route path="profile/edit" element={<ProfileEdit />} />
+            <Route path="index" element={<Index />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
+  );
+};
 
-  export default App;
-
+export default App;
