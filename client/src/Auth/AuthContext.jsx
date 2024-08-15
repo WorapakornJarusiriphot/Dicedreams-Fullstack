@@ -6,7 +6,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [accessToken, setAccessToken] = useState(localStorage.getItem('access_token'));
-    const [userId, setUserId] = useState(localStorage.getItem('user_id'));
+    const [userId, setUserId] = useState(localStorage.getItem('users_id'));
     const [username, setUsername] = useState(localStorage.getItem('username'));
     const [profilePic, setProfilePic] = useState(localStorage.getItem('profile_pic'));
     const [role, setRole] = useState(localStorage.getItem('role'));
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
             const { username, user_image, role: userRole } = response.data;
             setUsername(username);
             setProfilePic(user_image);
-            setRole(userRole || 'user');
+            setRole(userRole);
             localStorage.setItem('username', username);
             localStorage.setItem('profile_pic', user_image);
             localStorage.setItem('role', userRole);
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
         setAccessToken(token);
         setUserId(id);
         setRole(userRole);
-        localStorage.setItem('user_id', id);
+        localStorage.setItem('users_id', id);
         localStorage.setItem('role', userRole);
         fetchUserDetails(id);
     };

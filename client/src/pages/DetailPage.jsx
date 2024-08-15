@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -32,6 +32,10 @@ const DetailsPage = () => {
                         'users_id': userId,
                     },
                 });
+
+                // Log the response data to the console
+                console.log('Event details:', response.data);
+
                 setEvent(response.data);
             } catch (error) {
                 console.error('Failed to fetch event details', error);
@@ -53,14 +57,20 @@ const DetailsPage = () => {
         num_people,
         date_meet,
         time_meet,
+        users_id: eventOwnerId,
     } = event;
+
+    const canEdit = userId === eventOwnerId;
 
     return (
         <div>
             <h2>{name_games || 'Untitled Event'}</h2>
             <p>{`${new Date(date_meet).toLocaleDateString()} at ${new Date(`1970-01-01T${time_meet}Z`).toLocaleTimeString()}`}</p>
             <p>{detail_post || 'No content available'}</p>
-            <p>{`Participants: ${num_people || 0}`}</p>
+            <p>{`Participants: ${num_people || 1}`}</p>
+            {canEdit && (
+                <button onClick={() => navigate(`/edit-event/${id}`)}>Edit Event</button>
+            )}
             <button onClick={() => navigate('/')}>Return to Home</button>
         </div>
     );
