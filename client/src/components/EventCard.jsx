@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Button, Typography
+    Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Button, Typography, IconButton, Menu, MenuItem
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import axios from 'axios';
 import { AuthContext } from '../Auth/AuthContext';
 
@@ -26,6 +27,36 @@ function EventCard(props) {
 
     const navigate = useNavigate();
     const { accessToken, role, userId: currentUserId } = useContext(AuthContext);
+
+    const [anchorEl, setAnchorEl] = useState(null);
+    const isMenuOpen = Boolean(anchorEl);
+
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleEditPost = () => {
+        navigate(`/events/edit/${eventId}`);
+        handleMenuClose();
+    };
+
+    const handleDeletePost = async () => {
+        try {
+            await axios.delete(`http://localhost:8080/api/post_games/${eventId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+            // Add any additional logic after deletion if necessary
+        } catch (error) {
+            console.error('Failed to delete post', error);
+        }
+        handleMenuClose();
+    };
 
     useEffect(() => {
         const fetchUserDetails = async (id) => {
@@ -84,6 +115,30 @@ function EventCard(props) {
                     >
                         {username ? username[0] : 'U'}
                     </Avatar>
+                }
+                action={
+                    currentUserId === userId && (
+                        <>
+                            <IconButton
+                                aria-label="settings"
+                                aria-controls={`event-menu-${eventId}`}
+                                aria-haspopup="true"
+                                onClick={handleMenuOpen}
+                                id={`event-menu-button-${eventId}`}
+                            >
+                                <MoreVertIcon />
+                            </IconButton>
+                            <Menu
+                                id={`event-menu-${eventId}`}
+                                anchorEl={anchorEl}
+                                open={isMenuOpen}
+                                onClose={handleMenuClose}
+                            >
+                                <MenuItem onClick={handleEditPost}>Edit</MenuItem>
+                                <MenuItem onClick={handleDeletePost}>Delete</MenuItem>
+                            </Menu>
+                        </>
+                    )
                 }
                 title={username || 'Unknown User'}
                 subheader={postTime ? dayjs(postTime).format('DD MMM YYYY h:mm A') : 'Unknown Time'}
