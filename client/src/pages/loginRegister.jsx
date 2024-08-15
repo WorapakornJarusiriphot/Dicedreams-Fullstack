@@ -46,7 +46,7 @@ function LoginPage() {
   });
   const location = useLocation();
   const navigate = useNavigate();
-  const { setCredential } = useContext(AuthContext);
+  const { login } = useContext(AuthContext); // Use login function from AuthContext
   const isMobile = useMediaQuery("(max-width:600px)");
   const [alert, setAlert] = useState({ open: false, message: "", severity: "success" });
   const fileInputRef = useRef(null);
@@ -74,10 +74,8 @@ function LoginPage() {
         identifier: formData.identifier,
         password: formData.loginPassword,
       });
-      const { access_token, user_id } = response.data;
-      localStorage.setItem("access_token", access_token);
-      localStorage.setItem("user_id", user_id);
-      setCredential(access_token, user_id);
+      const { access_token } = response.data;
+      login(access_token); // Use the login function from AuthContext
       navigate("/");
       setAlert({ open: true, message: "เข้าสู่ระบบสำเร็จ!", severity: "success" });
     } catch (error) {
@@ -124,7 +122,6 @@ function LoginPage() {
     try {
       const formattedBirthday = dayjs(formData.birthday).format("MM/DD/YYYY");
 
-      // Convert image to Base64
       const convertImageToBase64 = (imageFile) => {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -138,7 +135,6 @@ function LoginPage() {
         ? await convertImageToBase64(formData.user_image)
         : null;
 
-      // Log the Base64 string
       console.log(base64Image);
 
       const dataToSend = {
@@ -161,7 +157,6 @@ function LoginPage() {
 
       setAlert({ open: true, message: "ลงทะเบียนสำเร็จ!", severity: "success" });
 
-      // Clear the form data and reset alert message after successful registration
       setFormData({
         first_name: "",
         last_name: "",
@@ -180,7 +175,7 @@ function LoginPage() {
 
       setIsRegister(false);  // Switch to login screen
     } catch (error) {
-      console.log(error.response.data); // Logs the full server response
+      console.log(error.response.data);
       const errorMessage =
         error.response?.data?.message ||
         (error.request ? "ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง" : "ข้อผิดพลาด: " + error.message);
@@ -260,9 +255,6 @@ function LoginPage() {
               name="first_name"
               value={formData.first_name}
               onChange={handleInputChange}
-              InputProps={{ style: { color: "#FFFFFF" } }}
-              InputLabelProps={{ style: { color: "#FFFFFF" } }}
-              required
             />
             <TextField
               id="last_name"
@@ -273,9 +265,6 @@ function LoginPage() {
               name="last_name"
               value={formData.last_name}
               onChange={handleInputChange}
-              InputProps={{ style: { color: "#FFFFFF" } }}
-              InputLabelProps={{ style: { color: "#FFFFFF" } }}
-              required
             />
             <TextField
               id="username"
@@ -286,9 +275,6 @@ function LoginPage() {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
-              InputProps={{ style: { color: "#FFFFFF" } }}
-              InputLabelProps={{ style: { color: "#FFFFFF" } }}
-              required
             />
             <TextField
               id="phone_number"
@@ -299,9 +285,6 @@ function LoginPage() {
               name="phone_number"
               value={formData.phone_number}
               onChange={handleInputChange}
-              InputProps={{ style: { color: "#FFFFFF" } }}
-              InputLabelProps={{ style: { color: "#FFFFFF" } }}
-              required
             />
             <TextField
               id="email"
@@ -312,9 +295,6 @@ function LoginPage() {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              InputProps={{ style: { color: "#FFFFFF" } }}
-              InputLabelProps={{ style: { color: "#FFFFFF" } }}
-              required
             />
             <TextField
               id="password"
@@ -322,108 +302,68 @@ function LoginPage() {
               variant="filled"
               fullWidth
               margin="normal"
-              name="password"
               type={showPassword ? "text" : "password"}
+              name="password"
               value={formData.password}
               onChange={handleInputChange}
               InputProps={{
-                style: { color: "#FFFFFF" },
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleTogglePasswordVisibility}
-                      edge="end"
-                      style={{ color: "#FFFFFF" }}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    <IconButton onClick={handleTogglePasswordVisibility}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              InputLabelProps={{ style: { color: "#FFFFFF" } }}
-              required
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Day/month/year of birth"
+                label="Date of Birth"
                 value={formData.birthday}
-                onChange={(newValue) => setFormData((prev) => ({ ...prev, birthday: newValue }))}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="filled"
-                    fullWidth
-                    margin="normal"
-                    InputProps={{ style: { color: "#FFFFFF" } }}
-                    InputLabelProps={{ style: { color: "#FFFFFF" } }}
-                    id="birthday"
-                  />
-                )}
+                onChange={(newValue) =>
+                  setFormData((prev) => ({ ...prev, birthday: newValue }))
+                }
+                renderInput={(params) => <TextField {...params} variant="filled" fullWidth margin="normal" />}
               />
             </LocalizationProvider>
-            <FormLabel component="legend" style={{ color: "#FFFFFF" }} id="gender-label">
+            <FormLabel component="legend" style={{ color: "#FFFFFF" }}>
               Gender
             </FormLabel>
             <RadioGroup
-              aria-label="gender"
+              row
               name="gender"
               value={formData.gender}
               onChange={handleInputChange}
-              row
-              style={{ color: "#FFFFFF" }}
-              id="gender-group"
+              style={{ justifyContent: "space-around" }}
             >
-              <FormControlLabel
-                value="ชาย"
-                control={<Radio style={{ color: "#FFFFFF" }} />}
-                label="ชาย"
-                id="gender-male"
-              />
-              <FormControlLabel
-                value="หญิง"
-                control={<Radio style={{ color: "#FFFFFF" }} />}
-                label="หญิง"
-                id="gender-female"
-              />
-              <FormControlLabel
-                value="ไม่ระบุ"
-                control={<Radio style={{ color: "#FFFFFF" }} />}
-                label="ไม่ระบุ"
-                id="gender-not-specified"
-              />
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel value="female" control={<Radio />} label="Female" />
+              <FormControlLabel value="other" control={<Radio />} label="Other" />
             </RadioGroup>
+            <Button
+              variant="outlined"
+              fullWidth
+              startIcon={<CloudUploadIcon />}
+              onClick={() => fileInputRef.current.click()}
+              style={{
+                borderColor: "#FFFFFF",
+                color: "#FFFFFF",
+                marginBottom: "16px",
+                textTransform: "none",
+              }}
+            >
+              {formData.user_image_preview ? (
+                <Box component="img" src={formData.user_image_preview} sx={{ width: 70, height: 70 }} />
+              ) : (
+                "Upload Image"
+              )}
+            </Button>
             <input
-              accept="image/*"
-              style={{ display: "none" }}
-              id="user_image"
-              type="file"
               ref={fileInputRef}
+              type="file"
+              style={{ display: "none" }}
               onChange={handleFileChange}
             />
-            <label htmlFor="user_image">
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<CloudUploadIcon />}
-                component="span"
-                fullWidth
-                style={{ marginTop: 16 }}
-                id="upload-image-button"
-              >
-                Upload Image
-              </Button>
-            </label>
-            {formData.user_image_preview && ( // Added to display the image preview
-              <Box mt={2} display="flex" justifyContent="center">
-                <img
-                  src={formData.user_image_preview}
-                  alt="Preview"
-                  style={{ maxWidth: "100%", maxHeight: 200 }}
-                  id="image-preview"
-                />
-              </Box>
-            )}
-
             <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
               <Button
                 variant="contained"
@@ -465,16 +405,13 @@ function LoginPage() {
           <Box width="100%">
             <TextField
               id="identifier"
-              label="E-mail or Username"
+              label="Username or E-mail"
               variant="filled"
               fullWidth
               margin="normal"
               name="identifier"
               value={formData.identifier}
               onChange={handleInputChange}
-              InputProps={{ style: { color: "#FFFFFF" } }}
-              InputLabelProps={{ style: { color: "#FFFFFF" } }}
-              required
             />
             <TextField
               id="loginPassword"
@@ -482,63 +419,56 @@ function LoginPage() {
               variant="filled"
               fullWidth
               margin="normal"
-              name="loginPassword"
               type={showPassword ? "text" : "password"}
+              name="loginPassword"
               value={formData.loginPassword}
               onChange={handleInputChange}
               InputProps={{
-                style: { color: "#FFFFFF" },
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleTogglePasswordVisibility}
-                      edge="end"
-                      style={{ color: "#FFFFFF" }}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    <IconButton onClick={handleTogglePasswordVisibility}>
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              InputLabelProps={{ style: { color: "#FFFFFF" } }}
-              required
             />
-            <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
-              <Button
-                variant="contained"
-                fullWidth
-                onClick={handleLogin}
-                disabled={loading}
-                sx={{
-                  marginRight: "10px",
-                  backgroundColor: "crimson",
-                  color: "#FFFFFF",
-                  '&:hover': {
-                    backgroundColor: "darkred",
-                  },
-                }}
-                id="login-submit"
-              >
-                {loading ? <CircularProgress size={24} /> : "Log In"}
-              </Button>
-              <Button
-                variant="outlined"
-                fullWidth
-                onClick={handleCancel}
-                sx={{
-                  marginLeft: "10px",
-                  color: "#FFFFFF",
-                  borderColor: "#FFFFFF",
-                  '&:hover': {
+              <Box display="flex" justifyContent="space-between" sx={{ mt: 2 }}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={handleLogin}
+                  disabled={loading}
+                  sx={{
+                    marginRight: "10px",
+                    backgroundColor: "crimson",
+                    color: "#FFFFFF",
+                    '&:hover': {
+                      backgroundColor: "darkred",
+                    },
+                  }}
+                  id="login-submit"
+                >
+                  {loading ? <CircularProgress size={24} /> : "Log In"}
+                </Button>
+                <Button
+                  variant="outlined"
+                  fullWidth
+                  onClick={handleCancel}
+                  sx={{
+                    marginLeft: "10px",
+                    color: "#FFFFFF",
                     borderColor: "#FFFFFF",
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  },
-                }}
-                id="cancel-login"
-              >
-                Cancel
-              </Button>
-            </Box>
+                    '&:hover': {
+                      borderColor: "#FFFFFF",
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    },
+                  }}
+                  id="cancel-login"
+                >
+                  Cancel
+                </Button>
+              </Box>
           </Box>
         )}
       </Box>
@@ -546,9 +476,8 @@ function LoginPage() {
         open={alert.open}
         autoHideDuration={6000}
         onClose={handleCloseAlert}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: "100%" }}>
+        <Alert onClose={handleCloseAlert} severity={alert.severity}>
           {alert.message}
         </Alert>
       </Snackbar>

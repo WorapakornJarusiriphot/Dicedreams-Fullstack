@@ -1,132 +1,168 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { Container, Paper, Typography, Button, Box, Avatar, TextField } from '@mui/material';
 
 const DetailsPage = () => {
-    const { eventId } = useParams();
-    const [event, setEvent] = useState(null);
-    const [chatMessage, setChatMessage] = useState('');
-    const [chatHistory, setChatHistory] = useState([]);
+    const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const { userId, accessToken, role } = location.state || {};
+
+    const [event, setEvent] = useState(null);
 
     useEffect(() => {
+        if (!userId || !accessToken || !role) {
+            alert('Please log in to access this page.');
+            navigate('/login');
+            return;
+        }
+
+        if (role !== 'user') {
+            alert('You do not have permission to access this page.');
+            navigate('/');
+            return;
+        }
+
         const loadEventDetails = async () => {
             try {
-                console.log('Fetching event details for eventId:', eventId);
-                const response = await axios.get(`http://localhost:8080/api/postGame/${eventId}`);
-                console.log('Event details fetched:', response.data);
+                const response = await axios.get(`http://localhost:8080/api/postGame/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'users_id': userId,
+                    },
+                });
+
+                console.log('Event details:', response.data);
                 setEvent(response.data);
             } catch (error) {
                 console.error('Failed to fetch event details', error);
+                alert('Failed to fetch event details. Please try again later.');
+                navigate('/');
             }
         };
 
         loadEventDetails();
-    }, [eventId]);
-
-    const handleJoinEvent = useCallback(() => {
-        // Implement join event logic here
-        console.log('Join event button clicked for eventId:', eventId);
-    }, [eventId]);
-
-    const handleChatChange = (event) => {
-        setChatMessage(event.target.value);
-        console.log('Chat message updated:', event.target.value);
-    };
-
-    const handleChatSubmit = () => {
-        if (chatMessage.trim() !== '') {
-            setChatHistory([...chatHistory, chatMessage]);
-            console.log('Chat history updated:', [...chatHistory, chatMessage]);
-            setChatMessage('');
-        }
-    };
-
-    const handleReturnHome = () => {
-        console.log('Returning to home page');
-        navigate('/home'); // Navigate to the homepage
-    };
+    }, [id, userId, accessToken, role, navigate]);
 
     if (!event) {
-        console.log('Loading event data...');
-        return <p>Loading...</p>; // Placeholder while loading event data
+        return <Typography variant="h6">Loading...</Typography>;
     }
 
     const {
-        profilePic,
-        username,
-        postTime,
-        image,
-        nameGames,
-        dateMeet,
-        timeMeet,
-        detailPost,
-        numPeople,
-        maxParticipants,
-        participants
+        name_games,
+        detail_post,
+        num_people,
+        date_meet,
+        time_meet,
+        users_id: eventOwnerId,
     } = event;
 
-    // Format the meeting date and time
-    const formattedDateMeet = dateMeet ? new Date(dateMeet).toLocaleDateString() : 'Unknown Date';
-    const formattedTimeMeet = timeMeet ? new Date(`1970-01-01T${timeMeet}Z`).toLocaleTimeString() : 'Unknown Time';
-
-    console.log('Rendering event details:', {
-        nameGames,
-        formattedDateMeet,
-        formattedTimeMeet,
-        detailPost,
-        numPeople,
-        maxParticipants,
-        participants
-    });
+    const isOwner = userId === eventOwnerId;
 
     return (
-        <div>
-            {/* Event Summary */}
-            <div>
-                <h2>{nameGames || 'Untitled Event'}</h2>
-                <p>{`${formattedDateMeet} at ${formattedTimeMeet}`}</p>
-                <p>{detailPost || 'No content available'}</p>
-                <p>{`Location: ${event.location || 'Unknown Location'}`}</p>
-                <p>{`Participants: ${numPeople || 0}/${maxParticipants || 'N/A'}`}</p>
-                <button onClick={handleJoinEvent}>Join</button>
-                <button onClick={handleReturnHome}>Return to Home</button>
-            </div>
+        <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
+            <Paper elevation={3} sx={{ padding: 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
+                <Typography variant="h4" gutterBottom>
+                    {name_games || 'Untitled Event'}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    {`${new Date(date_meet).toLocaleDateString()} at ${new Date(`1970-01-01T${time_meet}Z`).toLocaleTimeString()}`}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    {detail_post || 'No content available'}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Location: ร้าน outcast gaming
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Participants: {num_people || 1}
+                </Typography>
 
-            {/* Participants Section */}
-            <div>
-                <h3>Participants</h3>
-                <div>
-                    {participants.map((participant) => (
-                        <img key={participant.id} alt={participant.name} src={participant.avatar || '/path/to/defaultAvatar.jpg'} />
-                    ))}
-                </div>
-            </div>
+                {/* Buttons for Event Owner */}
+                {isOwner ? (
+                    <>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/')}
+                            sx={{ marginTop: 3 }}
+                        >
+                            Return to Home
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => navigate(`/edit-participants/${id}`)}
+                            sx={{ marginTop: 3, marginLeft: 2 }}
+                        >
+                            Edit Participants
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => navigate(`/edit-event/${id}`)} // This navigates to the EditGamePostPage
+                            sx={{ marginTop: 3, marginLeft: 2 }}
+                        >
+                            Edit Post
+                        </Button>
 
-            {/* Chat Section */}
-            <div>
-                <h3>Chat</h3>
-                <ul>
-                    {chatHistory.map((message, index) => (
-                        <li key={index}>{message}</li>
-                    ))}
-                </ul>
-                <div>
-                    <input
-                        type="text"
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() => {/* Add logic to end the post */ }}
+                            sx={{ marginTop: 3, marginLeft: 2 }}
+                        >
+                            End Post
+                        </Button>
+                    </>
+                ) : (
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => navigate('/')}
+                        sx={{ marginTop: 3 }}
+                    >
+                        Join
+                    </Button>
+                )}
+            </Paper>
+
+            <Paper elevation={3} sx={{ padding: 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
+                <Typography variant="h5" gutterBottom>
+                    Participants
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 3 }}>
+                    <Avatar alt="Participant 1" src="https://via.placeholder.com/40" />
+                    <Avatar alt="Participant 2" src="https://via.placeholder.com/40" />
+                    {/* Add more participants as needed */}
+                </Box>
+            </Paper>
+
+            <Paper elevation={3} sx={{ padding: 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
+                <Typography variant="h5" gutterBottom>
+                    Chat
+                </Typography>
+                {/* Chat component or functionality will go here */}
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', marginTop: 2 }}>
+                    <TextField
+                        variant="outlined"
                         placeholder="Add a chat..."
-                        value={chatMessage}
-                        onChange={handleChatChange}
-                        onKeyPress={(event) => {
-                            if (event.key === 'Enter') {
-                                handleChatSubmit();
-                            }
-                        }}
+                        fullWidth
+                        sx={{ input: { color: 'white' }, backgroundColor: '#1c1c1c', borderRadius: '4px' }}
                     />
-                    <button onClick={handleChatSubmit}>Send</button>
-                </div>
-            </div>
-        </div>
+                    <Button variant="contained" color="error">
+                        Send
+                    </Button>
+                </Box>
+            </Paper>
+
+            {/* Return to Home Button */}
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+
+            </Box>
+        </Container>
     );
 };
 
