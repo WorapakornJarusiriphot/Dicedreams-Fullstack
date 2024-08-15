@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { Container, Paper, Typography, Button, Box, Avatar, TextField } from '@mui/material';
 
 const DetailsPage = () => {
     const { id } = useParams();
@@ -33,9 +34,7 @@ const DetailsPage = () => {
                     },
                 });
 
-                // Log the response data to the console
                 console.log('Event details:', response.data);
-
                 setEvent(response.data);
             } catch (error) {
                 console.error('Failed to fetch event details', error);
@@ -48,7 +47,7 @@ const DetailsPage = () => {
     }, [id, userId, accessToken, role, navigate]);
 
     if (!event) {
-        return <p>Loading...</p>;
+        return <Typography variant="h6">Loading...</Typography>;
     }
 
     const {
@@ -60,19 +59,109 @@ const DetailsPage = () => {
         users_id: eventOwnerId,
     } = event;
 
-    const canEdit = userId === eventOwnerId;
+    const isOwner = userId === eventOwnerId;
 
     return (
-        <div>
-            <h2>{name_games || 'Untitled Event'}</h2>
-            <p>{`${new Date(date_meet).toLocaleDateString()} at ${new Date(`1970-01-01T${time_meet}Z`).toLocaleTimeString()}`}</p>
-            <p>{detail_post || 'No content available'}</p>
-            <p>{`Participants: ${num_people || 1}`}</p>
-            {canEdit && (
-                <button onClick={() => navigate(`/edit-event/${id}`)}>Edit Event</button>
-            )}
-            <button onClick={() => navigate('/')}>Return to Home</button>
-        </div>
+        <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
+            <Paper elevation={3} sx={{ padding: 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
+                <Typography variant="h4" gutterBottom>
+                    {name_games || 'Untitled Event'}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    {`${new Date(date_meet).toLocaleDateString()} at ${new Date(`1970-01-01T${time_meet}Z`).toLocaleTimeString()}`}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    {detail_post || 'No content available'}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Location: ร้าน outcast gaming
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Participants: {num_people || 1}
+                </Typography>
+
+                {/* Buttons for Event Owner */}
+                {isOwner ? (
+                    <>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/')}
+                            sx={{ marginTop: 3 }}
+                        >
+                            Return to Home
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => navigate(`/edit-participants/${id}`)}
+                            sx={{ marginTop: 3, marginLeft: 2 }}
+                        >
+                            Edit Participants
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => navigate(`/edit-event/${id}`)}
+                            sx={{ marginTop: 3, marginLeft: 2 }}
+                        >
+                            Edit Post
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() => {/* Add logic to end the post */ }}
+                            sx={{ marginTop: 3, marginLeft: 2 }}
+                        >
+                            End Post
+                        </Button>
+                    </>
+                ) : (
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => navigate('/')}
+                        sx={{ marginTop: 3 }}
+                    >
+                        Join
+                    </Button>
+                )}
+            </Paper>
+
+            <Paper elevation={3} sx={{ padding: 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
+                <Typography variant="h5" gutterBottom>
+                    Participants
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 3 }}>
+                    <Avatar alt="Participant 1" src="https://via.placeholder.com/40" />
+                    <Avatar alt="Participant 2" src="https://via.placeholder.com/40" />
+                    {/* Add more participants as needed */}
+                </Box>
+            </Paper>
+
+            <Paper elevation={3} sx={{ padding: 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
+                <Typography variant="h5" gutterBottom>
+                    Chat
+                </Typography>
+                {/* Chat component or functionality will go here */}
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', marginTop: 2 }}>
+                    <TextField
+                        variant="outlined"
+                        placeholder="Add a chat..."
+                        fullWidth
+                        sx={{ input: { color: 'white' }, backgroundColor: '#1c1c1c', borderRadius: '4px' }}
+                    />
+                    <Button variant="contained" color="error">
+                        Send
+                    </Button>
+                </Box>
+            </Paper>
+
+            {/* Return to Home Button */}
+            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+
+            </Box>
+        </Container>
     );
 };
 
