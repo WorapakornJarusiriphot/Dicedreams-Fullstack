@@ -1,236 +1,173 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {
-    Container,
-    Paper,
-    Typography,
-    TextField,
-    Button,
-    Box,
-    Grid,
-} from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker, TimePicker } from '@mui/x-date-pickers';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { AuthContext } from '../Auth/AuthContext';
+import { Button, TextField, Typography, Box, Container } from '@mui/material';
 
 const EditGamePostPage = () => {
     const { id } = useParams();
+    const { accessToken } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const [gameData, setGameData] = useState({
-        name: '',
-        details: '',
-        date: null,
-        time: null,
-        numPlayers: '',
+    const [postDetails, setPostDetails] = useState({
+        boardGameName: '',
+        postDetails: '',
+        appointmentDateTime: '',
+        playersCount: '',
         location: '',
         image: null,
     });
 
     useEffect(() => {
-        // Load the game data from the API using the id
-        const fetchGameData = async () => {
+        // Fetch the existing post data to populate the form
+        const fetchPostData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/postGame/${id}`);
-                setGameData({
-                    name: response.data.name_games,
-                    details: response.data.detail_post,
-                    date: response.data.date_meet,
-                    time: response.data.time_meet,
-                    numPlayers: response.data.num_people,
-                    location: response.data.location, // Assuming the API provides a location field
-                    image: null, // Image handling can be complex; this is a placeholder
+                const response = await axios.get(`http://localhost:8080/api/postGame/${id}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+                setPostDetails({
+                    boardGameName: response.data.boardGameName,
+                    postDetails: response.data.postDetails,
+                    appointmentDateTime: response.data.appointmentDateTime,
+                    playersCount: response.data.playersCount,
+                    location: response.data.location,
+                    image: null, // We'll handle image upload separately
                 });
             } catch (error) {
-                console.error('Failed to load game data', error);
+                console.error("Error fetching post data", error);
             }
         };
 
-        fetchGameData();
-    }, [id]);
+        fetchPostData();
+    }, [id, accessToken]);
 
-    const handleInputChange = (e) => {
-        setGameData({ ...gameData, [e.target.name]: e.target.value });
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setPostDetails({
+            ...postDetails,
+            [name]: value,
+        });
     };
 
-    const handleDateChange = (date) => {
-        setGameData({ ...gameData, date });
+    const handleFileChange = (event) => {
+        setPostDetails({
+            ...postDetails,
+            image: event.target.files[0],
+        });
     };
 
-    const handleTimeChange = (time) => {
-        setGameData({ ...gameData, time });
-    };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-    const handleImageUpload = (e) => {
-        setGameData({ ...gameData, image: e.target.files[0] });
-    };
+        const formData = new FormData();
+        formData.append('boardGameName', postDetails.boardGameName);
+        formData.append('postDetails', postDetails.postDetails);
+        formData.append('appointmentDateTime', postDetails.appointmentDateTime);
+        formData.append('playersCount', postDetails.playersCount);
+        formData.append('location', postDetails.location);
+        if (postDetails.image) {
+            formData.append('image', postDetails.image);
+        }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // Add your update logic here
         try {
-            const formData = new FormData();
-            formData.append('name_games', gameData.name);
-            formData.append('detail_post', gameData.details);
-            formData.append('date_meet', gameData.date);
-            formData.append('time_meet', gameData.time);
-            formData.append('num_people', gameData.numPlayers);
-            formData.append('location', gameData.location);
-            if (gameData.image) {
-                formData.append('image', gameData.image);
-            }
-
             await axios.put(`http://localhost:8080/api/postGame/${id}`, formData, {
                 headers: {
+                    Authorization: `Bearer ${accessToken}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
-            alert('Game post updated successfully!');
-            navigate('/');
+            navigate(`/events/${id}`); // Redirect to the updated event's detail page
         } catch (error) {
-            console.error('Failed to update game post', error);
-            alert('Failed to update game post. Please try again.');
+            console.error("Error updating post", error);
         }
     };
 
     return (
-        <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
-            <Paper elevation={3} sx={{ padding: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
-                <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', marginBottom: 4 }}>
-                    Edit Board Game Post
+        <Container component="main" maxWidth="md">
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{ mt: 1 }}
+            >
+                <Typography component="h1" variant="h5">
+                    Edit Game Post
                 </Typography>
-                <Box
-                    component="form"
-                    noValidate
-                    autoComplete="off"
-                    onSubmit={handleSubmit}
-                    sx={{ '& .MuiTextField-root': { mb: 3 }, '& .MuiButton-root': { mb: 3 } }}
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="boardGameName"
+                    label="Board Game Name"
+                    name="boardGameName"
+                    value={postDetails.boardGameName}
+                    onChange={handleInputChange}
+                    autoFocus
+                />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="postDetails"
+                    label="Post Details"
+                    name="postDetails"
+                    value={postDetails.postDetails}
+                    onChange={handleInputChange}
+                    multiline
+                    rows={4}
+                />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="appointmentDateTime"
+                    label="Appointment Date and Time"
+                    name="appointmentDateTime"
+                    type="datetime-local"
+                    value={postDetails.appointmentDateTime}
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="playersCount"
+                    label="Number of Players"
+                    name="playersCount"
+                    value={postDetails.playersCount}
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="location"
+                    label="Location"
+                    name="location"
+                    value={postDetails.location}
+                    onChange={handleInputChange}
+                />
+                <Button
+                    variant="contained"
+                    component="label"
                 >
-                    <TextField
-                        fullWidth
-                        label="Board game name"
-                        variant="outlined"
-                        name="name"
-                        value={gameData.name}
-                        onChange={handleInputChange}
-                        InputLabelProps={{ shrink: true }}
-                        sx={{ input: { color: 'white' }, backgroundColor: '#1c1c1c', borderRadius: '4px' }}
+                    Upload Image
+                    <input
+                        type="file"
+                        hidden
+                        onChange={handleFileChange}
                     />
-                    <TextField
-                        fullWidth
-                        label="Post details"
-                        variant="outlined"
-                        name="details"
-                        multiline
-                        rows={4}
-                        value={gameData.details}
-                        onChange={handleInputChange}
-                        InputLabelProps={{ shrink: true }}
-                        sx={{ input: { color: 'white' }, backgroundColor: '#1c1c1c', borderRadius: '4px' }}
-                    />
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker
-                                    label="Select an appointment date"
-                                    value={gameData.date}
-                                    onChange={handleDateChange}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            fullWidth
-                                            variant="outlined"
-                                            InputLabelProps={{ shrink: true }}
-                                            sx={{
-                                                input: { color: 'white' },
-                                                backgroundColor: '#1c1c1c',
-                                                borderRadius: '4px',
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </LocalizationProvider>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <TimePicker
-                                    label="Select an appointment time"
-                                    value={gameData.time}
-                                    onChange={handleTimeChange}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            fullWidth
-                                            variant="outlined"
-                                            InputLabelProps={{ shrink: true }}
-                                            sx={{
-                                                input: { color: 'white' },
-                                                backgroundColor: '#1c1c1c',
-                                                borderRadius: '4px',
-                                            }}
-                                        />
-                                    )}
-                                />
-                            </LocalizationProvider>
-                        </Grid>
-                    </Grid>
-                    <TextField
-                        fullWidth
-                        label="Select Number of Player"
-                        variant="outlined"
-                        name="numPlayers"
-                        value={gameData.numPlayers}
-                        onChange={handleInputChange}
-                        InputLabelProps={{ shrink: true }}
-                        sx={{ input: { color: 'white' }, backgroundColor: '#1c1c1c', borderRadius: '4px' }}
-                    />
-                    <TextField
-                        fullWidth
-                        label="Appointment location"
-                        variant="outlined"
-                        name="location"
-                        value={gameData.location}
-                        onChange={handleInputChange}
-                        InputLabelProps={{ shrink: true }}
-                        sx={{ input: { color: 'white' }, backgroundColor: '#1c1c1c', borderRadius: '4px' }}
-                    />
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 3 }}>
-                        <Button
-                            variant="outlined"
-                            component="label"
-                            startIcon={<UploadFileIcon />}
-                            sx={{ color: 'white', borderColor: 'white', mb: 2 }}
-                        >
-                            Upload Image
-                            <input
-                                type="file"
-                                hidden
-                                onChange={handleImageUpload}
-                            />
-                        </Button>
-                        <Typography variant="body2" sx={{ color: 'gray' }}>
-                            PNG, JPG (max. 3MB)
-                        </Typography>
-                    </Box>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="error"
-                        fullWidth
-                        sx={{
-                            marginTop: 3,
-                            backgroundColor: '#ffcc00',
-                            '&:hover': { backgroundColor: '#e6b800' },
-                            fontWeight: 'bold',
-                        }}
-                    >
-                        Update Post
-                    </Button>
-                </Box>
-            </Paper>
+                </Button>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                >
+                    Save Changes
+                </Button>
+            </Box>
         </Container>
     );
 };
