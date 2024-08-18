@@ -30,18 +30,20 @@ const Profile = () => {
 
   const getUser = async () => {
     try {
-      
       const token = localStorage.getItem("access_token");
-      const user_id = localStorage.getItem("user_id");
+      const userId = localStorage.getItem("users_id"); // Use 'users_id' instead of 'user_id'
+      console.log("sssss", userId);
+
       if (!token) {
         throw new Error("No token found");
       }
-      // console.log("token -->", token);
-      // const user_id = "065a9e78-50bc-4d43-acda-3080af58d155"; // test
-      // const user_id = "5ab17ae8-707b-43f9-baf1-1ecda4c691cd"; // dream
 
-      const url = `http://localhost:8080/api/users/${user_id}`;
-      // const url = `http://localhost:8080/api/users`;
+      if (!userId) {
+        console.error("User ID not found");
+        return;
+      }
+
+      const url = `http://localhost:8080/api/users/${userId}`;
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -69,26 +71,24 @@ const Profile = () => {
   };
 
   return (
-    <Box sx={{ marginTop: 4 }}>
+    <Box sx={{ marginTop: 8 }}>
       <Box
         sx={{
           backgroundColor: "#222",
           borderRadius: 2,
-          width: "60%", 
+          width: "60%",
           margin: "20px auto",
-          padding: 2, 
+          padding: 2,
         }}
       >
         <Box
           sx={{
             height: "20vh",
-            width: "20%",
-
-            // backgroundImage: `url(${
-            //   user.user_image ? user.user_image : "../public/p1.png" // use
-            // })`,
-
-            backgroundImage: "url(../public/p1.png)",  // test
+            width: "50%",
+            backgroundImage: `url(${
+              user.user_image ? user.user_image : "../public/p1.png" // use
+            })`,
+            // backgroundImage: "url(../public/p1.png)", // test
             backgroundSize: "contain",
             backgroundPosition: "left",
             backgroundRepeat: "no-repeat",
@@ -109,7 +109,9 @@ const Profile = () => {
               <TextField
                 id="outlined-required"
                 label="Bio"
-                defaultValue="Hello, I'm ready to play with you 👋"
+                defaultValue={
+                  user.bio ? user.bio : "Hello, I'm ready to play with you 👋"
+                }
                 variant="outlined"
                 multiline
                 rows={3}
