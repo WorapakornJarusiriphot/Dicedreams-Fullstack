@@ -141,6 +141,7 @@ const ProfileEdit = () => {
 
       let birthDay = transformDateFormat(user.birthday);
 
+      console.log("birthDay-->", birthDay);
       const formData = {
         id: user_id || "no_data_now",
         first_name: firstName || "no_data_now",
@@ -255,11 +256,12 @@ const ProfileEdit = () => {
 
   function transformDateFormat(date) {
     if (dayjs.isDayjs(date)) {
-      // Convert dayjs object to the desired format
-      return date.format("MM-DD-YYYY"); // Adjust format as needed
+      return date.format("MM-DD-YYYY"); 
+    } else {
+      console.error("Provided date is not a dayjs object:", date);
+      const [year, month, day] = date.split("-");
+      return `${month}-${day}-${year}`;
     }
-    console.error("Provided date is not a dayjs object:", date);
-    return "";
   }
 
   useEffect(() => {

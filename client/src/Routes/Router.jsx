@@ -11,6 +11,8 @@ import EventDetailPage from '../pages/DetailPage';
 import Profile from '../pages/Profile';
 import ProfileEdit from '../pages/ProfileEdit';
 import Index from '../pages/Index';
+import Store from '../pages/store';
+import StoreAc from "../pages/storeActivity";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +62,14 @@ const router = createBrowserRouter([
       {
         path: "index",
         element: <Index />
+      },
+      {
+        path: "store",
+        element: <Store />
+      },
+      {
+        path: "StoreActivityCreate",
+        element: <StoreAc />
       },
       // {
       //   path: "participation-history",
