@@ -191,12 +191,12 @@ exports.update = async (req, res, next) => {
       res.status(400).json({
         error: {
           status_code: 400,
-          message: "Username or email alreassssssssdy exists",
+          message: "Username or email already exists",
         },
       });
     } else {
       res.status(500).send({
-        message: `Error updating User wissssssssth id=${req.params.id}`,
+        message: `Error updating User with id=${req.params.id}`,
       });
     }
   }
