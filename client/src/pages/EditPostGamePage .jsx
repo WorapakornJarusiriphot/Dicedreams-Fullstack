@@ -84,81 +84,69 @@ const EditPostGamePage = () => {
     };
 
     if (loading) {
-        return <Typography variant="h6">Loading...</Typography>;
+        return <Typography variant="h6" id="loading">Loading...</Typography>;
     }
 
     return (
-        <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
-            <Paper elevation={3} sx={{ padding: 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
-                <Typography variant="h4" gutterBottom>
-                    Edit Event
+        <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }} id="edit-post-page">
+            <Paper elevation={3} sx={{ padding: 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }} id="edit-post-form">
+                <Typography variant="h4" gutterBottom id="edit-post-title">
+                    Edit Post
                 </Typography>
                 <form onSubmit={handleFormSubmit}>
                     <TextField
+                        fullWidth
                         label="Game Name"
                         name="name_games"
                         value={event.name_games}
                         onChange={handleInputChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        sx={{ backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                        sx={{ marginBottom: 2, backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                        id="edit-post-game-name"
                     />
                     <TextField
+                        fullWidth
                         label="Details"
                         name="detail_post"
                         value={event.detail_post}
                         onChange={handleInputChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        multiline
-                        rows={4}
-                        sx={{ backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                        sx={{ marginBottom: 2, backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                        id="edit-post-details"
                     />
                     <TextField
+                        fullWidth
                         label="Number of Participants"
                         name="num_people"
                         value={event.num_people}
                         onChange={handleInputChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        sx={{ backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                        sx={{ marginBottom: 2, backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                        id="edit-post-participants"
                     />
                     <TextField
+                        fullWidth
                         label="Date"
                         name="date_meet"
                         type="date"
                         value={event.date_meet}
                         onChange={handleInputChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        sx={{ backgroundColor: '#1c1c1c', input: { color: 'white' } }}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
+                        sx={{ marginBottom: 2, backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                        id="edit-post-date"
                     />
                     <TextField
+                        fullWidth
                         label="Time"
                         name="time_meet"
                         type="time"
                         value={event.time_meet}
                         onChange={handleInputChange}
-                        fullWidth
-                        variant="outlined"
-                        margin="normal"
-                        sx={{ backgroundColor: '#1c1c1c', input: { color: 'white' } }}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
+                        sx={{ marginBottom: 2, backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                        id="edit-post-time"
                     />
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 3 }}>
                         <Button
                             variant="contained"
                             color="primary"
                             type="submit"
+                            id="save-changes-button"
                         >
                             Save Changes
                         </Button>
@@ -166,6 +154,8 @@ const EditPostGamePage = () => {
                             variant="outlined"
                             color="secondary"
                             onClick={() => navigate(`/events/${id}`)}
+                            sx={{ marginLeft: 2 }}
+                            id="cancel-button"
                         >
                             Cancel
                         </Button>
