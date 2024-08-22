@@ -96,7 +96,7 @@ const CreatePost = () => {
       return;
     }
 
-    const formattedDate = selectedDate.format('YYYY-MM-DD');
+    const formattedDate = selectedDate.format('YYYY-MMM-DD');
 
     const requestData = {
       name_games: formValues.name_games,
