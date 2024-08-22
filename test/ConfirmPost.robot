@@ -15,5 +15,9 @@ ${Delay}    1s
 *** Test Cases ***
 Search Google
     Open Browser    ${URL}    ${Browser}
-    
+    Click Button    locator 
+    Click Button    locator
+    Click Button    locator
+    Page Should Contain    คุณได้ทำการยืนยันการเข้าร่วมเสร็จสิ้น
+    Capture Page Screenshot
     Close Browser

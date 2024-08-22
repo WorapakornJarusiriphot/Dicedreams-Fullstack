@@ -15,5 +15,9 @@ ${Delay}    1s
 *** Test Cases ***
 Search Google
     Open Browser    ${URL}    ${Browser}
-    
+    Click Button    locator
+    Click Button    locator
+    Click Button    locator
+    Page Should Contain    ลบโพสต์นัดเล่นสำเร็จ
+    Capture Page Screenshot
     Close Browser
