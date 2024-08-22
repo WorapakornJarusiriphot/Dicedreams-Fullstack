@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Paper, Typography, Button, TextField, Box } from '@mui/material';
+import { AuthContext } from '../Auth/AuthContext';
 
 const EditPostGamePage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const { userId, accessToken, role } = location.state || {
-        userId: sessionStorage.getItem('users_id'),
-        accessToken: sessionStorage.getItem('access_token'),
-        role: sessionStorage.getItem('role')
-    };
+    const { userId, accessToken, role } = useContext(AuthContext); // Fetch user details from AuthContext
 
     const [event, setEvent] = useState({
         name_games: '',
@@ -25,28 +20,31 @@ const EditPostGamePage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!userId || !accessToken || !role) {
-            alert('Please log in to access this page.');
-            navigate('/login');
-            return;
-        }
+        const verifyUserAndLoadEvent = async () => {
+            if (!userId || !accessToken || !role) {
+                alert('Please log in to access this page.');
+                navigate('/login');
+                return;
+            }
 
-        if (role !== 'user') {
-            alert('You do not have permission to access this page.');
-            navigate('/');
-            return;
-        }
-
-        const loadEventDetails = async () => {
             try {
                 const response = await axios.get(`http://localhost:8080/api/postGame/${id}`, {
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
                         'users_id': userId,
+                        'role': role,
                     },
                 });
 
-                setEvent(response.data);
+                const eventData = response.data;
+
+                if (eventData.users_id !== userId) {
+                    alert('You do not have permission to edit this post.');
+                    navigate('/');
+                    return;
+                }
+
+                setEvent(eventData);
                 setLoading(false);
             } catch (error) {
                 console.error('Failed to fetch event details', error);
@@ -55,7 +53,7 @@ const EditPostGamePage = () => {
             }
         };
 
-        loadEventDetails();
+        verifyUserAndLoadEvent();
     }, [id, userId, accessToken, role, navigate]);
 
     const handleInputChange = (e) => {
