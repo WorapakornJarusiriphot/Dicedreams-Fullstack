@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from '../layout/layoutMain';
 import Home from '../pages/Home';
 import Post from "../components/Post";
-import CreatePost from "../pages/Createpost";
+import CreatePost from "../pages/CreatePost";
 import Rules from "../pages/Rule";
 import LoginPage from "../pages/loginRegister";
 import NotificationPage from "../pages/NotificationPage";
@@ -11,6 +11,7 @@ import EventDetailPage from '../pages/DetailPage';
 import Profile from '../pages/Profile';
 import ProfileEdit from '../pages/ProfileEdit';
 import Index from '../pages/Index';
+import EditPostGamePage from "../pages/EditPostGamePage ";
 import Store from '../pages/store';
 import StoreAc from "../pages/storeActivity";
 
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
         element: <EventDetailPage />
       },
       {
+        path: "edit-event/:id",
+        element: <EditPostGamePage />
+      },
+      {
         path: "profile",
         element: <Profile />
       },
@@ -70,6 +75,7 @@ const router = createBrowserRouter([
       {
         path: "StoreActivityCreate",
         element: <StoreAc />
+      }
       },
       // {
       //   path: "participation-history",

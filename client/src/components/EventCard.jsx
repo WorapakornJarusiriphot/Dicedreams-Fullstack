@@ -40,7 +40,7 @@ function EventCard(props) {
     };
 
     const handleEditPost = () => {
-        navigate(`/events/edit/${eventId}`);
+        navigate(`/edit-event/${eventId}`);
         handleMenuClose();
     };
 
@@ -79,7 +79,7 @@ function EventCard(props) {
         }
     }, [userId, accessToken]);
 
-    const formattedDateMeet = dateMeet ? dayjs(dateMeet).format('DD MMM YYYY') : 'Unknown Date';
+    const formattedDateMeet = dateMeet ? dayjs(dateMeet).format('MMM DD YYYY') : 'Unknown Date';
     const formattedTimeMeet = timeMeet ? dayjs(timeMeet, 'HH:mm:ss').format('h:mm A') : 'Unknown Time';
 
     const handleJoinClick = () => {
@@ -145,7 +145,7 @@ function EventCard(props) {
                     )
                 }
                 title={username || 'Unknown User'}
-                subheader={postTime ? dayjs(postTime).format('DD MMM YYYY h:mm A') : 'Unknown Time'}
+                subheader={postTime ? dayjs(postTime).format('MMM DD YYYY h:mm A') : 'Unknown Time'}
                 sx={{ color: 'white' }}
             />
             <CardMedia
