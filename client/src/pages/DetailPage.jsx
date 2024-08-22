@@ -83,6 +83,15 @@ const DetailsPage = () => {
                 {isOwner ? (
                     <>
                         <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/')}
+                            sx={{ marginTop: 3 }}
+                            id="return-home-button"
+                        >
+                            Return to Home
+                        </Button>
+                        <Button
                             variant="outlined"
                             color="primary"
                             onClick={() => navigate(`/edit-participants/${id}`)}
