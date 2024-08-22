@@ -76,7 +76,7 @@ const EditPostGamePage = () => {
             });
 
             alert('Event updated successfully!');
-            navigate(`/event-details/${id}`);
+            navigate(`/events/${id}`);
         } catch (error) {
             console.error('Failed to update event', error);
             alert('Failed to update event. Please try again later.');
@@ -165,7 +165,7 @@ const EditPostGamePage = () => {
                         <Button
                             variant="outlined"
                             color="secondary"
-                            onClick={() => navigate(`/event-details/${id}`)}
+                            onClick={() => navigate(`/events/${id}`)}
                         >
                             Cancel
                         </Button>
