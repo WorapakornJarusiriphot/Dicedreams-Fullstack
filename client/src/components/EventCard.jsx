@@ -40,7 +40,7 @@ function EventCard(props) {
     };
 
     const handleEditPost = () => {
-        navigate(`/events/edit/${eventId}`);
+        navigate(`/edit-event/${eventId}`);
         handleMenuClose();
     };
 

@@ -11,6 +11,7 @@ import EventDetailPage from '../pages/DetailPage';
 import Profile from '../pages/Profile';
 import ProfileEdit from '../pages/ProfileEdit';
 import Index from '../pages/Index';
+import EditPostGamePage from "../pages/EditPostGamePage ";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
         element: <EventDetailPage />
       },
       {
+        path: "edit-event/:id",
+        element: <EditPostGamePage />
+      },
+      {
         path: "profile",
         element: <Profile />
       },
@@ -60,11 +65,7 @@ const router = createBrowserRouter([
       {
         path: "index",
         element: <Index />
-      },
-      // {
-      //   path: "participation-history",
-      //   element: <ParticipationHistory />
-      // }
+      }
     ]
   }
 ]);

@@ -221,6 +221,7 @@ function LoginPage() {
         backgroundPosition: "center",
         minHeight: "125vh",
       }}
+      id="login-page-container"
     >
       <Box
         display="flex"
@@ -232,8 +233,9 @@ function LoginPage() {
         width={isMobile ? "90%" : isRegister ? "700px" : "500px"}
         maxWidth="90%"
         sx={{ backdropFilter: "blur(10px)" }}
+        id="login-page-content-box"
       >
-        <ButtonGroup variant="text" fullWidth>
+        <ButtonGroup variant="text" fullWidth id="login-register-button-group">
           <Button onClick={() => setIsRegister(false)} id="login-button">
             <Typography style={{ color: "#FFFFFF" }}>Log In</Typography>
           </Button>
@@ -242,13 +244,14 @@ function LoginPage() {
           </Button>
         </ButtonGroup>
         {isRegister ? (
-          <Box width="100%">
+          <Box width="100%" id="register-form">
             <Box
               display="flex"
               flexDirection="row"
               gap={2}
               mb={2}
               justifyContent="space-between"
+              id="name-fields"
             >
               <TextField
                 id="first_name"
@@ -259,8 +262,6 @@ function LoginPage() {
                 fullWidth
                 margin="normal"
                 required
-                InputProps={{ style: { color: "white" } }}
-                InputLabelProps={{ style: { color: "gray" } }}
               />
               <TextField
                 id="last_name"
@@ -271,8 +272,6 @@ function LoginPage() {
                 fullWidth
                 margin="normal"
                 required
-                InputProps={{ style: { color: "white" } }}
-                InputLabelProps={{ style: { color: "gray" } }}
               />
             </Box>
             <TextField
@@ -284,8 +283,6 @@ function LoginPage() {
               fullWidth
               margin="normal"
               required
-              InputProps={{ style: { color: "white" } }}
-              InputLabelProps={{ style: { color: "gray" } }}
             />
             <TextField
               id="phone_number"
@@ -296,8 +293,6 @@ function LoginPage() {
               fullWidth
               margin="normal"
               required
-              InputProps={{ style: { color: "white" } }}
-              InputLabelProps={{ style: { color: "gray" } }}
             />
             <TextField
               id="email"
@@ -308,108 +303,90 @@ function LoginPage() {
               fullWidth
               margin="normal"
               required
-              InputProps={{ style: { color: "white" } }}
-              InputLabelProps={{ style: { color: "gray" } }}
             />
             <TextField
               id="password"
               label="Password"
               name="password"
-              type={showPassword ? "text" : "password"}
               value={formData.password}
               onChange={handleInputChange}
+              type={showPassword ? "text" : "password"}
               fullWidth
               margin="normal"
               required
               InputProps={{
-                style: { color: "white" },
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
-                      style={{ color: "gray" }}
+                      id="toggle-password-visibility-button"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              InputLabelProps={{ style: { color: "gray" } }}
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
+                id="birthday"
                 label="Day/month/year of birth"
                 value={formData.birthday}
-                onChange={(date) => setFormData((prev) => ({ ...prev, birthday: date }))}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    fullWidth
-                    margin="normal"
-                    required
-                    InputProps={{ style: { color: "white" } }}
-                    InputLabelProps={{ style: { color: "gray" } }}
-                  />
-                )}
+                onChange={(newValue) => setFormData((prev) => ({ ...prev, birthday: newValue }))}
+                fullWidth
+                required
+                sx={{ width: "100%", marginTop: "16px" }}
               />
             </LocalizationProvider>
-            <FormLabel
-              component="legend"
-              style={{ color: "gray", marginTop: "16px" }}
-            >
+            <FormLabel component="legend" sx={{ marginTop: "16px" }} id="gender-label">
               Gender
             </FormLabel>
             <RadioGroup
+              id="gender-radio-group"
               row
-              aria-label="gender"
               name="gender"
               value={formData.gender}
               onChange={handleInputChange}
-              style={{ marginBottom: "16px" }}
             >
-              <FormControlLabel
-                value="ชาย"
-                control={<Radio style={{ color: "gray" }} />}
-                label="ชาย"
-              />
-              <FormControlLabel
-                value="หญิง"
-                control={<Radio style={{ color: "gray" }} />}
-                label="หญิง"
-              />
-              <FormControlLabel
-                value="ไม่ระบุ"
-                control={<Radio style={{ color: "gray" }} />}
-                label="ไม่ระบุ"
-              />
+              <FormControlLabel value="male" control={<Radio />} label="Male" id="male-radio" />
+              <FormControlLabel value="female" control={<Radio />} label="Female" id="female-radio" />
+              <FormControlLabel value="other" control={<Radio />} label="Other" id="other-radio" />
             </RadioGroup>
-            <Button
-              variant="contained"
-              component="label"
-              startIcon={<CloudUploadIcon />}
-              sx={{ marginBottom: 2 }}
-              onClick={() => fileInputRef.current.click()}
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ marginTop: "16px" }}
+              id="image-upload-section"
             >
-              Upload Image
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<CloudUploadIcon />}
+                onClick={() => fileInputRef.current.click()}
+                id="upload-image-button"
+              >
+                Upload Image
+              </Button>
               <input
                 type="file"
-                accept="image/*"
-                hidden
                 ref={fileInputRef}
+                style={{ display: "none" }}
                 onChange={handleFileChange}
+                accept="image/*"
+                id="image-input"
               />
-            </Button>
-            {formData.user_image_preview && (
-              <Box mt={2} display="flex" justifyContent="center">
+              {formData.user_image_preview && (
                 <img
                   src={formData.user_image_preview}
                   alt="Preview"
-                  style={{ maxHeight: "200px", maxWidth: "100%" }}
+                  style={{ width: "100px", height: "100px", marginLeft: "16px" }}
+                  id="image-preview"
                 />
-              </Box>
-            )}
+              )}
+            </Box>
             <Box mt={4} display="flex" justifyContent="center" gap={2}>
               <Button
                 variant="contained"
@@ -438,7 +415,7 @@ function LoginPage() {
             </Box>
           </Box>
         ) : (
-          <Box width="100%">
+          <Box width="100%" id="login-form">
             <TextField
               id="identifier"
               label="E-mail or Username"
@@ -448,42 +425,39 @@ function LoginPage() {
               fullWidth
               margin="normal"
               required
-              InputProps={{ style: { color: "white" } }}
-              InputLabelProps={{ style: { color: "gray" } }}
             />
             <TextField
               id="loginPassword"
               label="Password"
               name="loginPassword"
-              type={showPassword ? "text" : "password"}
               value={formData.loginPassword}
               onChange={handleInputChange}
+              type={showPassword ? "text" : "password"}
               fullWidth
               margin="normal"
               required
               InputProps={{
-                style: { color: "white" },
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
                       onClick={handleTogglePasswordVisibility}
                       edge="end"
-                      style={{ color: "gray" }}
+                      id="toggle-password-visibility-button"
                     >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              InputLabelProps={{ style: { color: "gray" } }}
             />
-            <Box mt={4} display="flex" justifyContent="center" gap={2}>
+              <Box mt={4} display="flex" justifyContent="center" gap={2}>
                 <Button
                   variant="contained"
                   onClick={handleLogin}
                   disabled={loading}
                   fullWidth
+                  id="login-submit-button"
                   style={{
                     backgroundColor: "crimson",
                     color: "white",
@@ -495,6 +469,7 @@ function LoginPage() {
                   variant="outlined"
                   onClick={handleCancel}
                   fullWidth
+                  id="cancel-login-button"
                   style={{
                     color: "white",
                     borderColor: "white",
@@ -503,20 +478,20 @@ function LoginPage() {
                 >
                   Cancel
                 </Button>
-            </Box>
+              </Box>
           </Box>
         )}
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}
+          id="alert-snackbar"
+        >
+          <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: "100%" }}>
+            {alert.message}
+          </Alert>
+        </Snackbar>
       </Box>
-      <Snackbar
-        open={alert.open}
-        autoHideDuration={6000}
-        onClose={handleCloseAlert}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: "100%" }}>
-          {alert.message}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 }

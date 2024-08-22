@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './Auth/AuthContext';
@@ -14,7 +13,7 @@ import EventDetailPage from './pages/DetailPage';
 import Profile from './pages/Profile';
 import ProfileEdit from './pages/ProfileEdit';
 import Index from './pages/Index';
-import EditGamePostPage from './pages/EditGamePostPage'; // Import your EditGamePostPage
+import EditPostGamePage from './pages/EditPostGamePage ';
 
 const App = () => {
   return (
@@ -30,7 +29,7 @@ const App = () => {
             <Route path="notifications" element={<NotificationPage />} />
             <Route path="participation-history" element={<ParticipationHistory />} />
             <Route path="events/:id" element={<EventDetailPage />} />
-            <Route path="edit-event/:id" element={<EditGamePostPage />} /> {/* Add this route */}
+            <Route path="edit-event/:id" element={<EditPostGamePage />} />
             <Route path="profile" element={<Profile />} />
             <Route path="profile/edit" element={<ProfileEdit />} />
             <Route path="index" element={<Index />} />
