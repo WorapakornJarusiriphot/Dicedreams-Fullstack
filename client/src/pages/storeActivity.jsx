@@ -10,6 +10,8 @@ import {
   Menu,
   MenuItem,
   Button,
+  LinearProgress,
+  CircularProgress ,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -66,98 +68,6 @@ const StoreAc = () => {
     });
   };
 
-  const handleFileUpload = async (file) => {
-    setImagePreview(URL.createObjectURL(file));
-    setUploading(true);
-    setUploadProgress(0);
-    setUploadError(null);
-    setShowUploadBar(true);
-
-    if (file.size > 3000000) {
-      alert("ขนาดไฟล์เกิน 3 MB");
-      setUploading(false);
-      return;
-    }
-
-    if (
-      ![
-        "image/jpeg",
-        "image/svg+xml",
-        "image/png",
-        "image/jpg",
-        "image/gif",
-      ].includes(file.type)
-    ) {
-      alert("กรุณาเลือกไฟล์ตามนามสกุลที่ระบุ");
-      setUploading(false);
-      return;
-    }
-
-    try {
-      const user_id = localStorage.getItem("users_id");
-      const token = localStorage.getItem("access_token");
-      if (!token) {
-        throw new Error("No token found");
-      }
-
-      const base64Image = await convertImageToBase64(file);
-
-      let birthDay = transformDateFormat(user.birthday);
-
-      const formData = {
-        id: user_id || "no_data_now",
-        first_name: firstName || "no_data_now",
-        last_name: lastName || "no_data_now",
-        username: user.username || "no_data_now",
-        email: user.email || "no_data_now",
-        birthday: birthDay || "no_data_now",
-        phone_number: phoneNumber || "no_data_now",
-        gender: user.gender || "no_data_now",
-        user_image: base64Image || "no_data_now",
-      };
-      console.log("formData-->", formData);
-
-      const response = await axios.put(
-        `http://localhost:8080/api/users/${user_id}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          onUploadProgress: (progressEvent) => {
-            const { loaded, total } = progressEvent;
-            let percentCompleted = Math.floor((loaded * 100) / total);
-            setUploadProgress(percentCompleted);
-          },
-        }
-      );
-
-      setUploading(false);
-      setUploadProgress(100);
-      setUploadedImageUrl(response.data.user_image);
-
-      setUser((prevUser) => ({
-        ...prevUser,
-        user_image: response.data.user_image,
-      }));
-
-      console.log("File uploaded and user updated successfully", response.data);
-      console.log("Uploaded Image URL:-->", uploadedImageUrl);
-
-      // Wait for 2 seconds before clearing the upload progress and calling getUser
-      setTimeout(() => {
-        setUploadProgress(0);
-        getUser();
-      }, 2000);
-    } catch (error) {
-      setUploading(false);
-      setUploadProgress(0);
-      setUploadError("File upload failed");
-      console.error("Error uploading file", error);
-    }
-  };
-
   const handleDragOver = (e) => {
     e.preventDefault();
     setDragging(true);
@@ -175,7 +85,7 @@ const StoreAc = () => {
     if (files.length > 0) {
       const file = files[0];
       console.log(files);
-      handleFileUpload(file);
+      createAc(file);
     }
   };
 
@@ -184,6 +94,7 @@ const StoreAc = () => {
   };
 
   const createAc = async (file) => {
+    // Image Preview, Upload State, and Error Handling
     setImagePreview(URL.createObjectURL(file));
     setUploading(true);
     setUploadProgress(0);
@@ -209,19 +120,22 @@ const StoreAc = () => {
       setUploading(false);
       return;
     }
+
     try {
       const user_id = localStorage.getItem("users_id");
       const token = localStorage.getItem("access_token");
 
       if (!token) {
-        throw new Error("No token found");
+        alert("No token found. Please login.");
+        setUploading(false);
+        return;
       }
 
       const base64Image = await convertImageToBase64(file);
+
       let dataAc = {
         name_activity: acName,
         status_post: "active",
-        creation_date: useNow(),
         detail_post: acDetail,
         date_activity: eventDate,
         time_activity: eventTime,
@@ -229,9 +143,7 @@ const StoreAc = () => {
         store_id: user_id,
       };
 
-      console.log("dataAc-->", dataAc);
-
-      const response = await axios.put(
+      const response = await axios.post(
         `http://localhost:8080/api/postActivity`,
         dataAc,
         {
@@ -249,19 +161,10 @@ const StoreAc = () => {
 
       setUploading(false);
       setUploadProgress(100);
-      setUploadedImageUrl(response.data.user_image);
 
-      setUser((prevUser) => ({
-        ...prevUser,
-        user_image: response.data.user_image,
-      }));
-
-      console.log("File uploaded and user updated successfully", response.data);
-      console.log("Uploaded Image URL:-->", uploadedImageUrl);
-
-      // Wait for 2 seconds before clearing the upload progress and calling getUser
       setTimeout(() => {
         setUploadProgress(0);
+        setImagePreview(null); // Clear preview after successful upload
         getUser();
       }, 2000);
     } catch (error) {
@@ -476,7 +379,7 @@ const StoreAc = () => {
             ref={fileInputRef}
             type="file"
             style={{ display: "none" }}
-            onChange={(e) => handleFileUpload(e.target.files[0])}
+            onChange={(e) => createAc(e.target.files[0])}
           />
         </Box>
 
@@ -513,13 +416,14 @@ const StoreAc = () => {
         )}
 
         <Button
-          //   onClick={updateUser}
+          onClick={createAc}
           sx={{
             color: "#fff",
-            backgroundColor: "#AB003B",
-            borderColor: "#AB003B",
+            width: "100%",
+            backgroundColor: "#0B6BCB",
+            borderColor: "#0B6BCB",
             "&:hover": {
-              backgroundColor: "#AB003B",
+              backgroundColor: "#0B6BCB",
             },
           }}
         >

@@ -31,6 +31,10 @@ const UserPosts = ({ user }) => {
   const ITEM_HEIGHT = 48;
   const options = ["เข้าร่วม", "แก้ไขชื่อ", "อื่นๆ"];
 
+  if (!user.users_id) {
+    return <Alert severity="error">{error}</Alert>;
+  }
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
