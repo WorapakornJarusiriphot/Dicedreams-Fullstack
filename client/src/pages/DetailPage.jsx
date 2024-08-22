@@ -121,15 +121,26 @@ const DetailsPage = () => {
                         </Button>
                     </>
                 ) : (
-                    <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => navigate('/')}
-                        sx={{ marginTop: 3 }}
-                        id="join-button"
-                    >
-                        Join
-                    </Button>
+                    <>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() => navigate('/')}
+                                sx={{ marginTop: 3}}
+                            id="join-button"
+                        >
+                            Join
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/')}
+                                sx={{ marginTop: 3, marginLeft: 2 }}
+                            id="return-home-button"
+                        >
+                            Return to Home
+                        </Button>
+                    </>
                 )}
             </Paper>
 
