@@ -76,10 +76,6 @@ const router = createBrowserRouter([
         path: "StoreActivityCreate",
         element: <StoreAc />
       }
-      // {
-      //   path: "participation-history",
-      //   element: <ParticipationHistory />
-      // }
     ]
   }
 ]);
