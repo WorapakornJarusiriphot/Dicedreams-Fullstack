@@ -1,142 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-08-09T16:23:20.170165" rpa="false" schemaversion="5">
-<suite id="s1" name="Register" source="/Users/macbook/Desktop/TestDiceDream/Dicedreams-Fullstack/test/Register.robot">
-<test id="s1-t1" name="Search Google" line="16">
+<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-08-19T17:18:58.876283" rpa="false" schemaversion="5">
+<suite id="s1" name="EditProfile" source="/Users/macbook/Desktop/TestDiceDream/Dicedreams-Fullstack/test/EditProfile.robot">
+<test id="s1-t1" name="Search Google" line="12">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-08-09T16:23:20.597091" level="INFO">Opening browser 'chrome' to base url 'http://localhost:5173/'.</msg>
+<msg time="2024-08-19T17:18:59.237794" level="INFO">Opening browser 'chrome' to base url 'http://localhost:5173/'.</msg>
 <arg>${URL}</arg>
 <arg>${Browser}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-08-09T16:23:20.596228" elapsed="21.882180"/>
+<status status="PASS" start="2024-08-19T17:18:59.237427" elapsed="22.165652"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-08-09T16:23:42.520545" level="INFO">Clicking button 'xpath=(//button[@type='button'])[3]'.</msg>
-<arg>xpath=(//button[@type='button'])[3]</arg>
+<msg time="2024-08-19T17:19:21.455196" level="INFO">Clicking button 'css=.MuiButton-text'.</msg>
+<arg>css=.MuiButton-text</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-08-09T16:23:42.504435" elapsed="1.398086"/>
+<status status="PASS" start="2024-08-19T17:19:21.445744" elapsed="0.554209"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
-<msg time="2024-08-09T16:23:44.964722" level="INFO">Slept 1 second.</msg>
+<msg time="2024-08-19T17:19:23.009889" level="INFO">Slept 1 second.</msg>
 <arg>${Delay}</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-08-09T16:23:43.905863" elapsed="1.059206"/>
+<status status="PASS" start="2024-08-19T17:19:22.003479" elapsed="1.006554"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-08-09T16:23:44.966162" level="INFO">Clicking button 'xpath=//div[@id='root']/div/main/div/div/div[2]/div'.</msg>
-<msg time="2024-08-09T16:23:46.282789" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-5.png"&gt;&lt;img src="selenium-screenshot-5.png" width="800px"&gt;&lt;/a&gt;</msg>
-<msg time="2024-08-09T16:23:46.285462" level="FAIL">Button with locator 'xpath=//div[@id='root']/div/main/div/div/div[2]/div' not found.</msg>
-<arg>xpath=//div[@id='root']/div/main/div/div/div[2]/div</arg>
+<msg time="2024-08-19T17:19:23.010905" level="INFO">Clicking button 'id=identifier'.</msg>
+<arg>id=identifier</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="FAIL" start="2024-08-09T16:23:44.965681" elapsed="1.360076">Button with locator 'xpath=//div[@id='root']/div/main/div/div/div[2]/div' not found.</status>
+<status status="PASS" start="2024-08-19T17:19:23.010427" elapsed="0.093504"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<arg>id=first_name</arg>
-<arg>nawaporn</arg>
+<msg time="2024-08-19T17:19:23.105416" level="INFO">Typing text 'nawa2' into text field 'name=identifier'.</msg>
+<arg>name=identifier</arg>
+<arg>nawa2</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.326251" elapsed="0.000052"/>
+<status status="PASS" start="2024-08-19T17:19:23.105009" elapsed="0.744727"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<arg>id=last_name</arg>
+<msg time="2024-08-19T17:19:23.850563" level="INFO">Clicking button 'id=loginPassword'.</msg>
+<arg>id=loginPassword</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.326782" elapsed="0.000055"/>
+<status status="PASS" start="2024-08-19T17:19:23.850200" elapsed="0.091544"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<arg>id=last_name</arg>
-<arg>boongon</arg>
+<msg time="2024-08-19T17:19:23.952227" level="INFO">Typing text '12345678b' into text field 'name=loginPassword'.</msg>
+<arg>name=loginPassword</arg>
+<arg>12345678b</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.327053" elapsed="0.000051"/>
+<status status="PASS" start="2024-08-19T17:19:23.944344" elapsed="0.513348"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<arg>css=.MuiFormControl-root:nth-child(3)</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.327319" elapsed="0.000048"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<arg>id=username</arg>
-<arg>dream1</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.327569" elapsed="0.000053"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>css=.MuiFormControl-root:nth-child(4)</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.327876" elapsed="0.000042"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<arg>id=phone_number</arg>
-<arg>0987654321</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.328092" elapsed="0.000044"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//div[@id='root']/div/main/div/div/div[2]/div[5]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.328315" elapsed="0.000043"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<arg>id=email</arg>
-<arg>nawaporn@gmail.com</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.328546" elapsed="0.000042"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//div[@id='root']/div/main/div/div/div[2]/div[6]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.328765" elapsed="0.000042"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<arg>id=password</arg>
-<arg>D12345678</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.328985" elapsed="0.000041"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>css=.MuiFormControl-root:nth-child(7) path</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.329225" elapsed="0.000399"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=(//input[@name='gender'])[3]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.329922" elapsed="0.000054"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//div[@id='root']/div/main/div/div/div/form/span</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.330233" elapsed="0.000047"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<arg>css=input:nth-child(7)</arg>
-<arg>C:\fakepath\สีเหลือง สีฟ้า ภาพประกอบ น่ารัก Desktop Wallpaper.png</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.330491" elapsed="0.000050"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.332083" elapsed="0.000063"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-08-19T17:19:24.460325" level="INFO">Clicking button 'xpath=//div[@id='root']/div/main/div/div/div[2]/div[3]/button'.</msg>
 <arg>xpath=//div[@id='root']/div/main/div/div/div[2]/div[3]/button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.333235" elapsed="0.000072"/>
+<status status="PASS" start="2024-08-19T17:19:24.459342" elapsed="0.141057"/>
 </kw>
-<kw name="Sleep" owner="BuiltIn">
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.333586" elapsed="0.000055"/>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-08-19T17:19:24.620655" level="INFO">Clicking button 'xpath=/html/body/div/div/main/header[1]/div/div[2]/button[1]'.</msg>
+<msg time="2024-08-19T17:19:26.659350" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-25.png"&gt;&lt;img src="selenium-screenshot-25.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-08-19T17:19:26.665007" level="FAIL">Button with locator 'xpath=/html/body/div/div/main/header[1]/div/div[2]/button[1]' not found.</msg>
+<arg>xpath=/html/body/div/div/main/header[1]/div/div[2]/button[1]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="FAIL" start="2024-08-19T17:19:24.601751" elapsed="2.101389">Button with locator 'xpath=/html/body/div/div/main/header[1]/div/div[2]/button[1]' not found.</status>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//input[@id=':r1:']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.706381" elapsed="0.000171"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=//input[@id=':r1:']</arg>
+<arg>nawaporns</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.706907" elapsed="0.000047"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//input[@id=':r2:']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.707261" elapsed="0.000060"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=//input[@id=':r2:']</arg>
+<arg>boongons</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.707642" elapsed="0.000058"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//input[@id=':r4:']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.707950" elapsed="0.000054"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=":r2m:"</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.708237" elapsed="0.000038"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>id=":r2m:"</arg>
+<arg>nawa2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.708491" elapsed="0.000055"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=//input[@id=':r4:']</arg>
+<arg>nawaporn1@gmail.com</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.708786" elapsed="0.000052"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=//input[@id=':r9:']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.709068" elapsed="0.001383"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=//input[@id=':r9:']</arg>
+<arg>หาเพื่อนเล่นเกม มือใหม่ยังเล่นไม่ค่อยเก่ง -v-</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.712641" elapsed="0.000258"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=(//button[@type='button'])[6]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.717175" elapsed="0.000110"/>
+</kw>
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<arg>nawa2</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="NOT RUN" start="2024-08-19T17:19:26.717807" elapsed="0.000224"/>
 </kw>
 <kw name="Capture Page Screenshot" owner="SeleniumLibrary">
 <doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.333892" elapsed="0.000052"/>
+<status status="NOT RUN" start="2024-08-19T17:19:26.718870" elapsed="0.000088"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary">
 <doc>Closes the current browser.</doc>
-<status status="NOT RUN" start="2024-08-09T16:23:46.334173" elapsed="0.000043"/>
+<status status="NOT RUN" start="2024-08-19T17:19:26.719607" elapsed="0.000076"/>
 </kw>
-<status status="FAIL" start="2024-08-09T16:23:20.593192" elapsed="25.741651">Button with locator 'xpath=//div[@id='root']/div/main/div/div/div[2]/div' not found.</status>
+<status status="FAIL" start="2024-08-19T17:18:59.236184" elapsed="27.484779">Button with locator 'xpath=/html/body/div/div/main/header[1]/div/div[2]/button[1]' not found.</status>
 </test>
-<status status="FAIL" start="2024-08-09T16:23:20.172487" elapsed="26.164455"/>
+<status status="FAIL" start="2024-08-19T17:18:58.879201" elapsed="27.855307"/>
 </suite>
 <statistics>
 <total>
@@ -145,7 +145,7 @@
 <tag>
 </tag>
 <suite>
-<stat pass="0" fail="1" skip="0" id="s1" name="Register">Register</stat>
+<stat pass="0" fail="1" skip="0" id="s1" name="EditProfile">EditProfile</stat>
 </suite>
 </statistics>
 <errors>
