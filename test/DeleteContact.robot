@@ -15,5 +15,9 @@ ${Delay}    1s
 *** Test Cases ***
 Search Google
     Open Browser    ${URL}    ${Browser}
-    
+    Click Button    locator
+    Click Button    Delete
+    Click Button    Cancel
+    Page Should Contain    บัญชีผู้ใช้ถูกลบออกจากระบบแล้ว
+    Capture Page Screenshot
     Close Browser

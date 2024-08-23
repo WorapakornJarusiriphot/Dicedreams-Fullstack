@@ -15,5 +15,10 @@ ${Delay}    1s
 *** Test Cases ***
 Search Google
     Open Browser    ${URL}    ${Browser}
-    
+    Click Button    locator
+    Click Button    locator
+    Click Button    Delete
+    Click Button    Cancel
+    Page Should Contain    แสดงข้อลบโพสต์กิจกรรมไม่สำเร็จ
+    Capture Page Screenshot
     Close Browser
