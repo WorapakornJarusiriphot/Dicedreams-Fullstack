@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography, Avatar } from "@mui/material";
 
-const IndexStore = ({ data, profileIMG }) => {
+const IndexStore = ({ data, imgS , nameS }) => {
   const [storeData, setStore] = useState(null);
   const [error, setError] = useState(null);
 
@@ -139,23 +139,26 @@ const IndexStore = ({ data, profileIMG }) => {
               gap: 1,
             }}
           >
+            {/* topper */}
             <Avatar
               sx={{ bgcolor: "red" }}
               aria-label="profile-picture"
-              src={store?.post_activity_image}
+              src={imgS}
             />
             <Box>
               <Typography variant="h6" sx={{ color: "white" }}>
-                {store.name_activity}
+                {nameS} 
               </Typography>
               <Typography variant="body2" sx={{ color: "lightgray" }}>
                 {formatDateToThai(store.creation_date)}
               </Typography>
             </Box>
+
+
           </Box>
 
           <img
-            src={store?.post_activity_image || "fallback_image_url.jpg"}
+            src={store?.post_activity_image }
             alt="Activity"
             style={{ width: "100%", borderRadius: 4 }}
           />

@@ -3,15 +3,17 @@ import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import { Box, Typography, Button, Avatar } from "@mui/material";
 import IndexStore from "../components/indexStore";
-import UserPosts from "../components/UPost";
+import IndexUser from "../components/indexUser";
 
 const Index = () => {
   const location = useLocation();
   const [user, setUser] = useState(null);
   const [store, setStore] = useState(null);
   const [storeData, setStoreData] = useState(null);
+  const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [errorStore, setErrorStore] = useState(null);
+  const [errorUser, setErrorUser] = useState(null);
   const searchQuery = new URLSearchParams(location.search).get("search");
   const [result, setResult] = useState({ data: null, tag: null });
 
@@ -37,6 +39,8 @@ const Index = () => {
   useEffect(() => {
     if (result.tag === "store" && result.data) {
       getStore(result.data.store_id);
+    } else if (result.tag === "user" && result.data) {
+      getUserAc(result.data.users_id);
     }
   }, [result]);
 
@@ -50,6 +54,7 @@ const Index = () => {
       });
       setUser(response.data);
       console.log("User data-->", response.data);
+      console.log("result data-->", result);
     } catch (error) {
       setError("Error fetching user data");
       console.error(error);
@@ -118,6 +123,22 @@ const Index = () => {
     }
   }
 
+  async function getUserAc(id) {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) throw new Error("No token found");
+      const url = `http://localhost:8080/api/postGame/user/${id}`;
+      const response = await axios.get(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUserData(response.data);
+      console.log("User response:", response.data);
+    } catch (error) {
+      setErrorUser("Error fetching store data");
+      console.error(error);
+    }
+  }
+
   const formatDateToThai = (isoDateString) => {
     if (!isoDateString) return "";
     const thaiDays = [
@@ -174,59 +195,73 @@ const Index = () => {
 
   return (
     <Box sx={{ marginTop: 15 }}>
-      <Box
-        sx={{
-          backgroundColor: "#333",
-          height: "8vh",
-          width: "70%",
-          margin: "20px auto",
-          borderRadius: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          color: "white",
-          p: 2,
-          mb: 4,
-        }}
-      >
-        <Avatar
-          sx={{ bgcolor: "red" }}
-          aria-label="profile-picture"
-          src={result.tag === "store" ? result.data.store_image : "No Image"}
-          alt={result.tag === "store" ? result.data.name_store : "No Image"}
-        />
-        <Typography variant="h5">
-          {result.tag === "store" ? result.data.name_store : "No Name"}
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to={`/profile/${
-            result.tag === "store" ? result.data.store_id : "ss"
-          }`}
-          sx={{
-            color: "white",
-            backgroundColor: "#00BFFF",
-            "&:hover": { backgroundColor: "#115293" },
-          }}
-        >
-          View Profile
-        </Button>
-      </Box>
-
-      {result.tag === "store" ? (
-        <IndexStore data={storeData} profileIMG={result.data.store_image}></IndexStore>
-      ) : (
-        <Box sx={{ textAlign: "center", p: 2 }}>
-          <Typography
-            variant="h5"
-            sx={{ fontSize: "30px", fontWeight: "bold" }}
+      {result.data && (
+        <>
+          <Box
+            sx={{
+              backgroundColor: "#333",
+              height: "8vh",
+              width: "70%",
+              margin: "20px auto",
+              borderRadius: 2,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              color: "white",
+              p: 2,
+              mb: 4,
+            }}
           >
-            What API
-          </Typography>
-          {/* <UserPosts user={result.data} /> */}
-        </Box>
+            <Avatar
+              sx={{ bgcolor: "red" }}
+              aria-label="profile-picture"
+              src={
+                result.tag === "store"
+                  ? result.data.store_image
+                  : result.data.user_image
+              }
+              alt={
+                result.tag === "store"
+                  ? result.data.name_store
+                  : result.data.username
+              }
+            />
+            <Typography variant="h5">
+              {result.tag === "store"
+                ? result.data.name_store
+                : result.data.username}
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              component={Link}
+              to={`/profile/${
+                result.tag === "store" ? result.data.store_id : "ss"
+              }`}
+              sx={{
+                color: "white",
+                backgroundColor: "#00BFFF",
+                "&:hover": { backgroundColor: "#115293" },
+              }}
+            >
+              View Profile
+            </Button>
+          </Box>
+
+          {result.tag === "store" ? (
+            <IndexStore
+              data={storeData}
+              imgS={result.data.store_image}
+              nameS={result.data.name_store}
+            />
+          ) : (
+            <IndexUser
+              data={userData}
+              imgU={result.data.user_image}
+              nameU={result.data.username}
+            />
+          )}
+        </>
       )}
     </Box>
   );
