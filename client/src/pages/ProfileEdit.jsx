@@ -81,8 +81,11 @@ const ProfileEdit = () => {
       );
 
       console.log("User updated successfully", response.data);
+      
+      window.alert("User updated successfully!");
       navigate("/profile");
     } catch (error) {
+      window.alert("Failed to update user. Please try again.");
       console.error("Error updating user", error);
     }
   };
@@ -256,7 +259,7 @@ const ProfileEdit = () => {
 
   function transformDateFormat(date) {
     if (dayjs.isDayjs(date)) {
-      return date.format("MM-DD-YYYY"); 
+      return date.format("MM-DD-YYYY");
     } else {
       console.error("Provided date is not a dayjs object:", date);
       const [year, month, day] = date.split("-");

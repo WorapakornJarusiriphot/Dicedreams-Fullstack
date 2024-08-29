@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import {
   Box,
@@ -11,7 +11,7 @@ import {
   MenuItem,
   Button,
   LinearProgress,
-  CircularProgress ,
+  CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -84,8 +84,7 @@ const StoreAc = () => {
 
     if (files.length > 0) {
       const file = files[0];
-      console.log(files);
-      createAc(file);
+      handleFileUpload(file);
     }
   };
 
@@ -93,8 +92,7 @@ const StoreAc = () => {
     fileInputRef.current.click();
   };
 
-  const createAc = async (file) => {
-    // Image Preview, Upload State, and Error Handling
+  const handleFileUpload = async (file) => {
     setImagePreview(URL.createObjectURL(file));
     setUploading(true);
     setUploadProgress(0);
@@ -122,7 +120,7 @@ const StoreAc = () => {
     }
 
     try {
-      const user_id = localStorage.getItem("users_id");
+      const user_id = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
       const token = localStorage.getItem("access_token");
 
       if (!token) {
@@ -134,44 +132,100 @@ const StoreAc = () => {
       const base64Image = await convertImageToBase64(file);
 
       let dataAc = {
-        name_activity: acName,
+        name_activity: acName || "no_data_now",
         status_post: "active",
-        detail_post: acDetail,
-        date_activity: eventDate,
-        time_activity: eventTime,
+        detail_post: acDetail || "no_data_now",
+        date_activity: eventDate
+          ? eventDate.format("YYYY-MM-DD")
+          : "no_data_now",
+        time_activity: eventTime ? eventTime.format("HH:mm:ss") : "no_data_now",
         post_activity_image: base64Image,
-        store_id: user_id,
+        store_id: user_id || "no_data_now",
       };
 
-      const response = await axios.post(
-        `http://localhost:8080/api/postActivity`,
-        dataAc,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          onUploadProgress: (progressEvent) => {
-            const { loaded, total } = progressEvent;
-            let percentCompleted = Math.floor((loaded * 100) / total);
-            setUploadProgress(percentCompleted);
-          },
-        }
-      );
+      await axios.post(`http://localhost:8080/api/postActivity`, dataAc, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        onUploadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent;
+          let percentCompleted = Math.floor((loaded * 100) / total);
+          setUploadProgress(percentCompleted);
+        },
+      });
 
       setUploading(false);
       setUploadProgress(100);
-
       setTimeout(() => {
         setUploadProgress(0);
-        setImagePreview(null); // Clear preview after successful upload
-        getUser();
+        setImagePreview(null);
       }, 2000);
     } catch (error) {
       setUploading(false);
       setUploadProgress(0);
       setUploadError("File upload failed");
       console.error("Error uploading file", error);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      const user_id = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        alert("No token found. Please login.");
+        return;
+      }
+
+      if (!acName) {
+        alert("กรุณาใส่ ชื่อเรื่อง");
+        return;
+      }
+      if (!acDetail) {
+        alert("กรุณาใส่ รายละเอียด");
+        return;
+      }
+      if (!eventDate) {
+        alert("กรุณาเลือกวันที่");
+        return;
+      }
+      if (!eventTime) {
+        alert("กรุณาเลือกเวลา");
+        return;
+      }
+
+      const formData = {
+        name_activity: acName,
+        status_post: "active",
+        detail_post: acDetail,
+        date_activity: eventDate.format("YYYY-MM-DD"),
+        time_activity: eventTime.format("HH:mm:ss"),
+        store_id: user_id,
+      };
+
+      console.log("formData-->", formData);
+
+      const response = await axios.put(
+        `http://localhost:8080/api/store/${user_id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("File uploaded and user updated successfully", response.data);
+      console.log("Uploaded Image URL:-->", uploadedImageUrl);
+
+      setTimeout(() => {
+        getStore();
+      }, 2000);
+    } catch (error) {
+      console.error("Error updating store", error);
     }
   };
 
@@ -379,7 +433,7 @@ const StoreAc = () => {
             ref={fileInputRef}
             type="file"
             style={{ display: "none" }}
-            onChange={(e) => createAc(e.target.files[0])}
+            onChange={(e) => handleFileUpload(e.target.files[0])}
           />
         </Box>
 
@@ -416,7 +470,7 @@ const StoreAc = () => {
         )}
 
         <Button
-          onClick={createAc}
+          onClick={handleSave}
           sx={{
             color: "#fff",
             width: "100%",
