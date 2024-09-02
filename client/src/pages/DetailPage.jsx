@@ -14,13 +14,13 @@ const DetailsPage = () => {
     useEffect(() => {
         if (!userId || !accessToken || !role) {
             alert('Please log in to access this page.');
-            navigate('/');
+            navigate('/login');
             return;
         }
 
         if (role !== 'user') {
             alert('You do not have permission to access this page.');
-            navigate('/');
+            navigate('/login');
             return;
         }
 

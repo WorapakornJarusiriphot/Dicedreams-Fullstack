@@ -139,7 +139,7 @@ function EventCard(props) {
                                 onClose={handleMenuClose}
                             >
                                 <MenuItem onClick={handleEditPost}>Edit</MenuItem>
-                                <MenuItem onClick={handleDeletePost}>Delete</MenuItem>
+                                <MenuItem onClick={handleDeletePost}>End Post</MenuItem>
                             </Menu>
                         </>
                     )

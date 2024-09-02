@@ -189,7 +189,6 @@ const Navbar = () => {
                         sx={{
                             marginLeft: '10px',
                             color: 'white',
-                            border: '1px solid white',
                             borderRadius: '8px',
                             padding: '5px 10px'
                         }}
