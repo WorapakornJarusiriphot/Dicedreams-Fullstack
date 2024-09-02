@@ -26,31 +26,11 @@ export default function Post() {
   };
 
   return (
-    <div className="py-24 flex flex-col justify-center items-center" id="post-container">
+    <div className="py-20 flex flex-col justify-center items-center" id="post-container">
       <FormControl className="section-container" id="post-form">
         <FormLabel className="subtitle" sx={{ fontFamily: 'Mount Light' }} id="post-form-label">
           Let's create a party for fun
         </FormLabel>
-        <Tooltip
-          title={
-            <div style={{ fontSize: '16px', padding: '8px' }}>
-              Click to create a post
-            </div>
-          }
-          arrow
-          PopperProps={{
-            modifiers: [
-              {
-                name: 'offset',
-                options: {
-                  offset: [0, 10],
-                },
-              },
-            ],
-          }}
-          classes={{ tooltip: 'bg-yellow-500 text-black' }}
-          id="post-tooltip"
-        >
           <Box
             sx={{
               display: 'flex',
@@ -94,7 +74,7 @@ export default function Post() {
               Post
             </Button>
           </Box>
-        </Tooltip>
+       
       </FormControl>
       <Snackbar
         open={snackbar.open}
