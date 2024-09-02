@@ -159,42 +159,50 @@ const Navbar = () => {
             </Box>
             {accessToken ? (
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    {!isMobile && (
-                        <Link
-                            to="/profile"
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                textDecoration: 'none',
-                                color: 'inherit',
-                                padding: '5px 10px',
-                                borderRadius: '8px',
-                                color: 'white',
-                                backgroundColor: 'rgba(220, 20, 60, 0.5)', // Crimson color with 50% transparency
-                            }}
-                        >
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    marginRight: '5px',
-                                    fontWeight: 'bold',
+                    <Box sx={{ 
+                        backgroundColor: 'rgba(220, 20, 60, 0.5)', 
+                        display: 'flex', 
+                        alignItems: 'center',
+                        padding: '5px 10px',
+                        borderRadius: '8px',
+                         }}>
+                        {!isMobile && (
+                            <Link
+                                to="/profile"
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                    padding: '5px 10px',
+                                    borderRadius: '8px',
+                                    color: 'white',
                                 }}
-                                id="username"
                             >
-                                {username}
-                            </Typography>
-                        </Link>
-                    )}
-                    <Avatar
-                        src={profilePic}
-                        alt={username}
-                        sx={{
-                            width: 40,
-                            height: 40,
-                            border: '2px solid white',
-                        }}
-                        id="profile-picture"
-                    />
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        marginRight: '5px',
+                                        fontWeight: 'bold',
+                                    }}
+                                    id="username"
+                                >
+                                    {username}
+                                </Typography>
+                            </Link>
+                        )}
+                        <Avatar
+                            src={profilePic}
+                            alt={username}
+                            sx={{
+                                width: 40,
+                                height: 40,
+                                border: '2px solid white',
+                            }}
+                            id="profile-picture"
+                        />
+                    </Box>
+                    
                     <IconButton
                         color="inherit"
                         onClick={() => setDialogOpen(true)}
