@@ -70,14 +70,18 @@ function LoginPage() {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:8080/api/auth", {
+      const response = await axios.post("https://dicedreams-backend-deploy-to-render.onrender.com/api/auth", {
         identifier: formData.identifier,
         password: formData.loginPassword,
       });
       const { access_token } = response.data;
       login(access_token);
-      navigate("/");
       setAlert({ open: true, message: "เข้าสู่ระบบสำเร็จ!", severity: "success" });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500); // Adjust the delay as needed
+
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||
@@ -147,7 +151,7 @@ function LoginPage() {
         user_image: base64Image,
       };
 
-      const response = await axios.post("http://localhost:8080/api/users", dataToSend, {
+      const response = await axios.post("https://dicedreams-backend-deploy-to-render.onrender.com/api/users", dataToSend, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -451,47 +455,48 @@ function LoginPage() {
                 ),
               }}
             />
-              <Box mt={4} display="flex" justifyContent="center" gap={2}>
-                <Button
-                  variant="contained"
-                  onClick={handleLogin}
-                  disabled={loading}
-                  fullWidth
-                  id="login-submit-button"
-                  style={{
-                    backgroundColor: "crimson",
-                    color: "white",
-                  }}
-                >
-                  {loading ? <CircularProgress size={24} style={{ color: "white" }} /> : "Log In"}
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={handleCancel}
-                  fullWidth
-                  id="cancel-login-button"
-                  style={{
-                    color: "white",
-                    borderColor: "white",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  Cancel
-                </Button>
-              </Box>
+            <Box mt={4} display="flex" justifyContent="center" gap={2}>
+              <Button
+                variant="contained"
+                onClick={handleLogin}
+                disabled={loading}
+                fullWidth
+                id="login-submit-button"
+                style={{
+                  backgroundColor: "crimson",
+                  color: "white",
+                }}
+              >
+                {loading ? <CircularProgress size={24} style={{ color: "white" }} /> : "Log In"}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleCancel}
+                fullWidth
+                id="cancel-login-button"
+                style={{
+                  color: "white",
+                  borderColor: "white",
+                  backgroundColor: "transparent",
+                }}
+              >
+                Cancel
+              </Button>
+            </Box>
           </Box>
         )}
-        <Snackbar
-          open={alert.open}
-          autoHideDuration={6000}
-          onClose={handleCloseAlert}
-          id="alert-snackbar"
-        >
-          <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: "100%" }}>
-            {alert.message}
-          </Alert>
-        </Snackbar>
       </Box>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={alert.open}
+        autoHideDuration={6000}
+        onClose={handleCloseAlert}
+        id="login-snackbar"
+      >
+        <Alert onClose={handleCloseAlert} severity={alert.severity} sx={{ width: "100%" }}>
+          {alert.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

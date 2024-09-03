@@ -1,33 +1,28 @@
 import React, { useState, useContext } from 'react';
 import {
     AppBar, Toolbar, IconButton, Typography, Input, Box, Drawer,
-    List, ListItem, ListItemText, Button, Divider, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle
+    List, ListItem, ListItemText, Button, Divider, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Avatar
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import InfoIcon from '@mui/icons-material/Info';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SearchIcon from '@mui/icons-material/Search'; // Import the search icon
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaCircleUser } from 'react-icons/fa6';
-import axios from 'axios';
-import FilterComponent from './FilterComponent';
+import { useMediaQuery } from '@mui/material';
 import { AuthContext } from '../Auth/AuthContext';
+import FilterComponent from './FilterComponent';
 
 const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const { accessToken, login, logout } = useContext(AuthContext);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const { accessToken, logout, username, profilePic } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
+    const isMobile = useMediaQuery('(max-width: 400px)');
 
     const toggleDrawer = (open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) return;
         setDrawerOpen(open);
-    };
-
-    const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value);
     };
 
     const handleSearchSubmit = (event) => {
@@ -37,42 +32,10 @@ const Navbar = () => {
         }
     };
 
-    const navigateToLogin = () => {
-        navigate('/login');
-    };
-
-    const navigateToRegister = () => {
-        navigate('/login?register=true');
-    };
-
-    const navigateToNotifications = () => {
-        navigate('/notifications');
-    };
-
-    const navigateToParticipationHistory = () => {
-        navigate('/participation-history');
-    };
-
-    const navigateToDetails = (eventId) => {
-        navigate(`/events/${eventId}`);
-    };
-
     const handleLogout = () => {
         logout();
         setDialogOpen(false);
         navigate('/');
-    };
-
-    const closeDrawer = () => {
-        setDrawerOpen(false);
-    };
-
-    const openDialog = () => {
-        setDialogOpen(true);
-    };
-
-    const closeDialog = () => {
-        setDialogOpen(false);
     };
 
     const drawerList = () => (
@@ -95,7 +58,7 @@ const Navbar = () => {
                 <ListItem
                     button
                     component={Link}
-                    to='/participation-history'
+                    to="/participation-history"
                     onClick={toggleDrawer(false)}
                     onKeyDown={toggleDrawer(false)}
                     id="participation-history-link"
@@ -135,7 +98,7 @@ const Navbar = () => {
                     <Typography variant="h6" id="filter-events-title">Filter Events</Typography>
                 </ListItem>
                 <ListItem>
-                    <FilterComponent onSearch={closeDrawer} id="filter-component" />
+                    <FilterComponent onSearch={() => setDrawerOpen(false)} id="filter-component" />
                 </ListItem>
             </List>
         </Box>
@@ -162,9 +125,11 @@ const Navbar = () => {
             >
                 {drawerList()}
             </Drawer>
-            <Link to="/" id="logo-link">
-                <img src='logoDice.png' alt="DiceDreams Logo" id="logo-image" style={{ marginRight: '18px', height: '64px' }} />
-            </Link>
+            {!isMobile && (
+                <Link to="/" id="logo-link">
+                    <img src='logoDice.png' alt="DiceDreams Logo" id="logo-image" style={{ marginRight: '18px', height: '64px' }} />
+                </Link>
+            )}
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Typography
                     variant="h6"
@@ -177,26 +142,85 @@ const Navbar = () => {
                 </Typography>
             </Link>
             <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, marginLeft: 2 }}>
-                <Input
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    onKeyDown={handleSearchSubmit}
-                    sx={{ marginLeft: 2 }}
-                    id="search-input"
-                />
+                {isMobile ? (
+                    <IconButton color="inherit" onClick={() => navigate(`/index?search=${encodeURIComponent(searchQuery)}`)} id="search-icon">
+                        <SearchIcon />
+                    </IconButton>
+                ) : (
+                    <Input
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={handleSearchSubmit}
+                        sx={{ marginLeft: 2 }}
+                        id="search-input"
+                    />
+                )}
             </Box>
             {accessToken ? (
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <IconButton color="inherit" onClick={() => navigate('/profile')} id="profile-button">
-                        <FaCircleUser size={24} />
+                    <Box sx={{ 
+                        backgroundColor: 'rgba(220, 20, 60, 0.5)', 
+                        display: 'flex', 
+                        alignItems: 'center',
+                        padding: '5px 10px',
+                        borderRadius: '8px',
+                         }}>
+                        {!isMobile && (
+                            <Link
+                                to="/profile"
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                    padding: '5px 10px',
+                                    borderRadius: '8px',
+                                    color: 'white',
+                                }}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        marginRight: '5px',
+                                        fontWeight: 'bold',
+                                    }}
+                                    id="username"
+                                >
+                                    {username}
+                                </Typography>
+                            </Link>
+                        )}
+                        <Avatar
+                            src={profilePic}
+                            alt={username}
+                            sx={{
+                                width: 40,
+                                height: 40,
+                                border: '2px solid white',
+                            }}
+                            id="profile-picture"
+                        />
+                    </Box>
+                    
+                    <IconButton
+                        color="inherit"
+                        onClick={() => setDialogOpen(true)}
+                        id="logout-button"
+                        sx={{
+                            marginLeft: '10px',
+                            color: 'white',
+                            borderRadius: '8px',
+                            padding: '5px 10px',
+                        }}
+                    >
+                        {isMobile ? <LogoutIcon /> : 'Log out'}
                     </IconButton>
-                    <Button color="inherit" onClick={openDialog} id="logout-button">Log out</Button>
                 </Box>
             ) : (
                 <>
-                    <Button color="inherit" onClick={navigateToLogin} id="login-button">Log in</Button>
-                    <Button variant="contained" color="primary" onClick={navigateToRegister} id="register-button">Register</Button>
+                    <Button color="inherit" onClick={() => navigate('/login')} id="login-button">Log in</Button>
+                    <Button variant="contained" color="primary" onClick={() => navigate('/login?register=true')} id="register-button">Register</Button>
                 </>
             )}
         </>
@@ -223,9 +247,11 @@ const Navbar = () => {
             >
                 {drawerList()}
             </Drawer>
-            <Link to="/" id="basic-logo-link">
-                <img src='logoDice.png' alt="DiceDreams Logo" id="basic-logo-image" style={{ marginRight: '18px', height: '64px' }} />
-            </Link>
+            {!isMobile && (
+                <Link to="/" id="basic-logo-link">
+                    <img src='logoDice.png' alt="DiceDreams Logo" id="basic-logo-image" style={{ marginRight: '18px', height: '64px' }} />
+                </Link>
+            )}
             <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                 <Typography
                     variant="h6"
@@ -247,34 +273,32 @@ const Navbar = () => {
             <Toolbar>
                 {location.pathname === '/login' || location.pathname === '/register'
                     ? renderBasicNavbar()
-                    : renderFullNavbar()}
+                    : renderFullNavbar()
+                }
             </Toolbar>
             <Dialog
                 open={dialogOpen}
-                onClose={closeDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-                id="logout-dialog"
+                onClose={() => setDialogOpen(false)}
+                aria-labelledby="logout-dialog-title"
+                aria-describedby="logout-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
-                    {"Confirm Logout"}
-                </DialogTitle>
+                <DialogTitle id="logout-dialog-title">Logout</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
+                    <DialogContentText id="logout-dialog-description">
                         Are you sure you want to log out?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={closeDialog} color="primary" id="cancel-logout-button">
+                    <Button onClick={() => setDialogOpen(false)} color="primary" id="cancel-logout-button">
                         Cancel
                     </Button>
                     <Button onClick={handleLogout} color="primary" autoFocus id="confirm-logout-button">
-                        Log out
+                        Logout
                     </Button>
                 </DialogActions>
             </Dialog>
         </AppBar>
     );
-}
+};
 
 export default Navbar;
