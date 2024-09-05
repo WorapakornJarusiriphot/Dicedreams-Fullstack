@@ -73,7 +73,7 @@ const router = createBrowserRouter([
         element: <Store />
       },
       {
-        path: "StoreActivityCreate",
+        path: "store/createAc",
         element: <StoreAc />
       }
     ]
