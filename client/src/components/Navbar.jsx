@@ -18,7 +18,7 @@ const Navbar = () => {
     const { accessToken, logout, username, profilePic } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
-    const isMobile = useMediaQuery('(max-width: 400px)');
+    const isMobile = useMediaQuery('(max-width: 600px)');
 
     const toggleDrawer = (open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) return;
