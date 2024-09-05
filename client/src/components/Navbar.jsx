@@ -6,6 +6,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SearchIcon from '@mui/icons-material/Search'; // Import the search icon
+import LoginIcon from '@mui/icons-material/Login';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material';
 import { AuthContext } from '../Auth/AuthContext';
@@ -176,7 +178,6 @@ const Navbar = () => {
                                     color: 'inherit',
                                     padding: '5px 10px',
                                     borderRadius: '8px',
-                                    color: 'white',
                                 }}
                             >
                                 <Typography
@@ -218,10 +219,23 @@ const Navbar = () => {
                     </IconButton>
                 </Box>
             ) : (
-                <>
-                    <Button color="inherit" onClick={() => navigate('/login')} id="login-button">Log in</Button>
-                    <Button variant="contained" color="primary" onClick={() => navigate('/login?register=true')} id="register-button">Register</Button>
-                </>
+                    <>
+                        {isMobile ? (
+                            <>
+                                <IconButton color="inherit" onClick={() => navigate('/login')} id="login-icon">
+                                    <LoginIcon />
+                                </IconButton>
+                                <IconButton color="primary" onClick={() => navigate('/login?register=true')} id="register-icon">
+                                    <AppRegistrationIcon />
+                                </IconButton>
+                            </>
+                        ) : (
+                            <>
+                                <Button color="inherit" onClick={() => navigate('/login')} id="login-button">Log in</Button>
+                                <Button variant="contained" color="primary" onClick={() => navigate('/login?register=true')} id="register-button">Register</Button>
+                            </>
+                        )}
+                    </>
             )}
         </>
     );
