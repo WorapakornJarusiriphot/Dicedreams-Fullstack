@@ -14,6 +14,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import dayjs from 'dayjs';
 import { AuthContext } from '../Auth/AuthContext';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const CreatePost = () => {
   const { userId, accessToken, username, profilePic } = useContext(AuthContext);
@@ -30,6 +31,9 @@ const CreatePost = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [alertMessage, setAlertMessage] = useState({ open: false, message: '', severity: '' });
   const fileInputRef = useRef(null);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Adjust based on screen size
 
   const handleNumberChange = (event) => {
     let value = event.target.value;
@@ -107,8 +111,8 @@ const CreatePost = () => {
       games_image: formValues.games_image,
       status_post: 'active',
       users_id: userId,
-      username, // Directly use username from context
-      profilePic, // Directly use profilePic from context
+      username,
+      profilePic,
     };
 
     try {
@@ -148,10 +152,31 @@ const CreatePost = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '120vh', position: 'relative', p: 4 }} id="create-post-container">
-      <Card sx={{ maxWidth: 600, width: '100%', boxShadow: 3, p: 2, mt: 4, mb: 4 }} id="create-post-card">
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '120vh',
+        p: isMobile ? 2 : 4,
+      }}
+      id="create-post-container"
+    >
+      <Card
+        sx={{
+          maxWidth: isMobile ? '100%' : 600,
+          width: '100%',
+          boxShadow: 3,
+          p: 2,
+          mt: 4,
+          mb: 4,
+        }}
+        id="create-post-card"
+      >
         <CardContent>
-          <Typography variant="h4" gutterBottom id="create-post-title">Create a board game post</Typography>
+          <Typography variant="h4" gutterBottom id="create-post-title">
+            Create a board game post
+          </Typography>
           <form onSubmit={handleSubmit} noValidate>
             <TextField
               fullWidth
@@ -233,7 +258,7 @@ const CreatePost = () => {
               id="file-input"
             />
             {previewImage && <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', marginBottom: '10px' }} id="image-preview" />}
-            <Stack direction="row" spacing={38} sx={{ mt: 2 }}>
+            <Stack direction={isMobile ? 'column' : 'row'} spacing={isMobile ? 2 : 38} sx={{ mt: 2 }}>
               <Button
                 type="submit"
                 variant="contained"

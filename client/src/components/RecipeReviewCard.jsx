@@ -14,7 +14,8 @@ function RecipeReviewCard() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getPostGames();
+        // Fetch only events with 'active' status
+        const data = await getPostGames({ status_post: 'active' });
         console.log("Fetched Events:", data); // Log fetched events
         setEvents(data);
       } catch (error) {
@@ -31,8 +32,9 @@ function RecipeReviewCard() {
     setFilter(event.target.value);
   };
 
-  const filteredEvents = filter === 'new' ? [...events].reverse() :
-    filter === 'old' ? events :
+  // Apply sorting based on selected filter
+  const filteredEvents = filter === 'old' ? [...events].reverse() :
+    filter === 'new' ? events :
       events;
 
   return (
@@ -77,7 +79,7 @@ function RecipeReviewCard() {
             <Grid item key={event.post_games_id} xs={12} sm={10} md={8} id={`event-card-grid-${event.post_games_id}`}>
               <EventCard
                 userId={event.users_id}
-                profilePic={event.user_image} // Make sure this is returned by your API
+                profilePic={event.user_image} // Ensure this is returned by your API
                 username={event.username} // Ensure this is included in the API response
                 postTime={event.creation_date}
                 image={event.games_image}
