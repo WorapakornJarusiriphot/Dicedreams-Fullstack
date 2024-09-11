@@ -51,6 +51,9 @@ const Profile = () => {
       });
       setUser(response.data);
       console.log("User data fetched successfully", response.data);
+      if (response.data.role == "store") {
+        navigate("/store");
+      }
     } catch (error) {
       console.error("Error fetching user data", error);
     }
