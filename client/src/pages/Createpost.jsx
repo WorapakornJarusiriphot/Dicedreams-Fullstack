@@ -13,8 +13,8 @@ import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import dayjs from 'dayjs';
-import { useMediaQuery } from '@mui/material';
 import { AuthContext } from '../Auth/AuthContext';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const CreatePost = () => {
   const { userId, accessToken, username, profilePic } = useContext(AuthContext);
@@ -32,7 +32,8 @@ const CreatePost = () => {
   const [alertMessage, setAlertMessage] = useState({ open: false, message: '', severity: '' });
   const fileInputRef = useRef(null);
 
-  const isMobile = useMediaQuery('(max-width:600px)');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Adjust based on screen size
 
   const handleNumberChange = (event) => {
     let value = event.target.value;
@@ -157,9 +158,7 @@ const CreatePost = () => {
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '120vh',
-        position: 'relative',
         p: isMobile ? 2 : 4,
-        width: isMobile ? '100%' : 'auto',
       }}
       id="create-post-container"
     >
@@ -258,14 +257,7 @@ const CreatePost = () => {
               onChange={handleImageChange}
               id="file-input"
             />
-            {previewImage && (
-              <img
-                src={previewImage}
-                alt="Preview"
-                style={{ maxWidth: '100%', marginBottom: '10px' }}
-                id="image-preview"
-              />
-            )}
+            {previewImage && <img src={previewImage} alt="Preview" style={{ maxWidth: '100%', marginBottom: '10px' }} id="image-preview" />}
             <Stack direction={isMobile ? 'column' : 'row'} spacing={isMobile ? 2 : 38} sx={{ mt: 2 }}>
               <Button
                 type="submit"

@@ -14,6 +14,7 @@ import Index from '../pages/Index';
 import EditPostGamePage from "../pages/EditPostGamePage ";
 import Store from '../pages/store';
 import StoreAc from "../pages/storeActivity";
+import EditParticipantsPage from '../pages/EditParticipantsPage'; // Import the new component
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "StoreActivityCreate",
         element: <StoreAc />
+      },
+      {
+        path: "edit-participants/:id", // New route for managing participants
+        element: <EditParticipantsPage />
       }
     ]
   }
