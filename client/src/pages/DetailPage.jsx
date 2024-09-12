@@ -106,16 +106,6 @@ const DetailsPage = () => {
                     Participants: {event.num_people || 1}
                 </Typography>
                 <Grid container spacing={2} sx={{ marginTop: 3 }}>
-                    <Grid item xs={12} sm={6}>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            onClick={() => navigate('/')}
-                        >
-                            Return to Home
-                        </Button>
-                    </Grid>
                     {!isOwner && (
                         <Grid item xs={12} sm={6}>
                             <Button
@@ -128,6 +118,16 @@ const DetailsPage = () => {
                             </Button>
                         </Grid>
                     )}
+                    <Grid item xs={12} sm={6}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={() => navigate('/')}
+                        >
+                            Return to Home
+                        </Button>
+                    </Grid>
                 </Grid>
             </Paper>
             {isOwner && (
