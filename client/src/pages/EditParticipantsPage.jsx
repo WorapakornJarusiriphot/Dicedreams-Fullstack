@@ -22,7 +22,7 @@ const EditParticipantsPage = () => {
             }
 
             try {
-                const response = await axios.get(`http://localhost:8080/api/postGame/${id}/participants`, {
+                const response = await axios.get(`http://localhost:8080/api/participate/post/${id}`, {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
                 const participants = response.data.participants || [];
