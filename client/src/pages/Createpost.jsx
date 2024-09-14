@@ -139,7 +139,7 @@ const CreatePost = () => {
       detail_post: formValues.detail_post,
       num_people: numberOfPlayers,
       date_meet: formattedDate,
-      time_meet: timeValue.format('HH:mm:ss'),
+      time_meet: timeValue.format('HH:mm A'),
       games_image: formValues.games_image,
       status_post: 'active',
       users_id: userId,

@@ -14,32 +14,41 @@ const DetailsPage = () => {
     const navigate = useNavigate();
     const { userId, accessToken, role } = useContext(AuthContext);
 
-    const [event, setEvent] = useState(null);
+    const [event, setEvent] = useState({
+        name_games: '',
+        detail_post: '',
+        num_people: '',
+        date_meet: dayjs(),  // Use dayjs object for consistency
+        time_meet: dayjs(),   // Use dayjs object for consistency
+        games_image: '',
+    });
+
     const [participants, setParticipants] = useState([]);
     const [alertMessage, setAlertMessage] = useState({ open: false, message: '', severity: 'success' });
     const [openDialog, setOpenDialog] = useState(false);
 
     useEffect(() => {
         const loadEventDetails = async () => {
-            if (!userId || !accessToken || role !== 'user') {
-                alert('Unauthorized access.');
-                navigate('/login');
-                return;
-            }
-
             try {
                 const response = await axios.get(`http://localhost:8080/api/postGame/${id}`, {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
-                setEvent(response.data);
-                setParticipants(response.data.participants || []);
+                const eventData = response.data;
+
+                setEvent({
+                    ...eventData,
+                    date_meet: dayjs(eventData.date_meet),
+                    time_meet: dayjs(eventData.time_meet, "HH:mm"),  // Adjust format if needed
+                });
+                setParticipants(eventData.participants || []);
             } catch (error) {
+                console.error('Failed to fetch event details:', error);
                 alert('Failed to fetch event details.');
                 navigate('/');
             }
         };
         loadEventDetails();
-    }, [id, userId, accessToken, role, navigate]);
+    }, [id, accessToken, navigate]);
 
     const handleEndPost = async () => {
         try {
@@ -54,26 +63,33 @@ const DetailsPage = () => {
     };
 
     useEffect(() => {
-        if (!event) return;
+        if (!event.name_games) return; // Ensure event is loaded
+
         const checkTimeToHidePost = () => {
             const currentTime = dayjs();
-            const appointmentTime = dayjs(`${event.date_meet} ${event.time_meet}`);
-            if (currentTime.isAfter(appointmentTime)) handleEndPost();
+            const appointmentTime = dayjs(event.date_meet).set('hour', event.time_meet.hour()).set('minute', event.time_meet.minute());
+            if (currentTime.isAfter(appointmentTime)) {
+                handleEndPost();
+            }
         };
         const intervalId = setInterval(checkTimeToHidePost, 60000);
         return () => clearInterval(intervalId);
     }, [event]);
 
-    const confirmEndPost = () => setOpenDialog(true);
+    const confirmEndPost = () => {
+        setOpenDialog(true);
+    };
 
     const handleDialogClose = (confirmed) => {
         setOpenDialog(false);
         if (confirmed) handleEndPost();
     };
 
-    if (!event) return <Typography variant="h6">Loading...</Typography>;
-
     const isOwner = userId === event.users_id;
+
+    if (!event.name_games) {
+        return <Typography variant="h6">Loading...</Typography>;
+    }
 
     return (
         <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
@@ -89,17 +105,17 @@ const DetailsPage = () => {
                     {event.name_games || 'Untitled Event'}
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    {`${dayjs(event.date_meet).format('MMM DD YYYY')} at ${dayjs(event.time_meet, 'HH:mm:ss').format('h:mm A')}`}
+                    {`${event.date_meet.format('MMM DD YYYY')} at ${event.time_meet.format('h:mm A')}`}
                 </Typography>
 
-                {event.image && (
+                {event.games_image && (
                     <Box sx={{ marginTop: 2, marginBottom: 2 }}>
-                        <img src={event.image} alt="Event" style={{ width: '100%', height: 'auto' }} />
+                        <img src={event.games_image} alt="Event" style={{ width: '100%', height: 'auto' }} />
                     </Box>
                 )}
 
                 <Typography variant="body1" gutterBottom>
-                    {event.detail_post || 'No content available'}
+                    {event.detail_post || '{ No content available }'}
                 </Typography>
 
                 <Typography variant="body1" gutterBottom>
@@ -193,34 +209,39 @@ const DetailsPage = () => {
             }}>
                 <Typography variant="h5" gutterBottom>Comments</Typography>
                 <TextField
-                    label="Leave a comment..."
-                    variant="outlined"
-                    multiline
+                    label="Leave a comment"
                     fullWidth
+                    multiline
                     rows={4}
-                    sx={{ marginTop: 2, marginBottom: 2, backgroundColor: 'white' }}
+                    variant="filled"
+                    sx={{ marginBottom: 2, backgroundColor: 'white' }}
                 />
-                <Button variant="contained" color="primary" sx={{ marginTop: 3 }}>
-                    Submit Comment
-                </Button>
+                <Button variant="contained" color="primary">Send</Button>
             </Paper>
 
             <Snackbar
                 open={alertMessage.open}
                 autoHideDuration={3000}
-                onClose={() => setAlertMessage({ open: false })}>
-                <Alert onClose={() => setAlertMessage({ open: false })} severity={alertMessage.severity}>
+                onClose={() => setAlertMessage({ ...alertMessage, open: false })}
+            >
+                <Alert onClose={() => setAlertMessage({ ...alertMessage, open: false })}
+                    severity={alertMessage.severity} sx={{ width: '100%' }}>
                     {alertMessage.message}
                 </Alert>
             </Snackbar>
 
-            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-                <DialogTitle>Confirm End Post</DialogTitle>
+            <Dialog
+                open={openDialog}
+                onClose={() => setOpenDialog(false)}
+            >
+                <DialogTitle>{"End Post?"}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>Are you sure you want to end this post?</DialogContentText>
+                    <DialogContentText>
+                        Do you really want to end this post? This action is irreversible.
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleDialogClose(false)} color="primary">Cancel</Button>
+                    <Button onClick={() => handleDialogClose(false)}>Cancel</Button>
                     <Button onClick={() => handleDialogClose(true)} color="error">End Post</Button>
                 </DialogActions>
             </Dialog>
@@ -229,4 +250,3 @@ const DetailsPage = () => {
 };
 
 export default DetailsPage;
-

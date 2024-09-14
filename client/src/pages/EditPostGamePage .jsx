@@ -6,6 +6,10 @@ import {
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { AuthContext } from '../Auth/AuthContext';
+import { DatePicker, TimePicker, renderTimeViewClock } from '@mui/x-date-pickers';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';  // Ensure dayjs is imported
 
 const EditPostGamePage = () => {
     const { id } = useParams();
@@ -16,8 +20,8 @@ const EditPostGamePage = () => {
         name_games: '',
         detail_post: '',
         num_people: '',
-        date_meet: '',
-        time_meet: '',
+        date_meet: dayjs(),  // Ensure this starts as a dayjs object
+        time_meet: dayjs(),  // Ensure this starts as a dayjs object
         games_image: '',
     });
 
@@ -53,9 +57,20 @@ const EditPostGamePage = () => {
                     return;
                 }
 
-                setEvent(eventData);
+                // Convert date_meet and time_meet to dayjs objects if they are strings
+                const updatedEvent = {
+                    ...eventData,
+                    date_meet: dayjs(eventData.date_meet),
+                    time_meet: dayjs(eventData.time_meet),
+                };
+
+                setEvent(updatedEvent);
                 setPreviewImage(eventData.games_image);
                 setLoading(false);
+
+                // Log the event data after it is loaded
+                console.log('Event data loaded:', updatedEvent);
+
             } catch (error) {
                 console.error('Failed to fetch event details', error);
                 setAlertMessage({
@@ -76,14 +91,17 @@ const EditPostGamePage = () => {
             ...prevEvent,
             [name]: value,
         }));
+        console.log(`Input Change - ${name}: `, value); // Log each input change
     };
 
+    // Inside handleNumberChange
     const handleNumberChange = (e) => {
         const { value } = e.target;
         setEvent((prevEvent) => ({
             ...prevEvent,
             num_people: value > 0 ? value : 1,
         }));
+        console.log('Number of Participants: ', value); // Log the number change
     };
 
     const handleImageChange = (event) => {
@@ -105,20 +123,33 @@ const EditPostGamePage = () => {
     const handleFormSubmit = async (e) => {
         e.preventDefault();
 
+        // Format the date_meet to "MM/DD/YYYY" before sending
+        const formattedEvent = {
+            ...event,
+            date_meet: event.date_meet.format('MM/DD/YYYY'),  // Format date as "MM/DD/YYYY"
+            time_meet: event.time_meet.format('HH:mm '),    // Ensure time is formatted correctly
+        };
+
+        // Log the formatted event data
+        console.log('Submitting edited event data: ', formattedEvent);
+
         try {
-            await axios.put(`http://localhost:8080/api/postGame/${id}`, event, {
+            // Send updated event data to the server
+            await axios.put(`http://localhost:8080/api/postGame/${id}`, formattedEvent, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
                     'users_id': userId,
                 },
             });
 
+            // Show success message
             setAlertMessage({
                 open: true,
                 message: 'Event updated successfully!',
                 severity: 'success',
             });
 
+            // Redirect after a short delay to allow the Snackbar to be visible
             setTimeout(() => {
                 navigate(`/events/${id}`);
             }, 1500);
@@ -169,26 +200,51 @@ const EditPostGamePage = () => {
                             />
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <TextField
-                                fullWidth
-                                label="Date"
-                                name="date_meet"
-                                type="date"
-                                value={event.date_meet}
-                                onChange={handleInputChange}
-                                sx={{ backgroundColor: '#1c1c1c', input: { color: 'white' } }}
-                            />
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker
+                                    label="Date"
+                                    value={event.date_meet}
+                                    onChange={(newValue) => {
+                                        setEvent((prevEvent) => ({
+                                            ...prevEvent,
+                                            date_meet: newValue,
+                                        }));
+                                        console.log('Date Selected: ', newValue.format('MM/DD/YYYY')); // Log date change
+                                    }}
+                                    sx={{ backgroundColor: '#1c1c1c', input: { color: 'white' } }}
+                                    format="MMM-DD-YYYY"
+                                    fullWidth
+                                />
+                            </LocalizationProvider>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <TextField
-                                fullWidth
-                                label="Time"
-                                name="time_meet"
-                                type="time"
-                                value={event.time_meet}
-                                onChange={handleInputChange}
-                                sx={{ backgroundColor: '#1c1c1c', input: { color: 'white' } }}
-                            />
+                            <Grid item xs={12} md={6}>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <TimePicker
+                                        label="Time"
+                                        value={event.time_meet} // Ensure this is a valid dayjs object
+                                        onChange={(newValue) => {
+                                            setEvent((prevEvent) => ({
+                                                ...prevEvent,
+                                                time_meet: newValue,
+                                            }));
+                                            console.log('Time Selected: ', newValue.format('hh:mm A')); // Log the selected time
+                                        }}
+                                        viewRenderers={{
+                                            hours: renderTimeViewClock,
+                                            minutes: renderTimeViewClock,
+                                        }}
+                                        views={['hours', 'minutes']}
+                                        sx={{
+                                            backgroundColor: '#1c1c1c',
+                                            '.MuiInputBase-root': { color: 'white' },
+                                            '.MuiInputLabel-root': { color: 'white' },
+                                        }}
+                                        fullWidth
+                                    />
+                                </LocalizationProvider>
+                            </Grid>
+
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -271,7 +327,6 @@ const EditPostGamePage = () => {
                     {alertMessage.message}
                 </Alert>
             </Snackbar>
-
         </Container>
     );
 };
