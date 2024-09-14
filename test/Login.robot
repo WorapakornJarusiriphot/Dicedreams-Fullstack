@@ -11,17 +11,22 @@ ${Delay}    1s
 Check Title blog  
     Wait Until Page Contains  เข้าสู่ระบบสำเร็จ  10s
     Sleep    1
-    Capture Page Screenshot
+    Capture Page Screenshot  Photo/Viwearticle/TC1001.png
 
 Check Title blog2
     Page Should Contain  กรอก E-mail หรือ Username ไม่ถูกต้อง
     Sleep    1
-    Capture Page Screenshot
+    Capture Page Screenshot  Photo/Viwearticle/TC1002.png
 
 Check Title blog3
     Page Should Contain  กรอก Password ไม่ถูกต้อง
     Sleep    1
-    Capture Page Screenshot
+    Capture Page Screenshot  Photo/Viwearticle/TC1003.png
+
+Check Title blog4
+    Page Should Contain  กรอก E-mail หรือ Username ไม่ถูกต้อง
+    Sleep    1
+    Capture Page Screenshot  Photo/Viwearticle/TC1004.png
 
 *** Test Cases ***
 TC1001 การเข้าสู่ระบบ
@@ -68,6 +73,6 @@ TC1004 การเข้าสู่ระบบโดยไม่กรอก�
     Click Button   id=loginPassword
     
     Click Button    id=login-submit-button
-    Check Title blog2
+    Check Title blog4
     Close Browser
 
