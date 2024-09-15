@@ -49,6 +49,8 @@ const EditPostGamePage = () => {
                     },
                 });
 
+                console.log('API Response:', response.data);
+
                 const eventData = response.data;
 
                 if (eventData.users_id !== userId) {
@@ -61,8 +63,13 @@ const EditPostGamePage = () => {
                 const updatedEvent = {
                     ...eventData,
                     date_meet: dayjs(eventData.date_meet),
-                    time_meet: dayjs(eventData.time_meet),
+                    time_meet: dayjs(eventData.time_meet, 'HH:mm:ss'), // Ensure the correct format when loading time
                 };
+
+                console.log('Parsed Date:', updatedEvent.date_meet.format('YYYY-MM-DD'));
+                console.log('Parsed Time:', updatedEvent.time_meet.format('HH:mm'));
+                console.log('Is date_meet valid:', dayjs(eventData.date_meet).isValid());
+                console.log('Is time_meet valid:', dayjs(eventData.time_meet, 'HH:mm:ss').isValid());
 
                 setEvent(updatedEvent);
                 setPreviewImage(eventData.games_image);
