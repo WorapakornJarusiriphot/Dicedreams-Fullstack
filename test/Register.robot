@@ -9,7 +9,10 @@ ${Delay}    1s
 
 
 *** Keywords ***
- 
+ Check Title blog register 
+    Wait Until Page Contains    10s
+    Sleep    1
+    Capture Page Screenshot  Photo/Viwearticle/TC1001.png
     
 
 *** Test Cases ***
@@ -29,11 +32,10 @@ TC2001การสมัครสมาชิก
     Input Text    name=email    dream@gmail.com
     Wait Until Element Is Visible    id=password-label
     Input Text    id=password    1234567890n
-    Scroll Element Into View    xpath=//button[contains(text(), 'สมัครสมาชิก')]
-    Wait Until Element Is Visible    xpath=//button[contains(text(), 'สมัครสมาชิก')]    10s
-    Click Button                     xpath=//button[contains(text(), 'สมัครสมาชิก')]
-
-
-
-
+    Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
+    Click Element    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']
+    Input Text    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    09/06/2002
+    Click Element    xpath=//input[@name='gender' and @value='other']
+    Click Element    xpath=//button[contains(text(),'Register')]
+    sleep    ${Delay}
     Close Browser
