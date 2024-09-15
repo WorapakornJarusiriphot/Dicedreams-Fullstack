@@ -127,7 +127,7 @@ const EditPostGamePage = () => {
         const formattedEvent = {
             ...event,
             date_meet: event.date_meet.format('MM/DD/YYYY'),  // Format date as "MM/DD/YYYY"
-            time_meet: event.time_meet.format('HH:mm '),    // Ensure time is formatted correctly
+            time_meet: event.time_meet.format('HH:mm A'),    // Ensure time is formatted correctly
         };
 
         // Log the formatted event data
@@ -172,15 +172,16 @@ const EditPostGamePage = () => {
     }
 
     return (
-        <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
-            <Paper elevation={3} sx={{ padding: isMobile ? 2 : 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
-                <Typography variant="h4" gutterBottom>
+        <Container id="edit-post-game-page-container" maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
+            <Paper id="edit-post-game-paper" elevation={3} sx={{ padding: isMobile ? 2 : 5, marginTop: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
+                <Typography id="edit-post-title" variant="h4" gutterBottom>
                     Edit Post
                 </Typography>
-                <form onSubmit={handleFormSubmit}>
+                <form id="edit-post-form" onSubmit={handleFormSubmit}>
                     <Grid container spacing={isMobile ? 2 : 3}>
                         <Grid item xs={12}>
                             <TextField
+                                id="edit-post-game-name"
                                 fullWidth
                                 label="Game Name"
                                 name="name_games"
@@ -191,6 +192,7 @@ const EditPostGamePage = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                id="edit-post-detail"
                                 fullWidth
                                 label="Details"
                                 name="detail_post"
@@ -202,6 +204,7 @@ const EditPostGamePage = () => {
                         <Grid item xs={12} md={6}>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DatePicker
+                                    id="edit-post-date-picker"
                                     label="Date"
                                     value={event.date_meet}
                                     onChange={(newValue) => {
@@ -218,38 +221,36 @@ const EditPostGamePage = () => {
                             </LocalizationProvider>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <Grid item xs={12} md={6}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <TimePicker
-                                        label="Time"
-                                        value={event.time_meet} // Ensure this is a valid dayjs object
-                                        onChange={(newValue) => {
-                                            setEvent((prevEvent) => ({
-                                                ...prevEvent,
-                                                time_meet: newValue,
-                                            }));
-                                            console.log('Time Selected: ', newValue.format('hh:mm A')); // Log the selected time
-                                        }}
-                                        viewRenderers={{
-                                            hours: renderTimeViewClock,
-                                            minutes: renderTimeViewClock,
-                                        }}
-                                        views={['hours', 'minutes']}
-                                        sx={{
-                                            backgroundColor: '#1c1c1c',
-                                            '.MuiInputBase-root': { color: 'white' },
-                                            '.MuiInputLabel-root': { color: 'white' },
-                                        }}
-                                        fullWidth
-                                    />
-                                </LocalizationProvider>
-                            </Grid>
-
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <TimePicker
+                                    id="edit-post-time-picker"
+                                    label="Time"
+                                    value={event.time_meet} // Ensure this is a valid dayjs object
+                                    onChange={(newValue) => {
+                                        setEvent((prevEvent) => ({
+                                            ...prevEvent,
+                                            time_meet: newValue,
+                                        }));
+                                        console.log('Time Selected: ', newValue.format('HH:mm A')); // Log the selected time
+                                    }}
+                                    viewRenderers={{
+                                        hours: renderTimeViewClock,
+                                        minutes: renderTimeViewClock,
+                                    }}
+                                    views={['hours', 'minutes']}
+                                    sx={{
+                                        backgroundColor: '#1c1c1c',
+                                        '.MuiInputBase-root': { color: 'white' },
+                                        '.MuiInputLabel-root': { color: 'white' },
+                                    }}
+                                    fullWidth
+                                />
+                            </LocalizationProvider>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                id="edit-post-num-people"
                                 fullWidth
-                                id="num_people"
                                 label="Number of Participants"
                                 type="number"
                                 value={event.num_people}
@@ -262,6 +263,7 @@ const EditPostGamePage = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <Button
+                                id="edit-post-upload-button"
                                 variant="contained"
                                 component="span"
                                 startIcon={<CloudUploadIcon />}
@@ -279,6 +281,7 @@ const EditPostGamePage = () => {
                             />
                             {previewImage && (
                                 <img
+                                    id="edit-post-image-preview"
                                     src={previewImage}
                                     alt="Preview"
                                     style={{ maxWidth: '100%', marginBottom: '10px' }}
@@ -287,8 +290,9 @@ const EditPostGamePage = () => {
                         </Grid>
                     </Grid>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+                    <Box id="edit-post-action-buttons" sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
                         <Button
+                            id="edit-post-save-button"
                             variant="contained"
                             sx={{
                                 backgroundColor: 'yellow',
@@ -300,6 +304,7 @@ const EditPostGamePage = () => {
                             Save Changes
                         </Button>
                         <Button
+                            id="edit-post-cancel-button"
                             variant="outlined"
                             sx={{
                                 borderColor: 'white',
@@ -318,12 +323,13 @@ const EditPostGamePage = () => {
 
             {/* Snackbar Notification */}
             <Snackbar
+                id="edit-post-snackbar"
                 open={alertMessage.open}
                 autoHideDuration={3000}
                 onClose={handleCloseSnackbar}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}  // Position set to bottom middle
             >
-                <Alert onClose={handleCloseSnackbar} severity={alertMessage.severity} sx={{ width: '100%' }}>
+                <Alert id="edit-post-alert" onClose={handleCloseSnackbar} severity={alertMessage.severity} sx={{ width: '100%' }}>
                     {alertMessage.message}
                 </Alert>
             </Snackbar>

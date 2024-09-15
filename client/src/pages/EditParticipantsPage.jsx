@@ -63,42 +63,43 @@ const EditParticipantsPage = () => {
     };
 
     return (
-        <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
-            <Paper elevation={3} sx={{ padding: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
-                <Typography variant="h4" gutterBottom>Manage Participants</Typography>
+        <Container id="edit-participants-page-container" maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
+            <Paper id="edit-participants-page-paper" elevation={3} sx={{ padding: 4, backgroundColor: '#2c2c2c', color: 'white' }}>
+                <Typography id="edit-participants-page-title" variant="h4" gutterBottom>Manage Participants</Typography>
 
-                <Typography variant="h6" gutterBottom>Waiting Participants</Typography>
-                <Grid container spacing={2}>
+                <Typography id="waiting-participants-title" variant="h6" gutterBottom>Waiting Participants</Typography>
+                <Grid container spacing={2} id="waiting-participants-grid">
                     {waitingParticipants.length > 0 ? waitingParticipants.map(participant => (
-                        <Grid item xs={12} key={participant.id}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Avatar alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
-                                <Typography variant="body1">{participant.username}</Typography>
-                                <Button variant="contained" color="success" onClick={() => handleApprove(participant.id)}>Approve</Button>
+                        <Grid item xs={12} key={participant.id} id={`waiting-participant-${participant.id}`}>
+                            <Box id={`waiting-participant-box-${participant.id}`} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Avatar id={`waiting-participant-avatar-${participant.id}`} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
+                                <Typography id={`waiting-participant-username-${participant.id}`} variant="body1">{participant.username}</Typography>
+                                <Button id={`approve-button-${participant.id}`} variant="contained" color="success" onClick={() => handleApprove(participant.id)}>Approve</Button>
                             </Box>
                         </Grid>
-                    )) : <Typography>No waiting participants.</Typography>}
+                    )) : <Typography id="no-waiting-participants">No waiting participants.</Typography>}
                 </Grid>
 
-                <Typography variant="h6" gutterBottom sx={{ marginTop: 4 }}>Joined Participants</Typography>
-                <Grid container spacing={2}>
+                <Typography id="joined-participants-title" variant="h6" gutterBottom sx={{ marginTop: 4 }}>Joined Participants</Typography>
+                <Grid container spacing={2} id="joined-participants-grid">
                     {joinedParticipants.length > 0 ? joinedParticipants.map(participant => (
-                        <Grid item xs={12} key={participant.id}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Avatar alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
-                                <Typography variant="body1">{participant.username}</Typography>
-                                <Button variant="contained" color="error" onClick={() => handleRemove(participant.id)}>Remove</Button>
+                        <Grid item xs={12} key={participant.id} id={`joined-participant-${participant.id}`}>
+                            <Box id={`joined-participant-box-${participant.id}`} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Avatar id={`joined-participant-avatar-${participant.id}`} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
+                                <Typography id={`joined-participant-username-${participant.id}`} variant="body1">{participant.username}</Typography>
+                                <Button id={`remove-button-${participant.id}`} variant="contained" color="error" onClick={() => handleRemove(participant.id)}>Remove</Button>
                             </Box>
                         </Grid>
-                    )) : <Typography>No joined participants.</Typography>}
+                    )) : <Typography id="no-joined-participants">No joined participants.</Typography>}
                 </Grid>
             </Paper>
 
             <Snackbar
+                id="edit-participants-page-snackbar"
                 open={alertMessage.open}
                 autoHideDuration={3000}
                 onClose={() => setAlertMessage({ open: false })}>
-                <Alert onClose={() => setAlertMessage({ open: false })} severity={alertMessage.severity}>
+                <Alert id="edit-participants-page-alert" onClose={() => setAlertMessage({ open: false })} severity={alertMessage.severity}>
                     {alertMessage.message}
                 </Alert>
             </Snackbar>

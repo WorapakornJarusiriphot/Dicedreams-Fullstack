@@ -88,43 +88,45 @@ const DetailsPage = () => {
     const isOwner = userId === event.users_id;
 
     if (!event.name_games) {
-        return <Typography variant="h6">Loading...</Typography>;
+        return <Typography id="loading-message" variant="h6">Loading...</Typography>;
     }
 
     return (
-        <Container maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
-            <Paper elevation={3} sx={{
+        <Container id="details-container" maxWidth="md" sx={{ padding: '2rem 0', marginTop: '2rem' }}>
+            <Paper id="details-paper" elevation={3} sx={{
                 padding: { xs: 2, md: 5 },
                 marginTop: 4, backgroundColor: '#2c2c2c', color: 'white'
             }}>
                 <Typography
+                    id="event-name"
                     variant="h4"
                     gutterBottom
                     sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}
                 >
                     {event.name_games || 'Untitled Event'}
                 </Typography>
-                <Typography variant="body1" gutterBottom>
+                <Typography id="event-date" variant="body1" gutterBottom>
                     {`${event.date_meet.format('MMM DD YYYY')} at ${event.time_meet.format('h:mm A')}`}
                 </Typography>
 
                 {event.games_image && (
-                    <Box sx={{ marginTop: 2, marginBottom: 2 }}>
-                        <img src={event.games_image} alt="Event" style={{ width: '100%', height: 'auto' }} />
+                    <Box id="event-image-box" sx={{ marginTop: 2, marginBottom: 2 }}>
+                        <img id="event-image" src={event.games_image} alt="Event" style={{ width: '100%', height: 'auto' }} />
                     </Box>
                 )}
 
-                <Typography variant="body1" gutterBottom>
+                <Typography id="event-details" variant="body1" gutterBottom>
                     {event.detail_post || '{ No content available }'}
                 </Typography>
 
-                <Typography variant="body1" gutterBottom>
+                <Typography id="event-participant-count" variant="body1" gutterBottom>
                     Participants: {event.num_people || 1}
                 </Typography>
-                <Grid container spacing={2} sx={{ marginTop: 3 }}>
+                <Grid id="actions-grid" container spacing={2} sx={{ marginTop: 3 }}>
                     {!isOwner && (
                         <Grid item xs={12} sm={6}>
                             <Button
+                                id="join-event-button"
                                 fullWidth
                                 variant="contained"
                                 color="error"
@@ -136,6 +138,7 @@ const DetailsPage = () => {
                     )}
                     <Grid item xs={12} sm={6}>
                         <Button
+                            id="return-home-button"
                             fullWidth
                             variant="contained"
                             color="primary"
@@ -147,14 +150,15 @@ const DetailsPage = () => {
                 </Grid>
             </Paper>
             {isOwner && (
-                <Paper elevation={3} sx={{
+                <Paper id="manage-event-paper" elevation={3} sx={{
                     padding: { xs: 2, md: 5 },
                     marginTop: 4, backgroundColor: '#424242', color: 'white'
                 }}>
-                    <Typography variant="h5" gutterBottom>Manage Event</Typography>
+                    <Typography id="manage-event-title" variant="h5" gutterBottom>Manage Event</Typography>
                     <Grid container spacing={2} sx={{ marginTop: 2 }}>
                         <Grid item xs={12} sm={4}>
                             <Button
+                                id="manage-participants-button"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
@@ -165,6 +169,7 @@ const DetailsPage = () => {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <Button
+                                id="edit-post-button"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
@@ -175,6 +180,7 @@ const DetailsPage = () => {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <Button
+                                id="end-post-button"
                                 fullWidth
                                 variant="outlined"
                                 color="error"
@@ -187,28 +193,29 @@ const DetailsPage = () => {
                 </Paper>
             )}
 
-            <Paper elevation={3} sx={{
+            <Paper id="participants-paper" elevation={3} sx={{
                 padding: { xs: 2, md: 5 },
                 marginTop: 4, backgroundColor: '#2c2c2c', color: 'white'
             }}>
-                <Typography variant="h5" gutterBottom>Participants</Typography>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                <Typography id="participants-title" variant="h5" gutterBottom>Participants</Typography>
+                <Box id="participants-box" sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                     {participants.length > 0 ? participants.map((participant, index) => (
-                        <Avatar key={index} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
+                        <Avatar id={`participant-avatar-${index}`} key={index} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
                     )) : (
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography id="no-participants-message" variant="body2" color="text.secondary">
                             No participants yet.
                         </Typography>
                     )}
                 </Box>
             </Paper>
 
-            <Paper elevation={3} sx={{
+            <Paper id="comments-paper" elevation={3} sx={{
                 padding: { xs: 2, md: 5 },
                 marginTop: 4, backgroundColor: '#2c2c2c', color: 'white'
             }}>
-                <Typography variant="h5" gutterBottom>Comments</Typography>
+                <Typography id="comments-title" variant="h5" gutterBottom>Comments</Typography>
                 <TextField
+                    id="comment-input"
                     label="Leave a comment"
                     fullWidth
                     multiline
@@ -216,10 +223,11 @@ const DetailsPage = () => {
                     variant="filled"
                     sx={{ marginBottom: 2, backgroundColor: 'white' }}
                 />
-                <Button variant="contained" color="primary">Send</Button>
+                <Button id="send-comment-button" variant="contained" color="primary">Send</Button>
             </Paper>
 
             <Snackbar
+                id="snackbar-alert"
                 open={alertMessage.open}
                 autoHideDuration={3000}
                 onClose={() => setAlertMessage({ ...alertMessage, open: false })}
@@ -231,6 +239,7 @@ const DetailsPage = () => {
             </Snackbar>
 
             <Dialog
+                id="confirm-end-dialog"
                 open={openDialog}
                 onClose={() => setOpenDialog(false)}
             >
@@ -241,8 +250,8 @@ const DetailsPage = () => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleDialogClose(false)}>Cancel</Button>
-                    <Button onClick={() => handleDialogClose(true)} color="error">End Post</Button>
+                    <Button id="cancel-end-button" onClick={() => handleDialogClose(false)}>Cancel</Button>
+                    <Button id="confirm-end-button" onClick={() => handleDialogClose(true)} color="error">End Post</Button>
                 </DialogActions>
             </Dialog>
         </Container>
