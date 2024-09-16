@@ -18,8 +18,8 @@ const DetailsPage = () => {
         name_games: '',
         detail_post: '',
         num_people: '',
-        date_meet: dayjs(),  // Use dayjs object for consistency
-        time_meet: dayjs(),   // Use dayjs object for consistency
+        date_meet: dayjs(),
+        time_meet: dayjs(),
         games_image: '',
     });
 
@@ -38,7 +38,7 @@ const DetailsPage = () => {
                 setEvent({
                     ...eventData,
                     date_meet: dayjs(eventData.date_meet),
-                    time_meet: dayjs(eventData.time_meet, "HH:mm"),  // Adjust format if needed
+                    time_meet: dayjs(eventData.time_meet, "HH:mm"),
                 });
                 setParticipants(eventData.participants || []);
             } catch (error) {
@@ -63,7 +63,7 @@ const DetailsPage = () => {
     };
 
     useEffect(() => {
-        if (!event.name_games) return; // Ensure event is loaded
+        if (!event.name_games) return;
 
         const checkTimeToHidePost = () => {
             const currentTime = dayjs();
@@ -83,6 +83,24 @@ const DetailsPage = () => {
     const handleDialogClose = (confirmed) => {
         setOpenDialog(false);
         if (confirmed) handleEndPost();
+    };
+
+    const handleJoinEvent = async () => {
+        const participantData = {
+            participant_apply_datetime: dayjs().format('MM/DD/YYYY HH:mm:ss'),
+            participant_status: 'pending',
+            user_id: userId,
+            post_games_id: id
+        };
+
+        try {
+            await axios.post(`http://localhost:8080/api/participate`, participantData, {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            });
+            setAlertMessage({ open: true, message: 'Successfully joined the event!', severity: 'success' });
+        } catch (error) {
+            setAlertMessage({ open: true, message: 'Failed to join the event.', severity: 'error' });
+        }
     };
 
     const isOwner = userId === event.users_id;
@@ -130,7 +148,7 @@ const DetailsPage = () => {
                                 fullWidth
                                 variant="contained"
                                 color="error"
-                                onClick={() => navigate('/join-event', { state: { eventId: id } })}
+                                onClick={handleJoinEvent}
                             >
                                 Join
                             </Button>
@@ -192,39 +210,6 @@ const DetailsPage = () => {
                     </Grid>
                 </Paper>
             )}
-
-            <Paper id="participants-paper" elevation={3} sx={{
-                padding: { xs: 2, md: 5 },
-                marginTop: 4, backgroundColor: '#2c2c2c', color: 'white'
-            }}>
-                <Typography id="participants-title" variant="h5" gutterBottom>Participants</Typography>
-                <Box id="participants-box" sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                    {participants.length > 0 ? participants.map((participant, index) => (
-                        <Avatar id={`participant-avatar-${index}`} key={index} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
-                    )) : (
-                        <Typography id="no-participants-message" variant="body2" color="text.secondary">
-                            No participants yet.
-                        </Typography>
-                    )}
-                </Box>
-            </Paper>
-
-            <Paper id="comments-paper" elevation={3} sx={{
-                padding: { xs: 2, md: 5 },
-                marginTop: 4, backgroundColor: '#2c2c2c', color: 'white'
-            }}>
-                <Typography id="comments-title" variant="h5" gutterBottom>Comments</Typography>
-                <TextField
-                    id="comment-input"
-                    label="Leave a comment"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    variant="filled"
-                    sx={{ marginBottom: 2, backgroundColor: 'white' }}
-                />
-                <Button id="send-comment-button" variant="contained" color="primary">Send</Button>
-            </Paper>
 
             <Snackbar
                 id="snackbar-alert"

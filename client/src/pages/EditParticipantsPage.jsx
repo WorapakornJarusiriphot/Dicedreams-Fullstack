@@ -25,9 +25,9 @@ const EditParticipantsPage = () => {
                 const response = await axios.get(`http://localhost:8080/api/participate/post/${id}`, {
                     headers: { Authorization: `Bearer ${accessToken}` }
                 });
-                const participants = response.data.participants || [];
-                setWaitingParticipants(participants.filter(p => p.status === 'waiting'));
-                setJoinedParticipants(participants.filter(p => p.status === 'joined'));
+                const participants = response.data || [];
+                setWaitingParticipants(participants.filter(p => p.participant_status === 'waiting'));
+                setJoinedParticipants(participants.filter(p => p.participant_status === 'joined'));
             } catch (error) {
                 alert('Failed to load participants.');
                 navigate('/');
@@ -42,9 +42,9 @@ const EditParticipantsPage = () => {
                 headers: { Authorization: `Bearer ${accessToken}` }
             });
             setAlertMessage({ open: true, message: 'Participant approved!', severity: 'success' });
-            setWaitingParticipants(prev => prev.filter(p => p.id !== participantId));
-            const approvedParticipant = waitingParticipants.find(p => p.id === participantId);
-            setJoinedParticipants(prev => [...prev, { ...approvedParticipant, status: 'joined' }]);
+            setWaitingParticipants(prev => prev.filter(p => p.participant_id !== participantId));
+            const approvedParticipant = waitingParticipants.find(p => p.participant_id === participantId);
+            setJoinedParticipants(prev => [...prev, { ...approvedParticipant, participant_status: 'joined' }]);
         } catch (error) {
             setAlertMessage({ open: true, message: 'Failed to approve participant.', severity: 'error' });
         }
@@ -56,7 +56,7 @@ const EditParticipantsPage = () => {
                 headers: { Authorization: `Bearer ${accessToken}` }
             });
             setAlertMessage({ open: true, message: 'Participant removed!', severity: 'success' });
-            setJoinedParticipants(prev => prev.filter(p => p.id !== participantId));
+            setJoinedParticipants(prev => prev.filter(p => p.participant_id !== participantId));
         } catch (error) {
             setAlertMessage({ open: true, message: 'Failed to remove participant.', severity: 'error' });
         }
@@ -70,11 +70,11 @@ const EditParticipantsPage = () => {
                 <Typography id="waiting-participants-title" variant="h6" gutterBottom>Waiting Participants</Typography>
                 <Grid container spacing={2} id="waiting-participants-grid">
                     {waitingParticipants.length > 0 ? waitingParticipants.map(participant => (
-                        <Grid item xs={12} key={participant.id} id={`waiting-participant-${participant.id}`}>
-                            <Box id={`waiting-participant-box-${participant.id}`} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Avatar id={`waiting-participant-avatar-${participant.id}`} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
-                                <Typography id={`waiting-participant-username-${participant.id}`} variant="body1">{participant.username}</Typography>
-                                <Button id={`approve-button-${participant.id}`} variant="contained" color="success" onClick={() => handleApprove(participant.id)}>Approve</Button>
+                        <Grid item xs={12} key={participant.participant_id} id={`waiting-participant-${participant.participant_id}`}>
+                            <Box id={`waiting-participant-box-${participant.participant_id}`} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Avatar id={`waiting-participant-avatar-${participant.participant_id}`} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
+                                <Typography id={`waiting-participant-username-${participant.participant_id}`} variant="body1">{participant.username}</Typography>
+                                <Button id={`approve-button-${participant.participant_id}`} variant="contained" color="success" onClick={() => handleApprove(participant.participant_id)}>Approve</Button>
                             </Box>
                         </Grid>
                     )) : <Typography id="no-waiting-participants">No waiting participants.</Typography>}
@@ -83,11 +83,11 @@ const EditParticipantsPage = () => {
                 <Typography id="joined-participants-title" variant="h6" gutterBottom sx={{ marginTop: 4 }}>Joined Participants</Typography>
                 <Grid container spacing={2} id="joined-participants-grid">
                     {joinedParticipants.length > 0 ? joinedParticipants.map(participant => (
-                        <Grid item xs={12} key={participant.id} id={`joined-participant-${participant.id}`}>
-                            <Box id={`joined-participant-box-${participant.id}`} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Avatar id={`joined-participant-avatar-${participant.id}`} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
-                                <Typography id={`joined-participant-username-${participant.id}`} variant="body1">{participant.username}</Typography>
-                                <Button id={`remove-button-${participant.id}`} variant="contained" color="error" onClick={() => handleRemove(participant.id)}>Remove</Button>
+                        <Grid item xs={12} key={participant.participant_id} id={`joined-participant-${participant.participant_id}`}>
+                            <Box id={`joined-participant-box-${participant.participant_id}`} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Avatar id={`joined-participant-avatar-${participant.participant_id}`} alt={participant.username} src={participant.user_image || "https://via.placeholder.com/40"} />
+                                <Typography id={`joined-participant-username-${participant.participant_id}`} variant="body1">{participant.username}</Typography>
+                                <Button id={`remove-button-${participant.participant_id}`} variant="contained" color="error" onClick={() => handleRemove(participant.participant_id)}>Remove</Button>
                             </Box>
                         </Grid>
                     )) : <Typography id="no-joined-participants">No joined participants.</Typography>}
