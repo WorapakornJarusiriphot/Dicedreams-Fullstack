@@ -30,10 +30,10 @@ const EditParticipantsPage = () => {
 
                 const participants = response.data || [];
                 setPendingParticipants(participants.filter(p => p.participant_status === 'pending'));
-                setJoinedParticipants(participants.filter(p => p.participant_status === 'joined'));
+                setJoinedParticipants(participants.filter(p => p.participant_status === 'approved'));
 
                 console.log('Pending participants:', participants.filter(p => p.participant_status === 'pending'));
-                console.log('Joined participants:', participants.filter(p => p.participant_status === 'joined'));
+                console.log('Joined participants:', participants.filter(p => p.participant_status === 'approved'));
             } catch (error) {
                 console.error('Error fetching participants:', error);
                 alert('Failed to load participants.');
@@ -46,20 +46,36 @@ const EditParticipantsPage = () => {
     const handleApprove = async (participantId) => {
         try {
             console.log('Approving participant with ID:', participantId);
-            await axios.put(`http://localhost:8080/participate/${id}`, {}, {
+
+            // Perform the PUT request to approve the participant
+            await axios.put(`http://localhost:8080/participate/${participantId}`, {}, {
                 headers: { Authorization: `Bearer ${accessToken}` }
             });
 
+            // Display a success message
             setAlertMessage({ open: true, message: 'Participant approved!', severity: 'success' });
-            setPendingParticipants(prev => prev.filter(p => p.participant_id !== participantId));
+
+            // Update the list of pending participants by removing the approved participant
+            setPendingParticipants(prevPending => {
+                const updatedPending = prevPending.filter(p => p.participant_id !== participantId);
+                console.log('Updated pending participants:', updatedPending);
+                return updatedPending;
+            });
+
+            // Find the approved participant from the previous pending state
             const approvedParticipant = pendingParticipants.find(p => p.participant_id === participantId);
-            setJoinedParticipants(prev => [...prev, { ...approvedParticipant, participant_status: 'joined' }]);
+
+            // Update the joined participants state
+            setJoinedParticipants(prevJoined => {
+                const updatedJoined = [...prevJoined, { ...approvedParticipant, participant_status: 'approved' }];
+                console.log('Updated joined participants:', updatedJoined);
+                return updatedJoined;
+            });
 
             console.log('Approved participant:', approvedParticipant);
-            console.log('Updated pending participants:', pendingParticipants);
-            console.log('Updated joined participants:', joinedParticipants);
         } catch (error) {
             console.error('Failed to approve participant:', error);
+            // Display an error message
             setAlertMessage({ open: true, message: 'Failed to approve participant.', severity: 'error' });
         }
     };
@@ -147,16 +163,23 @@ const EditParticipantsPage = () => {
                         <Grid item xs={12} key={participant.participant_id} id={`pending-participant-${participant.participant_id}`}>
                             <Box id={`pending-participant-box-${participant.participant_id}`} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                                    <Avatar id={`pending-participant-avatar-${participant.participant_id}`} alt={`${participant.first_name} ${participant.last_name}`} src={participant.user_image || "https://via.placeholder.com/40"} />
+                                    <Avatar id={`pending-participant-avatar-${participant.participant_id}`}
+                                        alt={`${participant?.user?.first_name} ${participant?.user?.last_name}`}
+                                        src={participant?.user?.user_image || "https://via.placeholder.com/40"}
+                                    />
                                     <Typography id={`pending-participant-name-${participant.participant_id}`} variant="body1" sx={{ marginLeft: 2 }}>
-                                        {`${participant.first_name} ${participant.last_name}`}
+                                        {`${participant?.user?.first_name} ${participant?.user?.last_name}`}
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-                                    <Button id={`approve-button-${participant.participant_id}`} variant="contained" color="success" onClick={() => handleApprove(participant.participant_id)}>
+                                    <Button id={`approve-button-${participant.participant_id}`}
+                                        variant="contained" color="success"
+                                        onClick={() => handleApprove(participant.participant_id)}>
                                         Approve
                                     </Button>
-                                    <Button id={`refuse-button-${participant.participant_id}`} variant="outlined" color="error" onClick={() => handleRefuse(participant.participant_id)}>
+                                    <Button id={`refuse-button-${participant.participant_id}`}
+                                        variant="outlined" color="error"
+                                        onClick={() => handleRefuse(participant.participant_id)}>
                                         Refuse
                                     </Button>
                                 </Box>
@@ -164,7 +187,6 @@ const EditParticipantsPage = () => {
                         </Grid>
                     )) : <Typography id="no-pending-participants">No pending participants.</Typography>}
                 </Grid>
-
                 <Button id="approve-all-button" variant="contained" color="success" sx={{ marginTop: 2 }} onClick={handleApproveAll}>
                     Approve All
                 </Button>
@@ -177,18 +199,24 @@ const EditParticipantsPage = () => {
                         <Grid item xs={12} key={participant.participant_id} id={`joined-participant-${participant.participant_id}`}>
                             <Box id={`joined-participant-box-${participant.participant_id}`} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-                                    <Avatar id={`joined-participant-avatar-${participant.participant_id}`} alt={`${participant.first_name} ${participant.last_name}`} src={participant.user_image || "https://via.placeholder.com/40"} />
+                                    <Avatar id={`joined-participant-avatar-${participant.participant_id}`}
+                                        alt={`${participant.first_name} ${participant.last_name}`}
+                                        src={participant.user_image || "https://via.placeholder.com/40"}
+                                    />
                                     <Typography id={`joined-participant-name-${participant.participant_id}`} variant="body1" sx={{ marginLeft: 2 }}>
                                         {`${participant.first_name} ${participant.last_name}`}
                                     </Typography>
                                 </Box>
-                                <Button id={`remove-button-${participant.participant_id}`} variant="contained" color="error" onClick={() => handleRemove(participant.participant_id)}>
+                                <Button id={`remove-button-${participant.participant_id}`}
+                                    variant="contained" color="error"
+                                    onClick={() => handleRemove(participant.participant_id)}>
                                     Remove
                                 </Button>
                             </Box>
                         </Grid>
                     )) : <Typography id="no-joined-participants">No joined participants.</Typography>}
                 </Grid>
+
 
                 <Button id="remove-all-button" variant="contained" color="error" sx={{ marginTop: 2 }} onClick={handleRemoveAll}>
                     Remove All
