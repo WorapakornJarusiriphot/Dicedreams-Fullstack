@@ -63,7 +63,9 @@ TC9001 สร้างโพสต์นัดเล่น
     Click Button    xpath=/html/body/main/div/form/div/div[4]/div/div[2]/div/div/div/button
     Wait Until Element Is Visible    id=games_image    10s
     Click Element    xpath=//*[@id="games_image"]/div[4]
-    Input Text    xpath=//*[@id="games_image"]/input    ภาพถ่ายหน้าจอ 2567-09-06 เวลา 12.23.50.png
+   
+    Click Image     xpath=//*[@id="games_image"]/div[3]/div/div[1]/div[3]
+    Choose File   xpath=//*[@id="games_image"]/div[3]/div    ภาพถ่ายหน้าจอ 2567-09-06 เวลา 12.23.50.png
     Click Button    id=PostGames
     sleep    ${Delay}
     Check text TC9001
