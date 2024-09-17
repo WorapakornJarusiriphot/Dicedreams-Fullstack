@@ -70,7 +70,7 @@ const ProfileEdit = () => {
 
       console.log("---->", updatedUserData);
       const response = await axios.put(
-        `http://localhost:8080/api/users/${user_id}`,
+        `https://dicedreams-backend-deploy-to-render.onrender.com/api/users/${user_id}`,
         updatedUserData,
         {
           headers: {
@@ -81,7 +81,7 @@ const ProfileEdit = () => {
       );
 
       console.log("User updated successfully", response.data);
-      
+
       window.alert("User updated successfully!");
       navigate("/profile");
     } catch (error) {
@@ -159,7 +159,7 @@ const ProfileEdit = () => {
       console.log("formData-->", formData);
 
       const response = await axios.put(
-        `http://localhost:8080/api/users/${user_id}`,
+        `https://dicedreams-backend-deploy-to-render.onrender.com/api/users/${user_id}`,
         formData,
         {
           headers: {
@@ -232,7 +232,7 @@ const ProfileEdit = () => {
       if (!token) {
         throw new Error("No token found");
       }
-      const url = `http://localhost:8080/api/users/${user_id}`;
+      const url = `https://dicedreams-backend-deploy-to-render.onrender.com/api/users/${user_id}`;
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -246,6 +246,15 @@ const ProfileEdit = () => {
       setUsername(response.data.username);
       setEmail(response.data.email);
       setGender(response.data.gender);
+
+
+      
+      const userBirthday = new Date(response.data.birthday);
+      const cutoffDate = new Date("1900-01-01");
+
+      if (userBirthday < cutoffDate) {
+        alert("ปีเกิดน้อยกว่าปี 1900 กรุณากรอกวันเกิดจริง");
+      }
       setBirthday(dayjs(response.data.birthday));
       console.log("User data fetched successfully", response.data);
     } catch (error) {
@@ -455,8 +464,8 @@ const ProfileEdit = () => {
               },
             }}
           >
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
+            <MenuItem value="ชาย">Male</MenuItem>
+            <MenuItem value="หญิง">Female</MenuItem>
             <MenuItem value="other">Other</MenuItem>
           </TextField>
         </Box>
