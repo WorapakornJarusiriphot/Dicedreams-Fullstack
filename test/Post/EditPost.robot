@@ -22,6 +22,7 @@ login check
 *** Test Cases ***
 Search Google
     Open Browser    ${URL}    ${Browser}
+    login check
     Click Button    css=.MuiButton-text
     Click Button     xpath=/html/body/main/div/div/div[2]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div/button/svg
     Click Button    xpath=/html/body/div[13]/div[3]/ul/li[1]
