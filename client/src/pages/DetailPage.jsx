@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
-    Container, Paper, Typography, Button, Box, Avatar, TextField,
+    Container, Paper, Typography, Button, Box, TextField,
     Snackbar, Alert, Dialog, DialogActions, DialogContent,
     DialogContentText, DialogTitle, Grid
 } from '@mui/material';
@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 const DetailsPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { userId, accessToken, role } = useContext(AuthContext);
+    const { userId, accessToken, role, username } = useContext(AuthContext); // Assume username is available here
 
     const [event, setEvent] = useState({
         name_games: '',
@@ -24,6 +24,8 @@ const DetailsPage = () => {
     });
 
     const [participants, setParticipants] = useState([]);
+    const [chatMessage, setChatMessage] = useState('');
+    const [messages, setMessages] = useState([]);
     const [alertMessage, setAlertMessage] = useState({ open: false, message: '', severity: 'success' });
     const [openDialog, setOpenDialog] = useState(false);
 
@@ -103,7 +105,26 @@ const DetailsPage = () => {
         }
     };
 
+    const handleSendMessage = () => {
+        if (chatMessage.trim()) {
+            const timestamp = dayjs().format('MMM DD YYYY, h:mm A'); // Format the timestamp
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { userId, username, text: chatMessage, timestamp } // Include timestamp in each message
+            ]);
+            setChatMessage('');  // Clear input field
+        }
+    };
+
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent default behavior (like submitting a form)
+            handleSendMessage(); // Call send message function
+        }
+    };
+
     const isOwner = userId === event.users_id;
+    const isApprovedParticipant = participants.some(p => p.user_id === userId && p.participant_status === 'approved');
 
     if (!event.name_games) {
         return <Typography id="loading-message" variant="h6">Loading...</Typography>;
@@ -115,12 +136,7 @@ const DetailsPage = () => {
                 padding: { xs: 2, md: 5 },
                 marginTop: 4, backgroundColor: '#2c2c2c', color: 'white'
             }}>
-                <Typography
-                    id="event-name"
-                    variant="h4"
-                    gutterBottom
-                    sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}
-                >
+                <Typography id="event-name" variant="h4" gutterBottom sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
                     {event.name_games || 'Untitled Event'}
                 </Typography>
                 <Typography id="event-date" variant="body1" gutterBottom>
@@ -140,6 +156,7 @@ const DetailsPage = () => {
                 <Typography id="event-participant-count" variant="body1" gutterBottom>
                     Participants: {event.num_people || 1}
                 </Typography>
+
                 <Grid id="actions-grid" container spacing={2} sx={{ marginTop: 3 }}>
                     {!isOwner && (
                         <Grid item xs={12} sm={6}>
@@ -167,6 +184,7 @@ const DetailsPage = () => {
                     </Grid>
                 </Grid>
             </Paper>
+
             {isOwner && (
                 <Paper id="manage-event-paper" elevation={3} sx={{
                     padding: { xs: 2, md: 5 },
@@ -211,34 +229,90 @@ const DetailsPage = () => {
                 </Paper>
             )}
 
+            {/* Chat Section */}
+            <Paper id="chat-paper" elevation={3} sx={{ marginTop: 4, padding: 3, backgroundColor: '#424242', color: 'white' }}>
+                <Typography id="chat-title" variant="h5" gutterBottom>Event Chat</Typography>
+
+                {/* Display messages */}
+                <Box id="chat-messages" sx={{ height: 200, overflowY: 'auto', backgroundColor: '#333', padding: 2, borderRadius: 1 }}>
+                    {messages.length > 0 ? (
+                        messages.map((msg, index) => (
+                            <Box key={index} id={`message-${index}`} sx={{
+                                backgroundColor: msg.userId === userId ? '#3f51b5' : '#757575',
+                                color: 'white', padding: 1, marginBottom: 1, borderRadius: '8px'
+                            }}>
+                                <Typography variant="subtitle2" id={`message-username-${index}`}>
+                                    {msg.username} {/* Displaying username */}
+                                    <Typography variant="caption" sx={{ marginLeft: 1, fontSize: '0.8rem' }} id={`message-timestamp-${index}`}>
+                                        {msg.timestamp} {/* Displaying timestamp */}
+                                    </Typography>
+                                </Typography>
+                                <Typography variant="body2" id={`message-text-${index}`}>
+                                    {msg.text}
+                                </Typography>
+                            </Box>
+                        ))
+                    ) : (
+                        <Typography id="no-messages" variant="body2">No messages yet.</Typography>
+                    )}
+                </Box>
+
+                {/* Message input */}
+                <Grid id="message-input-grid" container spacing={2} sx={{ marginTop: 2 }}>
+                    <Grid item xs={9}>
+                        <TextField
+                            id="message-input"
+                            fullWidth
+                            variant="outlined"
+                            value={chatMessage}
+                            onChange={(e) => setChatMessage(e.target.value)}
+                            onKeyDown={handleKeyPress} // Add keypress handler
+                            placeholder="Type your message"
+                            InputProps={{ style: { color: 'white' } }}
+                        />
+                    </Grid>
+                    <Grid item xs={3}>
+                        <Button
+                            id="send-message-button"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSendMessage}
+                            disabled={!chatMessage.trim()}
+                        >
+                            Send
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Paper>
+
+            {/* Confirmation Dialog */}
+            <Dialog id="end-post-dialog" open={openDialog} onClose={() => handleDialogClose(false)}>
+                <DialogTitle id="end-post-dialog-title">End Post</DialogTitle>
+                <DialogContent id="end-post-dialog-content">
+                    <DialogContentText id="end-post-dialog-content-text">
+                        Are you sure you want to end this post?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions id="end-post-dialog-actions">
+                    <Button onClick={() => handleDialogClose(false)} id="cancel-end-post-button">Cancel</Button>
+                    <Button onClick={() => handleDialogClose(true)} id="confirm-end-post-button" color="primary">
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Snackbar */}
             <Snackbar
-                id="snackbar-alert"
                 open={alertMessage.open}
-                autoHideDuration={3000}
+                autoHideDuration={6000}
                 onClose={() => setAlertMessage({ ...alertMessage, open: false })}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
-                <Alert onClose={() => setAlertMessage({ ...alertMessage, open: false })}
-                    severity={alertMessage.severity} sx={{ width: '100%' }}>
+                <Alert onClose={() => setAlertMessage({ ...alertMessage, open: false })} severity={alertMessage.severity}>
                     {alertMessage.message}
                 </Alert>
             </Snackbar>
-
-            <Dialog
-                id="confirm-end-dialog"
-                open={openDialog}
-                onClose={() => setOpenDialog(false)}
-            >
-                <DialogTitle>{"End Post?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Do you really want to end this post? This action is irreversible.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button id="cancel-end-button" onClick={() => handleDialogClose(false)}>Cancel</Button>
-                    <Button id="confirm-end-button" onClick={() => handleDialogClose(true)} color="error">End Post</Button>
-                </DialogActions>
-            </Dialog>
         </Container>
     );
 };
