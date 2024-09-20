@@ -68,7 +68,9 @@ const Admin = () => {
         },
       });
       console.log(response.data)
-      console.log("User deleted successfully");
+      alert("User deleted successfully");
+      // fetchUsers();
+      window.location.reload()
     } catch (error) {
       console.error("Error deleting user:", error.response.data.error);
     }
