@@ -74,6 +74,8 @@ const Profile = () => {
       setUser(response.data);
       if (response.data.role === "store") {
         navigate("/store");
+      }else if (response.data.role === "admin") {
+        navigate("/manage_contracts");
       }
     } catch (error) {
       console.error("Error fetching user data", error);
