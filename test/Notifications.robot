@@ -9,7 +9,7 @@ ${Delay}    1s
 
 
 *** Keywords ***
-login check
+login check11
    # Wait Until Element Is Visible    xpath=(//a[contains(@href, '/sign-in')])[2]
     Execute Javascript    document.getElementById('identifier').click()
     Input Text   xpath=//*[@id="identifier"]  WOJA2
@@ -20,11 +20,12 @@ login check
 
 
 *** Test Cases ***
-Search Google
+TCแจ้งเตือน
     Open Browser    ${URL}    ${Browser}
-    login check
-    Click Button    css=.MuiButton-text
-    Click Button     xpath=/html/body/main/div/div/div[2]/div[2]/div[2]/div[2]/div[3]/div[1]/div[3]/div/button/svg
-    Click Button    xpath=/html/body/div[13]/div[3]/ul/li[1]
-    Click Button    locator
+    login check11
+    sleep    ${Delay}
+    Wait Until Element Is Visible    xpath=//*[@id="Notification"]
+    Click Element     xpath=//*[@id="Notification"]
+    Capture Page Screenshot  Photo/Viwearticle/TCแจ้งเตือน.png
+    sleep    ${Delay}
     Close Browser
