@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Container, Grid, Typography, Paper, Select, MenuItem, CircularProgress, Alert
 } from '@mui/material';
@@ -10,6 +10,8 @@ function RecipeReviewCard() {
   const [filter, setFilter] = useState('new');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const lastEventRef = useRef(null);  // To reference the last added EventCard
+  const scrollPosRef = useRef(0);  // To store the original scroll position
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -27,6 +29,21 @@ function RecipeReviewCard() {
 
     fetchEvents();
   }, []);
+
+  useEffect(() => {
+    // Capture the original scroll position before updating the events
+    scrollPosRef.current = window.scrollY;
+
+    // Scroll to the last event card when the event list updates
+    if (lastEventRef.current) {
+      lastEventRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [events]);  // This will trigger whenever `events` is updated
+
+  useEffect(() => {
+    // Restore the scroll position to the original after the list is updated
+    window.scrollTo(0, scrollPosRef.current);
+  }, [events]);  // Runs after the list update to move to the original position
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
@@ -75,8 +92,16 @@ function RecipeReviewCard() {
         ) : error ? (
           <Alert severity="error" id="error-alert">{error}</Alert>
         ) : (
-          filteredEvents.map((event) => (
-            <Grid item key={event.post_games_id} xs={12} sm={10} md={8} id={`event-card-grid-${event.post_games_id}`}>
+          filteredEvents.map((event, index) => (
+            <Grid
+              item
+              key={event.post_games_id}
+              xs={12}
+              sm={10}
+              md={8}
+              ref={index === filteredEvents.length - 1 ? lastEventRef : null}  // Ref for the last event
+              id={`event-card-grid-${event.post_games_id}`}
+            >
               <EventCard
                 userId={event.users_id}
                 profilePic={event.user_image} // Ensure this is returned by your API
