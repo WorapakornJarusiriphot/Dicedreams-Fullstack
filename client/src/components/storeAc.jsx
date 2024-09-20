@@ -134,7 +134,7 @@ const StoreAc = ({ data, storeImg, storeName }) => {
                 },
               }}
             >
-              {["Option 1", "Option 2", "Option 3"].map((option) => (
+              {["EDIT", "Option 2", "Option 3"].map((option) => (
                 <MenuItem key={option} onClick={handleMenuClose}>
                   {option}
                 </MenuItem>

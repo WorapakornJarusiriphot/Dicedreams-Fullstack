@@ -26,12 +26,47 @@ const StoreAc = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
+  const [store, setstore] = useState(null);
 
   const navigate = useNavigate();
 
 
   const handleDateChange = (newValue) => setEventDate(newValue);
   const handleTimeChange = (newValue) => setEventTime(newValue);
+
+  const getStore = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const userId = localStorage.getItem("users_id");
+      // const userId = "3a644c7c-1321-4ff3-bcba-e600fa5366e4"; // test
+
+      console.log("getStore userId-->", userId);
+
+      if (!token) {
+        throw new Error("No token found");
+      }
+
+      if (!userId) {
+        console.error("User ID not found");
+        return;
+      }
+
+      const url = `https://dicedreams-backend-deploy-to-render.onrender.com/api/store/${userId}`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const storeData = response.data;
+      setstore(storeData);
+      console.log("response",response)
+
+    } catch (error) {
+      alert("Error fetching store data  " + error.response.data.error.message);
+      console.error("Error fetching store data", error);
+    }
+  };
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -151,6 +186,10 @@ const StoreAc = () => {
       navigate("/store");
     }
   };
+
+  useEffect(() => {
+    getStore();
+  }, []);
 
   return (
     <Box sx={{ marginTop: 8 }}>

@@ -166,7 +166,7 @@ const Store = () => {
   const getStoreAc = async () => {
     try {
       const token = localStorage.getItem("access_token");
-      const userId = localStorage.getItem("users_id");
+      const userId = localSstorage.getItem("users_id");
       // const userId = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
       console.log("getStoreAc userId-->", userId);
 
@@ -373,7 +373,7 @@ const Store = () => {
                       <Box>
                         <Button
                         sx={{width: "100%", margin: 4 , backgroundColor:"white" , color: "red"}}
-                          onClick={() => navigate("/store/createAc")} // Use navigate function on click
+                          onClick={() => navigate("/store/createAc")} 
                         >+ add New Activity</Button>
                       </Box>
                       <Activity
