@@ -16,6 +16,7 @@ import Store from '../pages/store';
 import StoreAc from "../pages/storeActivity";
 import EditParticipantsPage from '../pages/EditParticipantsPage'; // Import the new component
 import Adm from "../pages/Admin";
+import AcEdit from "../pages/storeAcEdit"
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: "manage_contracts",
         element: <Adm />
+      },
+      {
+        path: "store/editActivity/:id",
+        element: <AcEdit />
       }
     ]
   }
