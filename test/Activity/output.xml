@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-09-22T17:08:56.398741" rpa="false" schemaversion="5">
+<suite id="s1" name="Activity" source="/Users/macbook/Desktop/TestDDream/Dicedreams-Fullstack/test/Activity/Activity.robot">
+<test id="s1-t1" name="TC1601สร้างโพสต์กิจกรรม" line="23">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:08:56.837701" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-eta.vercel.app/sign-in'.</msg>
+<arg>${URL}</arg>
+<arg>${Browser}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-09-22T17:08:56.837341" elapsed="15.582073"/>
+</kw>
+<kw name="loginStore">
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:12.497974" level="INFO">Executing JavaScript:
+document.getElementById('identifier').click()
+Without any arguments.</msg>
+<arg>document.getElementById('identifier').click()</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2024-09-22T17:09:12.494744" elapsed="0.101634"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:12.597558" level="INFO">Typing text 'outcast' into text field 'xpath=//*[@id="identifier"]'.</msg>
+<arg>xpath=//*[@id="identifier"]</arg>
+<arg>outcast</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:12.596676" elapsed="0.410199"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="password-label"]</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-09-22T17:09:13.007187" elapsed="0.031138"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:13.039183" level="INFO">Executing JavaScript:
+document.getElementById("password").click()
+Without any arguments.</msg>
+<arg>document.getElementById("password").click()</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="PASS" start="2024-09-22T17:09:13.038586" elapsed="0.006870"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:13.045959" level="INFO">Typing text '111111' into text field 'name=password'.</msg>
+<arg>name=password</arg>
+<arg>111111</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:13.045690" elapsed="0.250684"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:13.296998" level="INFO">Clicking button 'xpath=/html/body/main/div/form/button'.</msg>
+<arg>xpath=/html/body/main/div/form/button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:13.296659" elapsed="0.211566"/>
+</kw>
+<status status="PASS" start="2024-09-22T17:09:12.481749" elapsed="1.026802"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-09-22T17:09:14.513960" level="INFO">Slept 1 second.</msg>
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-09-22T17:09:13.511671" elapsed="1.002463"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="Create-PostActivity"]</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-09-22T17:09:14.514643" elapsed="0.260289"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="Create-PostActivity"]</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="PASS" start="2024-09-22T17:09:14.775355" elapsed="0.278988"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:15.055278" level="INFO">Clicking element 'xpath=//*[@id="Create-PostActivity"]'.</msg>
+<arg>xpath=//*[@id="Create-PostActivity"]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:15.054894" elapsed="0.693697"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-09-22T17:09:16.751279" level="INFO">Slept 1 second.</msg>
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-09-22T17:09:15.749698" elapsed="1.001763"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:16.752342" level="INFO">Clicking button 'xpath=//*[@id="name_activity"]'.</msg>
+<arg>xpath=//*[@id="name_activity"]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:16.751910" elapsed="0.086903"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:16.840171" level="INFO">Typing text 'กิจกรรมแข่งเล่นเกมกับทางร้านชนะรับรางวัล' into text field 'xpath=//*[@id="name_activity"]'.</msg>
+<arg>xpath=//*[@id="name_activity"]</arg>
+<arg>กิจกรรมแข่งเล่นเกมกับทางร้านชนะรับรางวัล</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:16.839601" elapsed="1.081261"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="detail_post"]</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-09-22T17:09:17.922225" elapsed="0.029601"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:17.952590" level="INFO">Clicking element 'xpath=//*[@id="detail_post"]'.</msg>
+<arg>xpath=//*[@id="detail_post"]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:17.952252" elapsed="0.068776"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:18.022578" level="INFO">Typing text 'กิจกรรมนี้เราจะแบ่งเป็น3โต๊ะ แต่ละโต๊ะจะเป็นเถมคนละประเภท โต๊ะ1เกมคำต้องเชื่อม โต๊ะ2หมาป่า โต๊ะ3เหมียวระเบิด' into text field 'xpath=//*[@id="detail_post"]'.</msg>
+<arg>xpath=//*[@id="detail_post"]</arg>
+<arg>กิจกรรมนี้เราจะแบ่งเป็น3โต๊ะ แต่ละโต๊ะจะเป็นเถมคนละประเภท โต๊ะ1เกมคำต้องเชื่อม โต๊ะ2หมาป่า โต๊ะ3เหมียวระเบิด</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:18.022056" elapsed="3.121124"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:21.144228" level="INFO">Clicking button 'xpath=//*[@id=":Rd6jhkn9uuja:"]'.</msg>
+<arg>xpath=//*[@id=":Rd6jhkn9uuja:"]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:21.143876" elapsed="0.100670"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:21.245434" level="INFO">Clicking button 'xpath=/html/body/main/div/form/div[1]/div[3]/div/div[1]/div/div/div/button'.</msg>
+<arg>xpath=/html/body/main/div/form/div[1]/div[3]/div/div[1]/div/div/div/button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:21.245116" elapsed="0.208829"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:21.454624" level="INFO">Clicking button 'xpath=/html/body/div[3]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[4]/button[5]'.</msg>
+<arg>xpath=/html/body/div[3]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[4]/button[5]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:21.454295" elapsed="0.289171"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:21.745827" level="INFO">Clicking button 'xpath=//*[@id=":Rdajhkn9uuja:"]'.</msg>
+<arg>xpath=//*[@id=":Rdajhkn9uuja:"]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:21.745462" elapsed="0.103439"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:21.849744" level="INFO">Clicking button 'xpath=/html/body/main/div/form/div[1]/div[3]/div/div[2]/div/div/div/button'.</msg>
+<arg>xpath=/html/body/main/div/form/div[1]/div[3]/div/div[2]/div/div/div/button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:21.849433" elapsed="0.156872"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:22.007177" level="INFO">Clicking button 'xpath=/html/body/div[3]/div[2]/div/div[1]/div/div[1]/button[2]'.</msg>
+<arg>xpath=/html/body/div[3]/div[2]/div/div[1]/div/div[1]/button[2]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:22.006825" elapsed="0.133708"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:22.141156" level="INFO">Clicking button 'xpath=/html/body/div[3]/div[2]/div/div[2]/button'.</msg>
+<arg>xpath=/html/body/div[3]/div[2]/div/div[2]/button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-09-22T17:09:22.140901" elapsed="0.150481"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-09-22T17:09:23.295704" level="INFO">Slept 1 second.</msg>
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-09-22T17:09:22.292858" elapsed="1.003034"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-09-22T17:09:23.298481" level="INFO">Clicking button 'xpath=//*[@id="post_activity_image"]/input'.</msg>
+<msg time="2024-09-22T17:09:23.717502" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-16.png"&gt;&lt;img src="selenium-screenshot-16.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-09-22T17:09:23.718694" level="FAIL">InvalidArgumentException: Message: invalid argument
+  (Session info: chrome=128.0.6613.138)
+Stacktrace:
+0   chromedriver                        0x00000001082f3338 chromedriver + 5096248
+1   chromedriver                        0x00000001082eab6a chromedriver + 5061482
+2   chromedriver                        0x0000000107e75e01 chromedriver + 388609
+3   chromedriver                        0x0000000107eb80b4 chromedriver + 659636
+4   chromedriver                        0x0000000107ee6ef2 chromedriver + 851698
+5   chromedriver                        0x0000000107eb7288 chromedriver + 656008
+6   chromedriver                        0x0000000107ee70ae chromedriver + 852142
+7   chromedriver                        0x0000000107f04250 chromedriver + 971344
+8   chromedriver                        0x0000000107ee6c93 chromedriver + 851091
+9   chromedriver                        0x0000000107eb5c79 chromedriver + 650361
+10  chromedriver                        0x0000000107eb649e chromedriver + 652446
+11  chromedriver                        0x00000001082b60b0 chromedriver + 4845744
+12  chromedriver                        0x00000001082bafc8 chromedriver + 4865992
+13  chromedriver                        0x00000001082bb695 chromedriver + 4867733
+14  chromedriver                        0x0000000108298ce9 chromedriver + 4725993
+15  chromedriver                        0x00000001082bb989 chromedriver + 4868489
+16  chromedriver                        0x000000010828ac04 chromedriver + 4668420
+17  chromedriver                        0x00000001082dae68 chromedriver + 4996712
+18  chromedriver                        0x00000001082db067 chromedriver + 4997223
+19  chromedriver                        0x00000001082ea76e chromedriver + 5060462
+20  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+21  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15
+</msg>
+<arg>xpath=//*[@id="post_activity_image"]/input</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="FAIL" start="2024-09-22T17:09:23.297638" elapsed="0.440573">InvalidArgumentException: Message: invalid argument
+  (Session info: chrome=128.0.6613.138)
+Stacktrace:
+0   chromedriver                        0x00000001082f3338 chromedriver + 5096248
+1   chromedriver                        0x00000001082eab6a chromedriver + 5061482
+2   chromedriver                        0x0000000107e75e01 chromedriver + 388609
+3   chromedriver                        0x0000000107eb80b4 chromedriver + 659636
+4   chromedriver                        0x0000000107ee6ef2 chromedriver + 851698
+5   chromedriver                        0x0000000107eb7288 chromedriver + 656008
+6   chromedriver                        0x0000000107ee70ae chromedriver + 852142
+7   chromedriver                        0x0000000107f04250 chromedriver + 971344
+8   chromedriver                        0x0000000107ee6c93 chromedriver + 8...
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x00000001082b60b0 chromedriver + 4845744
+12  chromedriver                        0x00000001082bafc8 chromedriver + 4865992
+13  chromedriver                        0x00000001082bb695 chromedriver + 4867733
+14  chromedriver                        0x0000000108298ce9 chromedriver + 4725993
+15  chromedriver                        0x00000001082bb989 chromedriver + 4868489
+16  chromedriver                        0x000000010828ac04 chromedriver + 4668420
+17  chromedriver                        0x00000001082dae68 chromedriver + 4996712
+18  chromedriver                        0x00000001082db067 chromedriver + 4997223
+19  chromedriver                        0x00000001082ea76e chromedriver + 5060462
+20  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+21  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15</status>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2024-09-22T17:09:23.738782" elapsed="0.000060"/>
+</kw>
+<status status="FAIL" start="2024-09-22T17:08:56.835701" elapsed="26.904025">InvalidArgumentException: Message: invalid argument
+  (Session info: chrome=128.0.6613.138)
+Stacktrace:
+0   chromedriver                        0x00000001082f3338 chromedriver + 5096248
+1   chromedriver                        0x00000001082eab6a chromedriver + 5061482
+2   chromedriver                        0x0000000107e75e01 chromedriver + 388609
+3   chromedriver                        0x0000000107eb80b4 chromedriver + 659636
+4   chromedriver                        0x0000000107ee6ef2 chromedriver + 851698
+5   chromedriver                        0x0000000107eb7288 chromedriver + 656008
+6   chromedriver                        0x0000000107ee70ae chromedriver + 852142
+7   chromedriver                        0x0000000107f04250 chromedriver + 971344
+8   chromedriver                        0x0000000107ee6c93 chromedriver + 8...
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x00000001082b60b0 chromedriver + 4845744
+12  chromedriver                        0x00000001082bafc8 chromedriver + 4865992
+13  chromedriver                        0x00000001082bb695 chromedriver + 4867733
+14  chromedriver                        0x0000000108298ce9 chromedriver + 4725993
+15  chromedriver                        0x00000001082bb989 chromedriver + 4868489
+16  chromedriver                        0x000000010828ac04 chromedriver + 4668420
+17  chromedriver                        0x00000001082dae68 chromedriver + 4996712
+18  chromedriver                        0x00000001082db067 chromedriver + 4997223
+19  chromedriver                        0x00000001082ea76e chromedriver + 5060462
+20  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+21  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15</status>
+</test>
+<status status="FAIL" start="2024-09-22T17:08:56.401935" elapsed="27.340386"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Activity">Activity</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
