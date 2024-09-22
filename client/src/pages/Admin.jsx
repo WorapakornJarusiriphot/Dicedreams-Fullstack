@@ -20,12 +20,38 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
 const Admin = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const CheckUsers = async () => {
+      const id = localStorage.getItem("users_id");
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        alert("กรุณาลอกอินใหม่อีกครั้ง");
+        navigate("/");
+        throw new Error("No token found");
+      }
+
+      try {
+        const url = `https://dicedreams-backend-deploy-to-render.onrender.com/api/users/${id}`;
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.role != "admin") {
+          alert("ไม่สามารถใช้งานส่วนนี้ได้");
+          navigate("/");
+        } else {
+          fetchUsers();
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
     const fetchUsers = async () => {
       try {
         const response = await fetch(
@@ -33,12 +59,13 @@ const Admin = () => {
         );
         const data = await response.json();
         setUsers(data);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
 
-    fetchUsers();
+    CheckUsers();
   }, []);
 
   const handleHomeClick = () => {
@@ -57,6 +84,8 @@ const Admin = () => {
     const token = localStorage.getItem("access_token");
 
     if (!token) {
+      alert("กรุณาลอกอินใหม่อีกครั้ง");
+      navigate("/");
       throw new Error("No token found");
     }
 
@@ -67,10 +96,10 @@ const Admin = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data)
+      console.log(response.data);
       alert("User deleted successfully");
       // fetchUsers();
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
       console.error("Error deleting user:", error.response.data.error);
     }
@@ -118,7 +147,6 @@ const Admin = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-
               {users.map((user, index) => (
                 <TableRow key={user.users_id}>
                   <TableCell>
@@ -145,7 +173,6 @@ const Admin = () => {
                   </TableCell>
                 </TableRow>
               ))}
-
             </TableBody>
           </Table>
         </TableContainer>
