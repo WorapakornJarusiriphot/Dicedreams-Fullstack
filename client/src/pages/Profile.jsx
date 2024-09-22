@@ -59,7 +59,14 @@ const Profile = () => {
       const token = localStorage.getItem("access_token");
       const userId = localStorage.getItem("users_id");
 
-      if (!token) throw new Error("No token found");
+      if (!token) {
+        alert("กรุณาลอกอินใหม่อีกครั้ง");
+        navigate("/");
+        {
+        throw new Error("No token found");
+      }
+      }
+
       if (!userId) {
         console.error("User ID not found");
         return;

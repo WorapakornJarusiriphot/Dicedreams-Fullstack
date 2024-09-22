@@ -40,6 +40,8 @@ const UserPosts = ({ user }) => {
       try {
         const token = localStorage.getItem("access_token");
         if (!token) {
+          alert("กรุณาลอกอินใหม่อีกครั้ง");
+          navigate("/");
           throw new Error("No token found");
         }
 

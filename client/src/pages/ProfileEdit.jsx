@@ -53,6 +53,8 @@ const ProfileEdit = () => {
       const token = localStorage.getItem("access_token");
       const user_id = localStorage.getItem("users_id");
       if (!token) {
+        alert("กรุณาลอกอินใหม่อีกครั้ง");
+        navigate("/");
         throw new Error("No token found");
       }
 
@@ -137,6 +139,8 @@ const ProfileEdit = () => {
       const user_id = localStorage.getItem("users_id");
       const token = localStorage.getItem("access_token");
       if (!token) {
+        alert("กรุณาลอกอินใหม่อีกครั้ง");
+        navigate("/");
         throw new Error("No token found");
       }
 
@@ -230,6 +234,8 @@ const ProfileEdit = () => {
       const user_id = localStorage.getItem("users_id");
 
       if (!token) {
+        alert("กรุณาลอกอินใหม่อีกครั้ง");
+        navigate("/");
         throw new Error("No token found");
       }
       const url = `https://dicedreams-backend-deploy-to-render.onrender.com/api/users/${user_id}`;
