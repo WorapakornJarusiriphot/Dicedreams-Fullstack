@@ -88,7 +88,7 @@ const router = createBrowserRouter([
         element: <Adm />
       },
       {
-        path: "store/editActivity/:id",
+        path: "store/editActivity/:encodedId",
         element: <AcEdit />
       }
     ]
