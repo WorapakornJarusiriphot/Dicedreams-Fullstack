@@ -54,25 +54,29 @@ const formatDateToThai = (isoDateString) => {
 
 const StoreAc = ({ data, storeImg, storeName }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
   const menuOpen = Boolean(anchorEl);
-  const navigate = useNavigate(); // To navigate between routes
+  const navigate = useNavigate();
 
-  const handleMenuClick = (event) => {
+  const handleMenuClick = (event, postId) => {
     setAnchorEl(event.currentTarget);
+    setSelectedActivityId(postId);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
-  // Hash function for post_activity_id
-  const hashPostActivityId = (post_activity_id) => {
-    return crypto.SHA256(post_activity_id.toString()).toString(); // Hashing with SHA-256
+  const encodeId = (postId) => {
+    return btoa(postId)
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
   };
 
-  const handleEditClick = (post_activity_id) => {
-    const hashedId = hashPostActivityId(post_activity_id); // Hash the ID
-    navigate(`/store/editActivity/${hashedId}`); // Navigate to the edit page with the hashed ID
+  const handleEditClick = () => {
+    const encodedId = encodeId(selectedActivityId); 
+    navigate(`/store/editActivity/${encodedId}`);
   };
 
   if (!data || data.length === 0) {
@@ -127,7 +131,9 @@ const StoreAc = ({ data, storeImg, storeName }) => {
               aria-controls={menuOpen ? "long-menu" : undefined}
               aria-expanded={menuOpen ? "true" : undefined}
               aria-haspopup="true"
-              onClick={handleMenuClick}
+              onClick={(event) =>
+                handleMenuClick(event, activity.post_activity_id)
+              } // Pass post_activity_id here
               sx={{ color: "white" }}
             >
               <MoreVertIcon />
@@ -151,7 +157,7 @@ const StoreAc = ({ data, storeImg, storeName }) => {
                 key="EDIT"
                 onClick={() => {
                   handleMenuClose();
-                  handleEditClick(activity.post_activity_id); // Pass the post_activity_id
+                  handleEditClick(); // No need to pass the id, it's already in state
                 }}
               >
                 EDIT
@@ -185,9 +191,6 @@ const StoreAc = ({ data, storeImg, storeName }) => {
             {activity.detail_post || "????"}
           </Typography>
         </Box>
-
-        {/* Hidden div to store post_activity_id */}
-        <div style={{ display: "none" }}>{activity.post_activity_id}</div>
       </Box>
     );
   });
