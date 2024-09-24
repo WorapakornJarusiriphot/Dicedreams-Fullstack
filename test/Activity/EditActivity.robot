@@ -3,13 +3,20 @@ Library           SeleniumLibrary
 
 *** Variables ***
 ${Browser}  chrome
-${URL}   http://localhost:5173/
+${URL}    https://dicedreams-eta.vercel.app/sign-in
 ${Delay}    1s
 
 
 
 *** Keywords ***
-
+loginStore
+   # Wait Until Element Is Visible    xpath=(//a[contains(@href, '/sign-in')])[2]
+    Execute Javascript    document.getElementById('identifier').click()
+    Input Text   xpath=//*[@id="identifier"]  outcast
+    Wait Until Element Is Visible    xpath=//*[@id="password-label"]    10s
+    Execute JavaScript    document.getElementById("password").click()
+    Input Text      name=password   111111 
+    Click Button    xpath=/html/body/main/div/form/button
 
 
 *** Test Cases ***
