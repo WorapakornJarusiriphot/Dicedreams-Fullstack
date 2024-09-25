@@ -17,47 +17,47 @@ ${Delay}    1s
  Check Title blog register1
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2002.png
 
  Check Title blog register2
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2003.png
 
  Check Title blog register3
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2004.png
 
  Check Title blog register4
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2005.png
 
  Check Title blog register5
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2006.png
 
  Check Title blog register6
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2007.png
 
  Check Title blog register7
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2008.png
 
  Check Title blog register8
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2009.png
 
  Check Title blog register9
     Wait Until Page Contains  ไม่มีการตอบสนองจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้งในภายหลัง  10s
     Sleep    1
-    Capture Page Screenshot  Photo/Viwearticle/TC2001.png
+    Capture Page Screenshot  Photo/Viwearticle/TC2010.png
 
 *** Test Cases ***
 TC2001การสมัครสมาชิก
@@ -157,7 +157,7 @@ TC2003การสมัครสมาชิกไม่กรอกนาม�
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register 
+    Check Title blog register2 
     sleep    ${Delay}
     Close Browser
 
@@ -190,7 +190,7 @@ TC2004การสมัครสมาชิกไม่กรอกUsername
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register 
+    Check Title blog register3 
     sleep    ${Delay}
     Close Browser
 
@@ -223,7 +223,7 @@ TC2005การสมัครสมาชิกไม่กรอกเบอ�
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register 
+    Check Title blog register4 
     sleep    ${Delay}
     Close Browser
 
@@ -255,7 +255,7 @@ TC2006การสมัครสมาชิกไม่กรอกอีเ�
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register 
+    Check Title blog register5
     sleep    ${Delay}
     Close Browser
 
@@ -288,7 +288,7 @@ TC2007การสมัครสมาชิกไม่กรอกพาส�
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register 
+    Check Title blog register6 
     sleep    ${Delay}
     Close Browser
 
@@ -321,7 +321,7 @@ TC2008การสมัครสมาชิกไม่กรอกวัน�
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register 
+    Check Title blog register7
     sleep    ${Delay}
     Close Browser
 
@@ -354,7 +354,7 @@ TC2009การสมัครสมาชิกไม่กรอกเพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register 
+    Check Title blog register8
     sleep    ${Delay}
     Close Browser
 
@@ -387,6 +387,6 @@ TC2010การสมัครสมาชิกข้อมูลซ้ำ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register1
+    Check Title blog register9
     sleep    ${Delay}
     Close Browser

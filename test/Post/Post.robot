@@ -3,7 +3,7 @@ Library           SeleniumLibrary
 
 *** Variables ***
 ${Browser}  chrome
-${URL}   https://dicedreams-eta.vercel.app/sign-in
+${URL}   https://dicedreams-font-end.vercel.app
 
 ${Delay}    1s
 
@@ -12,13 +12,18 @@ ${Delay}    1s
 *** Keywords ***
 
 login check
-   # Wait Until Element Is Visible    xpath=(//a[contains(@href, '/sign-in')])[2]
-    Execute Javascript    document.getElementById('identifier').click()
-    Input Text   xpath=//*[@id="identifier"]  WOJA2
-    Wait Until Element Is Visible    xpath=//*[@id="password-label"]    10s
-    Execute JavaScript    document.getElementById("password").click()
-    Input Text      name=password   111111 
-    Click Button    xpath=/html/body/main/div/form/button
+   Open Browser    ${URL}    ${Browser}
+
+    Click Button    id=login-button
+    Wait Until Element Is Visible  xpath=//div[@id='login-form']/div  10s
+    Input Text      name=identifier    WOJA2
+    Click Button   id=loginPassword
+    Input Text      name=loginPassword   111111 
+    Click Button    id=login-submit-button
+    Wait Until Page Contains  เข้าสู่ระบบสำเร็จ  10s
+    Sleep    1
+    Capture Page Screenshot  Photo/Viwearticle/TC1001.png
+    
 
 Check text Tc9001
     Page Should Contain  สร้างโพสต์สำเร็จ
@@ -47,10 +52,10 @@ TC9001 สร้างโพสต์นัดเล่น
 
     login check
     sleep    ${Delay}
-    Wait Until Element Is Visible    xpath=//a[contains(@href, '/post-play')]    10s
-    Click Element                    xpath=//a[contains(@href, '/post-play')]
+    Wait Until Element Is Visible    id=post-box    10s
+    Click Element                    id=post-box
     sleep    ${Delay}
-    Click Button  id=name_games
+    Click Button  id=game-option-7-wonders-duel
     Input Text      name=nameGames    หมาป่า
     Execute JavaScript    console.log('Testing JavaScript');
     Input Text      name=detailPost  ต้องการจำนวนมากมาเกินที่กำหนดได้
