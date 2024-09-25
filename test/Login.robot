@@ -28,6 +28,16 @@ Check Title blog4
     Sleep    1
     Capture Page Screenshot  Photo/Viwearticle/TC1004.png
 
+Check Title blog5
+    Page Should Contain   Incorrect Password !
+    Sleep    1
+    Capture Page Screenshot  Photo/Viwearticle/TC1005.png
+
+Check Title blog6
+    Page Should Contain   User Not Exist
+    Sleep    1
+    Capture Page Screenshot  Photo/Viwearticle/TC1006.png
+
 *** Test Cases ***
 TC1001 การเข้าสู่ระบบ
     Open Browser    ${URL}    ${Browser}
@@ -76,3 +86,26 @@ TC1004 การเข้าสู่ระบบโดยไม่กรอก�
     Check Title blog4
     Close Browser
 
+TC1005 การเข้าสู่ระบบโดยกรอกรหัสผิด
+    Open Browser    ${URL}    ${Browser}
+    Click Button    id=login-button
+    Wait Until Element Is Visible  xpath=//div[@id='login-form']/div  10s
+    Input Text      name=identifier    WOJA2
+    Click Button   id=loginPassword
+    Input Text      name=loginPassword   45643265657 
+    Click Button    id=login-submit-button
+    sleep    ${Delay}
+    Check Title blog5
+    Close Browser
+
+TC1006 การเข้าสู่ระบบโดยกรอกชื่อผิด
+    Open Browser    ${URL}    ${Browser}
+    Click Button    id=login-button
+    Wait Until Element Is Visible  xpath=//div[@id='login-form']/div  10s
+    Input Text      name=identifier    WOJA2frtdreesz
+    Click Button   id=loginPassword
+    Input Text      name=loginPassword   111111 
+    Click Button    id=login-submit-button
+    sleep    ${Delay}
+    Check Title blog6
+    Close Browser
