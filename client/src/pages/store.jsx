@@ -25,6 +25,8 @@ const Store = () => {
   const [store, setstore] = useState(null);
   const [storeAc, setstoreAc] = useState(null);
 
+  const [storeID, setStoreID] = useState("");
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
@@ -53,10 +55,13 @@ const Store = () => {
 
   const defaultImage = "../../public/Necrons2.jpg";
 
+  const [multipleStores, setMultipleStores] = useState([]);
+  const [showMultipleStores, setShowMultipleStores] = useState(false);
+
   const handleSave = () => {
     try {
       // const user_id = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
-      const user_id = localStorage.getItem("users_id");
+      const user_id = storeID;
       const token = localStorage.getItem("access_token");
 
       if (!token) {
@@ -66,7 +71,7 @@ const Store = () => {
       }
 
       const formData = {
-        id: user_id || "no_data_now",
+        id: user_id ,
         first_name: firstName || "no_data_now",
         last_name: lastName || "no_data_now",
         username: username || "no_data_now",
@@ -115,14 +120,61 @@ const Store = () => {
     setActiveTab(0);
   };
 
+  const getStoreAll = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const userId = localStorage.getItem("users_id");
+      // const userId = "39fb4df4-05c4-4be4-8777-351a9bce42e5";
+      // const userId = "a342988e-4e7d-4447-b2e5-35ddcc0757a2";
+
+      if (!token) {
+        alert("กรุณาลอกอินใหม่อีกครั้ง");
+        navigate("/");
+        throw new Error("No token found");
+      }
+
+      const url = `https://dicedreams-backend-deploy-to-render.onrender.com/api/store`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const storeData = response.data;
+      let getid = [];
+      let spare = [];
+
+      storeData.forEach((element) => {
+        if (element.users_id === userId) {
+          getid.push(element);
+        }
+      });
+
+      if (getid.length === 1) {
+        setStoreID(getid[0].store_id);
+        console.log("found data ==> ", getid);
+      } else if (getid.length > 1) {
+        console.log("data more than 2 ", getid);
+        setMultipleStores(getid);
+        setShowMultipleStores(true);
+      } else {
+        alert("รหัสไม่ตรงกับระบบ");
+        navigate("/");
+      }
+    } catch (error) {
+      alert(
+        "Error fetching store data  " + error.response?.data?.error?.message ||
+          error.message
+      );
+      console.error("Error fetching store data", error);
+    }
+  };
+
   const getStore = async () => {
-    console.log("get store =>start<= ");
     try {
       const token = localStorage.getItem("access_token");
       // const userId = localStorage.getItem("users_id");
-      const userId = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
-
-      console.log("getStore userId-->", userId);
+      const userId = storeID;
 
       if (!token) {
         alert("กรุณาลอกอินใหม่อีกครั้ง");
@@ -170,12 +222,10 @@ const Store = () => {
   };
 
   const getStoreAc = async () => {
-    console.log("get store Activity=>start<= ");
     try {
       const token = localStorage.getItem("access_token");
       // const userId = localSstorage.getItem("users_id");
-      const userId = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
-      console.log("getStoreAc userId-->", userId);
+      const userId = storeID;
 
       if (!token) {
         alert("กรุณาลอกอินใหม่อีกครั้ง");
@@ -197,7 +247,9 @@ const Store = () => {
       setstoreAc(response.data);
       console.log("StoreAc data fetched successfully", response.data);
     } catch (error) {
-      alert("Error fetching StoreAc data  " + error.response.data.error.message);
+      alert(
+        "Error fetching StoreAc data  " + error.response.data.error.message
+      );
       console.error("Error fetching StoreAc data", error);
     }
   };
@@ -247,7 +299,8 @@ const Store = () => {
 
     try {
       // const user_id = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
-      const user_id = localStorage.getItem("users_id");
+      // const user_id = localStorage.getItem("users_id");
+      const user_id = storeID;
       const token = localStorage.getItem("access_token");
       if (!token) {
         alert("กรุณาลอกอินใหม่อีกครั้ง");
@@ -310,7 +363,6 @@ const Store = () => {
       setUploadError("File upload failed");
       console.error("Error uploading file", error);
       alert("Error uploading file  " + error.response.data.error.message);
-
     }
   };
 
@@ -344,9 +396,16 @@ const Store = () => {
   };
 
   useEffect(() => {
-    getStore();
-    getStoreAc();
+    getStoreAll();
   }, []);
+
+  useEffect(() => {
+    if (storeID) {
+      console.log("Updated storeID ==> ", storeID);
+      getStore();
+      getStoreAc();
+    }
+  }, [storeID]);
 
   return (
     <Box sx={{ marginTop: 8 }}>
@@ -383,9 +442,16 @@ const Store = () => {
                     <Box>
                       <Box>
                         <Button
-                        sx={{width: "100%", margin: 4 , backgroundColor:"white" , color: "red"}}
-                          onClick={() => navigate("/store/createAc")} 
-                        >+ add New Activity</Button>
+                          sx={{
+                            width: "100%",
+                            margin: 4,
+                            backgroundColor: "white",
+                            color: "red",
+                          }}
+                          onClick={() => navigate("/store/createAc")}
+                        >
+                          + add New Activity
+                        </Button>
                       </Box>
                       <Activity
                         data={storeAc}
@@ -726,6 +792,70 @@ const Store = () => {
             </Box>
           </Box>
         </>
+      )}
+
+      {showMultipleStores && (
+        <Box sx={{ margin: 8 }}>
+          {multipleStores.map((store) => (
+            <Box
+              key={store.store_id}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                margin: 5,
+                backgroundColor: "#444",
+                borderRadius: "1rem",
+                padding: 2,
+                boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+              }}
+            >
+              {/* Avatar Image */}
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src={store.store_image}
+                  alt={store.name_store}
+                  width={80}
+                  height={80}
+                  style={{
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    marginRight: "1rem",
+                  }}
+                />
+
+                <Box>
+                  <Typography variant="h6">{store.name_store}</Typography>
+                  <Typography variant="body2">Road: {store.road}</Typography>
+                  <Typography variant="body2">
+                    Sub District: {store.sub_district}
+                  </Typography>
+                  <Typography variant="body2">Alley: {store.alley}</Typography>
+                  <Typography variant="body2">
+                    District: {store.district}
+                  </Typography>
+                  <Typography variant="body2">
+                    Province: {store.province}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <button
+                onClick={() => setStoreID(store.store_id)}
+                style={{
+                  padding: "0.5rem 1rem",
+                  backgroundColor: "#007bff",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "0.5rem",
+                  cursor: "pointer",
+                }}
+              >
+                Select Store
+              </button>
+            </Box>
+          ))}
+        </Box>
       )}
     </Box>
   );
