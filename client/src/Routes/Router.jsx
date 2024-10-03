@@ -9,6 +9,7 @@ import NotificationPage from "../pages/NotificationPage";
 import ParticipationHistory from '../pages/ParticipationHistory';
 import EventDetailPage from '../pages/DetailPage';
 import Profile from '../pages/Profile';
+import ProfileView from '../pages/ProfileView';
 import ProfileEdit from '../pages/ProfileEdit';
 import Index from '../pages/Index';
 import EditPostGamePage from "../pages/EditPostGamePage ";
@@ -90,6 +91,10 @@ const router = createBrowserRouter([
       {
         path: "store/editActivity/:encodedId",
         element: <AcEdit />
+      },
+      {
+        path: "profile/user/:encodedId",
+        element: <ProfileView />
       }
     ]
   }

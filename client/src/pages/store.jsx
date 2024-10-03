@@ -183,6 +183,7 @@ const Store = () => {
       }
 
       if (!userId) {
+        alert("User ID not found")
         console.error("User ID not found");
         return;
       }
@@ -234,6 +235,7 @@ const Store = () => {
       }
 
       if (!userId) {
+        alert("User ID not found");
         console.error("User ID not found");
         return;
       }
