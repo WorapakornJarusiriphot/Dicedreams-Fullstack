@@ -27,10 +27,7 @@ const Store = () => {
 
   const [storeID, setStoreID] = useState("");
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
-  const [username, setUsername] = useState("");
   const [housename, setHousename] = useState("");
   const [alley, setAlley] = useState("");
   const [road, setRoad] = useState("");
@@ -38,7 +35,6 @@ const Store = () => {
   const [subDistrict, setSubDistrict] = useState("");
   const [province, setProvince] = useState("");
   const [gender, setGender] = useState("");
-  const [email, setEmail] = useState("");
 
   const [imagePreview, setImagePreview] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -47,6 +43,9 @@ const Store = () => {
   const [uploadError, setUploadError] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
   const [dragging, setDragging] = useState(false);
+
+  const [storeName, setStoreName] = useState("");
+  const [houseNumber, setHouseNumber] = useState("");
 
   const fileInputRef = useRef(null);
 
@@ -60,7 +59,6 @@ const Store = () => {
 
   const handleSave = () => {
     try {
-      // const user_id = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
       const user_id = storeID;
       const token = localStorage.getItem("access_token");
 
@@ -71,14 +69,10 @@ const Store = () => {
       }
 
       const formData = {
-        id: user_id ,
-        first_name: firstName || "no_data_now",
-        last_name: lastName || "no_data_now",
-        username: username || "no_data_now",
-        email: email || "no_data_now",
-        gender: gender || "no_data_now",
+        store_id: user_id,
+        name_store: storeName || "no_data_now",
         phone_number: phone || "no_data_now",
-        house_name: housename || "no_data_now",
+        house_number: houseNumber || "no_data_now",
         alley: alley || "no_data_now",
         road: road || "no_data_now",
         district: district || "no_data_now",
@@ -100,19 +94,14 @@ const Store = () => {
       );
 
       console.log("File uploaded and user updated successfully", response.data);
-      console.log("Uploaded Image URL:-->", uploadedImageUrl);
-
-      // error: {
-      //   message: "ไม่มีสิทธิ์ใช้งานส่วนนี้ เฉพาะ store เท่านั้น";
-      // }
-      // message: "ไม่มีสิทธิ์ใช้งานส่วนนี้ เฉพาะ store เท่านั้น";
+      alert("File uploaded and user updated successfully  ");
 
       setTimeout(() => {
         getStore();
       }, 2000);
     } catch (error) {
-      alert("Error uploading file  " + error.response.data.error.message);
-      console.error("Error uploading file", error);
+      alert("Error uploading file  " + error);
+      console.error("Error uploading file: ", error);
     }
   };
 
@@ -124,8 +113,6 @@ const Store = () => {
     try {
       const token = localStorage.getItem("access_token");
       const userId = localStorage.getItem("users_id");
-      // const userId = "39fb4df4-05c4-4be4-8777-351a9bce42e5";
-      // const userId = "a342988e-4e7d-4447-b2e5-35ddcc0757a2";
 
       if (!token) {
         alert("กรุณาลอกอินใหม่อีกครั้ง");
@@ -162,10 +149,7 @@ const Store = () => {
         navigate("/");
       }
     } catch (error) {
-      alert(
-        "Error fetching store data  " + error.response?.data?.error?.message ||
-          error.message
-      );
+      alert("Error fetching store data  " + error);
       console.error("Error fetching store data", error);
     }
   };
@@ -183,7 +167,7 @@ const Store = () => {
       }
 
       if (!userId) {
-        alert("User ID not found")
+        alert("User ID not found");
         console.error("User ID not found");
         return;
       }
@@ -198,26 +182,25 @@ const Store = () => {
       const storeData = response.data;
       setstore(storeData);
 
-      let ori_Name = storeData.name_store.split(" ");
-
-      // Set individual state variables
-      setFirstName(ori_Name[0] || "");
-      setLastName(ori_Name.slice(1).join(" ") || "");
+      setStoreName(storeData.name_store || "");
+      setHouseNumber(storeData.house_number || "");
+      setAlley(storeData.alley || "");
+      setRoad(storeData.road || "");
+      setDistrict(storeData.district || "");
+      setSubDistrict(storeData.sub_district || "");
+      setProvince(storeData.province || "");
 
       setPhone(storeData.phone_number || "");
-      setUsername(storeData.username || "");
       setHousename(storeData.house_number || "");
       setAlley(storeData.alley || "");
       setRoad(storeData.road || "");
       setDistrict(storeData.district || "");
       setSubDistrict(storeData.sub_district || "");
       setProvince(storeData.province || "");
-      setGender(storeData.gender || "");
-      setEmail(storeData.email || "");
 
       console.log("store data fetched successfully", response.data);
     } catch (error) {
-      alert("Error fetching store data  " + error.response.data.error.message);
+      alert("Error fetching store data  " + error);
       console.error("Error fetching store data", error);
     }
   };
@@ -249,9 +232,7 @@ const Store = () => {
       setstoreAc(response.data);
       console.log("StoreAc data fetched successfully", response.data);
     } catch (error) {
-      alert(
-        "Error fetching StoreAc data  " + error.response.data.error.message
-      );
+      alert("Error fetching StoreAc data  " + error);
       console.error("Error fetching StoreAc data", error);
     }
   };
@@ -300,8 +281,6 @@ const Store = () => {
     }
 
     try {
-      // const user_id = "3594f82f-e3bf-11ee-9efc-30d0422f59c9"; // test
-      // const user_id = localStorage.getItem("users_id");
       const user_id = storeID;
       const token = localStorage.getItem("access_token");
       if (!token) {
@@ -313,13 +292,10 @@ const Store = () => {
       const base64Image = await convertImageToBase64(file);
 
       const formData = {
-        id: user_id || "no_data_now",
-        first_name: firstName || "no_data_now",
-        last_name: lastName || "no_data_now",
-        username: username || "no_data_now",
-        email: email || "no_data_now",
-        user_image: base64Image || "no_data_now",
+        store_id: user_id,
+        store_image: base64Image || "no_data_now",
       };
+
       console.log("formData-->", formData);
 
       const response = await axios.put(
@@ -342,18 +318,8 @@ const Store = () => {
       setUploadProgress(100);
       setUploadedImageUrl(response.data.user_image);
 
-      setUser((prevUser) => ({
-        ...prevUser,
-        user_image: response.data.user_image,
-      }));
-
       console.log("File uploaded and user updated successfully", response.data);
       console.log("Uploaded Image URL:-->", uploadedImageUrl);
-
-      // error: {
-      //   message: "ไม่มีสิทธิ์ใช้งานส่วนนี้ เฉพาะ store เท่านั้น";
-      // }
-      // message: "ไม่มีสิทธิ์ใช้งานส่วนนี้ เฉพาะ store เท่านั้น";
 
       setTimeout(() => {
         setUploadProgress(0);
@@ -363,8 +329,8 @@ const Store = () => {
       setUploading(false);
       setUploadProgress(0);
       setUploadError("File upload failed");
-      console.error("Error uploading file", error);
-      alert("Error uploading file  " + error.response.data.error.message);
+      console.error("Error uploading file: ", error);
+      alert("Error uploading file  " + error);
     }
   };
 
@@ -406,8 +372,21 @@ const Store = () => {
       console.log("Updated storeID ==> ", storeID);
       getStore();
       getStoreAc();
+      localStorage.setItem("store_id", storeID);
     }
   }, [storeID]);
+
+  const textFieldStyles = {
+    "& .MuiInputLabel-root": { color: "white" },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": { borderColor: "white" },
+      "&:hover fieldset": { borderColor: "white" },
+      "&.Mui-focused fieldset": {
+        borderColor: "white",
+      },
+    },
+    "& .MuiInputBase-input": { color: "white" },
+  };
 
   return (
     <Box sx={{ marginTop: 8 }}>
@@ -464,45 +443,15 @@ const Store = () => {
                   )}
                   {activeTab === 1 && (
                     <Box>
-                      {/* Name */}
+                      {/* Store Name */}
                       <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
                         <TextField
                           fullWidth
-                          label="First Name"
+                          label="Store Name"
                           variant="outlined"
-                          value={firstName}
-                          onChange={(e) => setFirstName(e.target.value)}
-                          sx={{
-                            flex: 1,
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
-                        />
-                        <TextField
-                          fullWidth
-                          label="Last Name"
-                          variant="outlined"
-                          value={lastName}
-                          onChange={(e) => setLastName(e.target.value)}
-                          sx={{
-                            flex: 1,
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
+                          value={storeName}
+                          onChange={(e) => setStoreName(e.target.value)}
+                          sx={textFieldStyles}
                         />
                       </Box>
 
@@ -528,47 +477,15 @@ const Store = () => {
                         />
                       </Box>
 
-                      {/* username */}
+                      {/* House Number, Alley, Road */}
                       <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
                         <TextField
                           fullWidth
-                          label="Username"
+                          label="House Number"
                           variant="outlined"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                          sx={{
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
-                        />
-                      </Box>
-
-                      {/* Housename and Alley and Road*/}
-                      <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
-                        <TextField
-                          fullWidth
-                          label="Housename"
-                          variant="outlined"
-                          value={housename}
-                          onChange={(e) => setHousename(e.target.value)}
-                          sx={{
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
+                          value={houseNumber}
+                          onChange={(e) => setHouseNumber(e.target.value)}
+                          sx={textFieldStyles}
                         />
                         <TextField
                           fullWidth
@@ -576,17 +493,7 @@ const Store = () => {
                           variant="outlined"
                           value={alley}
                           onChange={(e) => setAlley(e.target.value)}
-                          sx={{
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
+                          sx={textFieldStyles}
                         />
                         <TextField
                           fullWidth
@@ -594,21 +501,11 @@ const Store = () => {
                           variant="outlined"
                           value={road}
                           onChange={(e) => setRoad(e.target.value)}
-                          sx={{
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
+                          sx={textFieldStyles}
                         />
                       </Box>
 
-                      {/* District and Sub-District and Province */}
+                      {/* District, Sub-District, Province */}
                       <Box sx={{ display: "flex", gap: 2, marginBottom: 2 }}>
                         <TextField
                           fullWidth
@@ -616,17 +513,7 @@ const Store = () => {
                           variant="outlined"
                           value={district}
                           onChange={(e) => setDistrict(e.target.value)}
-                          sx={{
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
+                          sx={textFieldStyles}
                         />
                         <TextField
                           fullWidth
@@ -634,17 +521,7 @@ const Store = () => {
                           variant="outlined"
                           value={subDistrict}
                           onChange={(e) => setSubDistrict(e.target.value)}
-                          sx={{
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
+                          sx={textFieldStyles}
                         />
                         <TextField
                           fullWidth
@@ -652,17 +529,7 @@ const Store = () => {
                           variant="outlined"
                           value={province}
                           onChange={(e) => setProvince(e.target.value)}
-                          sx={{
-                            "& .MuiInputLabel-root": { color: "white" },
-                            "& .MuiOutlinedInput-root": {
-                              "& fieldset": { borderColor: "white" },
-                              "&:hover fieldset": { borderColor: "white" },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "white",
-                              },
-                            },
-                            "& .MuiInputBase-input": { color: "white" },
-                          }}
+                          sx={textFieldStyles}
                         />
                       </Box>
 
