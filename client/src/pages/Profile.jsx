@@ -80,6 +80,7 @@ const Profile = () => {
         },
       });
       setUser(response.data);
+      console.log(response.data)
       if (response.data.role === "store") {
         navigate("/store");
       }else if (response.data.role === "admin") {

@@ -15,7 +15,7 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  TextField, // Import TextField for search
+  TextField, 
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
@@ -74,7 +74,7 @@ const Admin = () => {
   }, []);
 
   const handleHomeClick = () => {
-    navigate("/Home");
+    navigate("/");
   };
 
   const deluser = async (id) => {
