@@ -1,90 +1,327 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-09-19T19:59:38.869640" rpa="false" schemaversion="5">
-<suite id="s1" name="DeletePost" source="/Users/macbook/Desktop/TestDDream/Dicedreams-Fullstack/test/Post/DeletePost.robot">
-<test id="s1-t1" name="TC13.2ลบโพสต์นัดเล่น" line="23">
+<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-10-04T14:18:38.440169" rpa="false" schemaversion="5">
+<suite id="s1" name="Post" source="/Users/macbook/Desktop/TestDDream/Dicedreams-Fullstack/test/Post/Post.robot">
+<test id="s1-t1" name="TC9001 สร้างโพสต์นัดเล่น" line="49">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-09-19T19:59:39.231546" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-eta.vercel.app/sign-in'.</msg>
+<msg time="2024-10-04T14:18:38.808618" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app'.</msg>
 <arg>${URL}</arg>
 <arg>${Browser}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-09-19T19:59:39.231109" elapsed="16.290124"/>
+<status status="PASS" start="2024-10-04T14:18:38.808224" elapsed="25.401102"/>
 </kw>
-<kw name="login check1">
-<kw name="Execute Javascript" owner="SeleniumLibrary">
-<msg time="2024-09-19T19:59:55.559237" level="INFO">Executing JavaScript:
-document.getElementById('identifier').click()
-Without any arguments.</msg>
-<arg>document.getElementById('identifier').click()</arg>
-<doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="PASS" start="2024-09-19T19:59:55.554733" elapsed="0.298413"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-09-19T19:59:55.855609" level="INFO">Typing text 'WOJA2' into text field 'xpath=//*[@id="identifier"]'.</msg>
-<arg>xpath=//*[@id="identifier"]</arg>
-<arg>WOJA2</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-09-19T19:59:55.853563" elapsed="0.702873"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="password-label"]</arg>
-<arg>10s</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-09-19T19:59:56.557004" elapsed="0.107527"/>
-</kw>
-<kw name="Execute Javascript" owner="SeleniumLibrary">
-<msg time="2024-09-19T19:59:56.665837" level="INFO">Executing JavaScript:
-document.getElementById("password").click()
-Without any arguments.</msg>
-<arg>document.getElementById("password").click()</arg>
-<doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="PASS" start="2024-09-19T19:59:56.664926" elapsed="0.015380"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-09-19T19:59:56.681568" level="INFO">Typing text '111111' into text field 'name=password'.</msg>
-<arg>name=password</arg>
-<arg>111111</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-09-19T19:59:56.680613" elapsed="0.322956"/>
+<kw name="login check">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-04T14:19:04.296125" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app'.</msg>
+<arg>${URL}</arg>
+<arg>${Browser}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-10-04T14:19:04.293655" elapsed="12.154343"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-09-19T19:59:57.004557" level="INFO">Clicking button 'xpath=/html/body/main/div/form/button'.</msg>
-<arg>xpath=/html/body/main/div/form/button</arg>
+<msg time="2024-10-04T14:19:16.460794" level="INFO">Clicking button 'id=login-button'.</msg>
+<msg time="2024-10-04T14:19:16.472739" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.90)
+Stacktrace:
+0   chromedriver                        0x000000010f45bd18 chromedriver + 4996376
+1   chromedriver                        0x000000010f4535da chromedriver + 4961754
+2   chromedriver                        0x000000010eff6d10 chromedriver + 388368
+3   chromedriver                        0x000000010efce44f chromedriver + 222287
+4   chromedriver                        0x000000010f06f9fd chromedriver + 883197
+5   chromedriver                        0x000000010f0853f9 chromedriver + 971769
+6   chromedriver                        0x000000010f067753 chromedriver + 849747
+7   chromedriver                        0x000000010f036635 chromedriver + 648757
+8   chromedriver                        0x000000010f036e5e chromedriver + 650846
+9   chromedriver                        0x000000010f422000 chromedriver + 4759552
+10  chromedriver                        0x000000010f426f18 chromedriver + 4779800
+11  chromedriver                        0x000000010f4275e5 chromedriver + 4781541
+12  chromedriver                        0x000000010f404aa9 chromedriver + 4639401
+13  chromedriver                        0x000000010f4278d9 chromedriver + 4782297
+14  chromedriver                        0x000000010f3f6044 chromedriver + 4579396
+15  chromedriver                        0x000000010f443a08 chromedriver + 4897288
+16  chromedriver                        0x000000010f443c03 chromedriver + 4897795
+17  chromedriver                        0x000000010f4531de chromedriver + 4960734
+18  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15
+</msg>
+<msg time="2024-10-04T14:19:16.479115" level="FAIL">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.90)
+Stacktrace:
+0   chromedriver                        0x000000010f45bd18 chromedriver + 4996376
+1   chromedriver                        0x000000010f4535da chromedriver + 4961754
+2   chromedriver                        0x000000010eff6d10 chromedriver + 388368
+3   chromedriver                        0x000000010efce44f chromedriver + 222287
+4   chromedriver                        0x000000010f06f9fd chromedriver + 883197
+5   chromedriver                        0x000000010f0853f9 chromedriver + 971769
+6   chromedriver                        0x000000010f067753 chromedriver + 849747
+7   chromedriver                        0x000000010f036635 chromedriver + 648757
+8   chromedriver                        0x000000010f036e5e chromedriver + 650846
+9   chromedriver                        0x000000010f422000 chromedriver + 4759552
+10  chromedriver                        0x000000010f426f18 chromedriver + 4779800
+11  chromedriver                        0x000000010f4275e5 chromedriver + 4781541
+12  chromedriver                        0x000000010f404aa9 chromedriver + 4639401
+13  chromedriver                        0x000000010f4278d9 chromedriver + 4782297
+14  chromedriver                        0x000000010f3f6044 chromedriver + 4579396
+15  chromedriver                        0x000000010f443a08 chromedriver + 4897288
+16  chromedriver                        0x000000010f443c03 chromedriver + 4897795
+17  chromedriver                        0x000000010f4531de chromedriver + 4960734
+18  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15
+</msg>
+<arg>id=login-button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-09-19T19:59:57.003996" elapsed="0.217910"/>
-</kw>
-<status status="PASS" start="2024-09-19T19:59:55.548050" elapsed="1.674238"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-09-19T19:59:58.236383" level="INFO">Slept 1 second.</msg>
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-09-19T19:59:57.223925" elapsed="1.012826"/>
+<status status="FAIL" start="2024-10-04T14:19:16.455454" elapsed="0.063055">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.90)
+Stacktrace:
+0   chromedriver                        0x000000010f45bd18 chromedriver + 4996376
+1   chromedriver                        0x000000010f4535da chromedriver + 4961754
+2   chromedriver                        0x000000010eff6d10 chromedriver + 388368
+3   chromedriver                        0x000000010efce44f chromedriver + 222287
+4   chromedriver                        0x000000010f06f9fd chromedriver + 883197
+5   chromedriver                        0x000000010f0853f9 chromedriver + 971769
+6   chromedriver                        0x000000010f067753 chromedriver + 849747
+7   chromedriver                        0x000000010f036635 chromedriver + 648757
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x000000010f422000 chromedriver + 4759552
+10  chromedriver                        0x000000010f426f18 chromedriver + 4779800
+11  chromedriver                        0x000000010f4275e5 chromedriver + 4781541
+12  chromedriver                        0x000000010f404aa9 chromedriver + 4639401
+13  chromedriver                        0x000000010f4278d9 chromedriver + 4782297
+14  chromedriver                        0x000000010f3f6044 chromedriver + 4579396
+15  chromedriver                        0x000000010f443a08 chromedriver + 4897288
+16  chromedriver                        0x000000010f443c03 chromedriver + 4897795
+17  chromedriver                        0x000000010f4531de chromedriver + 4960734
+18  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15</status>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<msg time="2024-09-19T20:00:28.996912" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-17.png"&gt;&lt;img src="selenium-screenshot-17.png" width="800px"&gt;&lt;/a&gt;</msg>
-<msg time="2024-09-19T20:00:29.013388" level="FAIL">Element 'xpath=//*[@id="MoreVertOutlinedIcon"]/svg' not visible after 30 seconds.</msg>
-<arg>xpath=//*[@id="MoreVertOutlinedIcon"]/svg</arg>
-<arg>timeout=30s</arg>
+<arg>xpath=//div[@id='login-form']/div</arg>
+<arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="FAIL" start="2024-09-19T19:59:58.237602" elapsed="30.966815">Element 'xpath=//*[@id="MoreVertOutlinedIcon"]/svg' not visible after 30 seconds.</status>
+<status status="NOT RUN" start="2024-10-04T14:19:16.519312" elapsed="0.000082"/>
 </kw>
-<kw name="Scroll Element Into View" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="MoreVertOutlinedIcon"]/svg</arg>
-<doc>Scrolls the element identified by ``locator`` into view.</doc>
-<status status="NOT RUN" start="2024-09-19T20:00:29.211391" elapsed="0.000265"/>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=identifier</arg>
+<arg>WOJA2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.519758" elapsed="0.000073"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=loginPassword</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.520070" elapsed="0.000070"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=loginPassword</arg>
+<arg>111111</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.520376" elapsed="0.000069"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=login-submit-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.520670" elapsed="0.000166"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>เข้าสู่ระบบสำเร็จ</arg>
+<arg>10s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.521332" elapsed="0.000151"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>1</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.522093" elapsed="0.000090"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<arg>Photo/Viwearticle/TC1001.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.522805" elapsed="0.000800"/>
+</kw>
+<status status="FAIL" start="2024-10-04T14:19:04.271948" elapsed="12.254554">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.90)
+Stacktrace:
+0   chromedriver                        0x000000010f45bd18 chromedriver + 4996376
+1   chromedriver                        0x000000010f4535da chromedriver + 4961754
+2   chromedriver                        0x000000010eff6d10 chromedriver + 388368
+3   chromedriver                        0x000000010efce44f chromedriver + 222287
+4   chromedriver                        0x000000010f06f9fd chromedriver + 883197
+5   chromedriver                        0x000000010f0853f9 chromedriver + 971769
+6   chromedriver                        0x000000010f067753 chromedriver + 849747
+7   chromedriver                        0x000000010f036635 chromedriver + 648757
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x000000010f422000 chromedriver + 4759552
+10  chromedriver                        0x000000010f426f18 chromedriver + 4779800
+11  chromedriver                        0x000000010f4275e5 chromedriver + 4781541
+12  chromedriver                        0x000000010f404aa9 chromedriver + 4639401
+13  chromedriver                        0x000000010f4278d9 chromedriver + 4782297
+14  chromedriver                        0x000000010f3f6044 chromedriver + 4579396
+15  chromedriver                        0x000000010f443a08 chromedriver + 4897288
+16  chromedriver                        0x000000010f443c03 chromedriver + 4897795
+17  chromedriver                        0x000000010f4531de chromedriver + 4960734
+18  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15</status>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.530145" elapsed="0.000189"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=post-box</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.531812" elapsed="0.002129"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="MoreVertOutlinedIcon"]/svg</arg>
+<arg>id=post-box</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-19T20:00:29.212806" elapsed="0.002197"/>
+<status status="NOT RUN" start="2024-10-04T14:19:16.535750" elapsed="0.000207"/>
 </kw>
-<kw name="Close Browser" owner="SeleniumLibrary">
-<doc>Closes the current browser.</doc>
-<status status="NOT RUN" start="2024-09-19T20:00:29.217155" elapsed="0.000104"/>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=game-select</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.536541" elapsed="0.000049"/>
 </kw>
-<status status="FAIL" start="2024-09-19T19:59:39.228636" elapsed="50.005108">Element 'xpath=//*[@id="MoreVertOutlinedIcon"]/svg' not visible after 30 seconds.</status>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>id=game-select</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.537341" elapsed="0.000051"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>id=game-select</arg>
+<arg>คำต้องห้าม</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.538942" elapsed="0.000075"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=detail-post-input</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.539330" elapsed="0.000056"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>id=detail-post-input</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.539636" elapsed="0.000039"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=detail_post</arg>
+<arg>ไม่จำเป็นต้องรู้จักกฏของเกมก่อน มาเล่นๆเอ็นจอยกัน</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.539888" elapsed="0.000038"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="date-time-picker"]/div[1]/div/div/button</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.540116" elapsed="0.000038"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="date-time-picker"]/div[1]/div/div/button</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.540317" elapsed="0.000035"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[4]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.540500" elapsed="0.000034"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="date-time-picker"]/div[2]/div</arg>
+<arg>20s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.540699" elapsed="0.000036"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="date-time-picker"]/div[2]/div/div/button</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.540888" elapsed="0.000033"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=/html/body/div[2]/div[2]/div/div[1]/div/div[1]/div/div[1]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.541238" elapsed="0.000046"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=/html/body/div[2]/div[2]/div/div[2]/button</arg>
+<arg>10</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.541473" elapsed="0.000043"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=/html/body/div[2]/div[2]/div/div[2]/button</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.541732" elapsed="0.000040"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.541937" elapsed="0.000037"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="num-people-select"]</arg>
+<arg>30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.542145" elapsed="0.000038"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="num-people-select"]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.542353" elapsed="0.000033"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="num-people-select"]</arg>
+<arg>7</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.542535" elapsed="0.000033"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="image-input"]</arg>
+<arg>30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.542739" elapsed="0.000193"/>
+</kw>
+<kw name="Click Element" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="image-input"]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.543103" elapsed="0.000035"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="image-input"]</arg>
+<arg>/Users/macbook/Desktop/คำต้องห้าม.jpeg</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-04T14:19:16.543292" elapsed="0.000034"/>
+</kw>
+<status status="FAIL" start="2024-10-04T14:18:38.806380" elapsed="37.756298">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.90)
+Stacktrace:
+0   chromedriver                        0x000000010f45bd18 chromedriver + 4996376
+1   chromedriver                        0x000000010f4535da chromedriver + 4961754
+2   chromedriver                        0x000000010eff6d10 chromedriver + 388368
+3   chromedriver                        0x000000010efce44f chromedriver + 222287
+4   chromedriver                        0x000000010f06f9fd chromedriver + 883197
+5   chromedriver                        0x000000010f0853f9 chromedriver + 971769
+6   chromedriver                        0x000000010f067753 chromedriver + 849747
+7   chromedriver                        0x000000010f036635 chromedriver + 648757
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x000000010f422000 chromedriver + 4759552
+10  chromedriver                        0x000000010f426f18 chromedriver + 4779800
+11  chromedriver                        0x000000010f4275e5 chromedriver + 4781541
+12  chromedriver                        0x000000010f404aa9 chromedriver + 4639401
+13  chromedriver                        0x000000010f4278d9 chromedriver + 4782297
+14  chromedriver                        0x000000010f3f6044 chromedriver + 4579396
+15  chromedriver                        0x000000010f443a08 chromedriver + 4897288
+16  chromedriver                        0x000000010f443c03 chromedriver + 4897795
+17  chromedriver                        0x000000010f4531de chromedriver + 4960734
+18  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15</status>
 </test>
-<status status="FAIL" start="2024-09-19T19:59:38.871755" elapsed="50.369980"/>
+<status status="FAIL" start="2024-10-04T14:18:38.442149" elapsed="38.138218"/>
 </suite>
 <statistics>
 <total>
@@ -93,9 +330,34 @@ Without any arguments.</msg>
 <tag>
 </tag>
 <suite>
-<stat pass="0" fail="1" skip="0" id="s1" name="DeletePost">DeletePost</stat>
+<stat pass="0" fail="1" skip="0" id="s1" name="Post">Post</stat>
 </suite>
 </statistics>
 <errors>
+<msg time="2024-10-04T14:19:16.472739" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.90)
+Stacktrace:
+0   chromedriver                        0x000000010f45bd18 chromedriver + 4996376
+1   chromedriver                        0x000000010f4535da chromedriver + 4961754
+2   chromedriver                        0x000000010eff6d10 chromedriver + 388368
+3   chromedriver                        0x000000010efce44f chromedriver + 222287
+4   chromedriver                        0x000000010f06f9fd chromedriver + 883197
+5   chromedriver                        0x000000010f0853f9 chromedriver + 971769
+6   chromedriver                        0x000000010f067753 chromedriver + 849747
+7   chromedriver                        0x000000010f036635 chromedriver + 648757
+8   chromedriver                        0x000000010f036e5e chromedriver + 650846
+9   chromedriver                        0x000000010f422000 chromedriver + 4759552
+10  chromedriver                        0x000000010f426f18 chromedriver + 4779800
+11  chromedriver                        0x000000010f4275e5 chromedriver + 4781541
+12  chromedriver                        0x000000010f404aa9 chromedriver + 4639401
+13  chromedriver                        0x000000010f4278d9 chromedriver + 4782297
+14  chromedriver                        0x000000010f3f6044 chromedriver + 4579396
+15  chromedriver                        0x000000010f443a08 chromedriver + 4897288
+16  chromedriver                        0x000000010f443c03 chromedriver + 4897795
+17  chromedriver                        0x000000010f4531de chromedriver + 4960734
+18  libsystem_pthread.dylib             0x00007fff207638fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff2075f443 thread_start + 15
+</msg>
 </errors>
 </robot>

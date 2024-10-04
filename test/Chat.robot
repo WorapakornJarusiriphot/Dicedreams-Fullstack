@@ -20,19 +20,36 @@ login check11
 
 
 *** Test Cases ***
-TC11พูดคุย
+TC11พูดคุยเข้าผ่านแจ้งเตือน
     Open Browser    ${URL}    ${Browser}
     login check11
     sleep    ${Delay}
     Wait Until Element Is Visible    xpath=//*[@id="Notification"]
     Click Element     xpath=//*[@id="Notification"]
-    Wait Until Element Is Visible    xpath=/html/body/div[4]/div[3]/div[2]/div/div[1]/div[2]/div/div/div/ul[2]/div[1]
-    Click Element     xpath=/html/body/div[4]/div[3]/div[2]/div/div[1]/div[2]/div/div/div/ul[2]/div[1]
-    Wait Until Element Is Visible    xpath=//*[@id="__next"]/div[2]/div[9]/form/div/div  30s
-    Click Element    xpath=//*[@id="__next"]/div[2]/div[9]/form/div/div  30s
-    Input Text    xpath=//*[@id="chat-section"]    เกมนี้เป็นตัวเกมใหม่ไม่จำเป็นต้องเล่นเ็นครับ
-    Wait Until Element Is Visible    xpath=//*[@id="Send-Chat"]
-    Click Element    xpath=//*[@id="Send-Chat"]
+    Wait Until Element Is Visible    xpath=//div[2]/div[2]/h6/span[2]
+    Click Element     xpath=//div[2]/div[2]/h6/span[2]       
+    Wait Until Element Is Visible    xpath=//div[@id='__next']/div[2]/div[6]/form/div/div   30s
+    Click Element     xpath=//div[@id='__next']/div[2]/div[6]/form/div/div
+    Input Text    id=chat-section   ดีครับ
+    Wait Until Element Is Visible    id=chat-section
+    Click Element    id=chat-section
     sleep    ${Delay}
-    Capture Page Screenshot  Photo/Viwearticle/TC11พูดคุย.png
+   # Capture Page Screenshot  Photo/Viwearticle/TC11พูดคุย.png
+    Close Browser
+
+TC11พูดคุยผ่านปุ่มแชท
+     Open Browser    ${URL}    ${Browser}
+    login check11
+    sleep    ${Delay}
+    Wait Until Element Is Visible    id=chat
+    Click Element     id=chat
+    #Wait Until Element Is Visible    xpath=/html/body/div[4]/div[3]/div[2]/div/div[1]/div[2]/div/div/div/ul[2]/div[1]
+   # Click Element     xpath=/html/body/div[4]/div[3]/div[2]/div/div[1]/div[2]/div/div/div/ul[2]/div[1]
+   # Wait Until Element Is Visible    xpath=//*[@id="__next"]/div[2]/div[9]/form/div/div  30s
+   # Click Element    xpath=//*[@id="__next"]/div[2]/div[9]/form/div/div  30s
+    Input Text    id=chat-section   เกมนี้เป็นตัวเกมใหม่ไม่จำเป็นต้องเล่นเ็นครับ
+    Wait Until Element Is Visible    id=chat-section
+    Click Element    id=chat-section
+    sleep    ${Delay}
+   # Capture Page Screenshot  Photo/Viwearticle/TC11พูดคุย.png
     Close Browser
