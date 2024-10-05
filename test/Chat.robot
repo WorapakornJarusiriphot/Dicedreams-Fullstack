@@ -43,13 +43,13 @@ TC11พูดคุยผ่านปุ่มแชท
     sleep    ${Delay}
     Wait Until Element Is Visible    id=chat
     Click Element     id=chat
-    #Wait Until Element Is Visible    xpath=/html/body/div[4]/div[3]/div[2]/div/div[1]/div[2]/div/div/div/ul[2]/div[1]
-   # Click Element     xpath=/html/body/div[4]/div[3]/div[2]/div/div[1]/div[2]/div/div/div/ul[2]/div[1]
+    Wait Until Element Is Visible    xpath=//*[@id="__next"]/div[2]/div[7]/form/div/div
+   Click Element     xpath=//*[@id="__next"]/div[2]/div[7]/form/div/div
    # Wait Until Element Is Visible    xpath=//*[@id="__next"]/div[2]/div[9]/form/div/div  30s
    # Click Element    xpath=//*[@id="__next"]/div[2]/div[9]/form/div/div  30s
     Input Text    id=chat-section   เกมนี้เป็นตัวเกมใหม่ไม่จำเป็นต้องเล่นเ็นครับ
-    Wait Until Element Is Visible    id=chat-section
-    Click Element    id=chat-section
+    Wait Until Element Is Visible    id=Send-Chat
+    Click Element    id=Send-Chat
     sleep    ${Delay}
    # Capture Page Screenshot  Photo/Viwearticle/TC11พูดคุย.png
     Close Browser
