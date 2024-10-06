@@ -44,7 +44,7 @@ TC11พูดคุยผ่านปุ่มแชท
     Wait Until Element Is Visible    id=chat
     Click Element     id=chat
     Wait Until Element Is Visible    xpath=//*[@id="__next"]/div[2]/div[7]/form/div/div
-   Click Element     xpath=//*[@id="__next"]/div[2]/div[7]/form/div/div
+    Click Element     xpath=//*[@id="__next"]/div[2]/div[7]/form/div/div
    # Wait Until Element Is Visible    xpath=//*[@id="__next"]/div[2]/div[9]/form/div/div  30s
    # Click Element    xpath=//*[@id="__next"]/div[2]/div[9]/form/div/div  30s
     Input Text    id=chat-section   เกมนี้เป็นตัวเกมใหม่ไม่จำเป็นต้องเล่นเ็นครับ
