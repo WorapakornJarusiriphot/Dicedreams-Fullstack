@@ -19,6 +19,7 @@ login check11
     Click Button    xpath=/html/body/main/div/form/button
 
 
+
 *** Test Cases ***
 TCแจ้งเตือน
     Open Browser    ${URL}    ${Browser}
@@ -26,6 +27,9 @@ TCแจ้งเตือน
     sleep    ${Delay}
     Wait Until Element Is Visible    xpath=//*[@id="Notification"]
     Click Element     xpath=//*[@id="Notification"]
-    Capture Page Screenshot  Photo/Viwearticle/TCแจ้งเตือน.png
     sleep    ${Delay}
+    #Page Should Contain  ดีคับ
+    #sleep    ${Delay}
+    Capture Page Screenshot  Photo/Viwearticle/TCแจ้งเตือน.png
+
     Close Browser
