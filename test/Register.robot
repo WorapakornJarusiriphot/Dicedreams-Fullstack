@@ -62,18 +62,18 @@ TC2001การสมัครสมาชิก
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nattavut2
+    Input Text    name=first_name    nawapors1
     Wait Until Element Is Visible  id=last_name-label
-    Input Text    name=last_name    keawmaha2
+    Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    nattNa1
+    Input Text    id=username    dreams1
     Wait Until Element Is Visible    id=phone_number-label
-    Input Text    id=phone_number    0891234568
+    Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    natt1@gmail.com
+    Input Text    name=email    nawaporns1@com
     Wait Until Element Is Visible    id=password-label
-    Input Text    id=password    23456789l1
-    
+    Input Text    id=password    12345678bs
+    #วันเกิด
     Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
     Click Element    css=#register-form > div:nth-child(6) > div > div > button
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
@@ -82,7 +82,7 @@ TC2001การสมัครสมาชิก
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
+    #เพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
@@ -99,16 +99,16 @@ TC2002การสมัครสมาชิกไม่กรอกชื่�
     Click Button    id=first_name
 
     Wait Until Element Is Visible  id=last_name-label
-    Input Text    name=last_name    keawmaha2
+    Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    nattNa1
+    Input Text    id=username    dreams
     Wait Until Element Is Visible    id=phone_number-label
-    Input Text    id=phone_number    0891234568
+    Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    natt1@gmail.com
+    Input Text    name=email    nawaporns@com
     Wait Until Element Is Visible    id=password-label
-    Input Text    id=password    23456789l1
-    
+    Input Text    id=password    12345678bs
+    #วันเกิด
     Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
     Click Element    css=#register-form > div:nth-child(6) > div > div > button
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
@@ -117,11 +117,11 @@ TC2002การสมัครสมาชิกไม่กรอกชื่�
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
+    #เพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
-    Check Title blog register1
+    Check Title blog register1 
     sleep    ${Delay}
     Close Browser
 
@@ -130,18 +130,18 @@ TC2003การสมัครสมาชิกไม่กรอกนาม�
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nattavut2
+    Input Text    name=first_name    nawapor
     Wait Until Element Is Visible  id=last_name-label
-   
+
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    nattNa1
+    Input Text    id=username    dreams
     Wait Until Element Is Visible    id=phone_number-label
-    Input Text    id=phone_number    0891234568
+    Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    natt1@gmail.com
+    Input Text    name=email    nawaporns@com
     Wait Until Element Is Visible    id=password-label
-    Input Text    id=password    23456789l1
-    
+    Input Text    id=password    12345678bs
+    #วันเกิด
     Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
     Click Element    css=#register-form > div:nth-child(6) > div > div > button
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
@@ -150,7 +150,7 @@ TC2003การสมัครสมาชิกไม่กรอกนาม�
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
+    #เพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
@@ -163,18 +163,18 @@ TC2004การสมัครสมาชิกไม่กรอกUsername
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nattavut2
+    Input Text    name=first_name    nawapor
     Wait Until Element Is Visible  id=last_name-label
-    Input Text    name=last_name    keawmaha2
+    Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-  
+
     Wait Until Element Is Visible    id=phone_number-label
-    Input Text    id=phone_number    0891234568
+    Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    natt1@gmail.com
+    Input Text    name=email    nawaporns@com
     Wait Until Element Is Visible    id=password-label
-    Input Text    id=password    23456789l1
-    
+    Input Text    id=password    12345678bs
+    #วันเกิด
     Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
     Click Element    css=#register-form > div:nth-child(6) > div > div > button
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
@@ -183,7 +183,7 @@ TC2004การสมัครสมาชิกไม่กรอกUsername
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
+    #เพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
@@ -196,18 +196,18 @@ TC2005การสมัครสมาชิกไม่กรอกเบอ�
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nattavut2
+    Input Text    name=first_name    nawapor
     Wait Until Element Is Visible  id=last_name-label
-    Input Text    name=last_name    keawmaha2
+    Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    nattNa1
+    Input Text    id=username    dreams
     Wait Until Element Is Visible    id=phone_number-label
-    
+
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    natt1@gmail.com
+    Input Text    name=email    nawaporns@com
     Wait Until Element Is Visible    id=password-label
-    Input Text    id=password    23456789l1
-    
+    Input Text    id=password    12345678bs
+    #วันเกิด
     Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
     Click Element    css=#register-form > div:nth-child(6) > div > div > button
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
@@ -216,7 +216,7 @@ TC2005การสมัครสมาชิกไม่กรอกเบอ�
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
+    #เพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
@@ -229,17 +229,18 @@ TC2006การสมัครสมาชิกไม่กรอกอีเ�
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nattavut2
+    Input Text    name=first_name    nawapor
     Wait Until Element Is Visible  id=last_name-label
-    Input Text    name=last_name    keawmaha2
+    Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    nattNa1
+    Input Text    id=username    dreams
     Wait Until Element Is Visible    id=phone_number-label
-    Input Text    id=phone_number    0891234568
+    Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
+
     Wait Until Element Is Visible    id=password-label
-    Input Text    id=password    23456789l1
-    
+    Input Text    id=password    12345678bs
+    #วันเกิด
     Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
     Click Element    css=#register-form > div:nth-child(6) > div > div > button
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
@@ -248,7 +249,7 @@ TC2006การสมัครสมาชิกไม่กรอกอีเ�
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
+    #เพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
@@ -261,18 +262,18 @@ TC2007การสมัครสมาชิกไม่กรอกพาส�
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nattavut2
+    Input Text    name=first_name    nawapor
     Wait Until Element Is Visible  id=last_name-label
-    Input Text    name=last_name    keawmaha2
+    Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    nattNa1
+    Input Text    id=username    dreams
     Wait Until Element Is Visible    id=phone_number-label
-    Input Text    id=phone_number    0891234568
+    Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    natt1@gmail.com
+    Input Text    name=email    nawaporns@com
     Wait Until Element Is Visible    id=password-label
-   
-    
+
+    #วันเกิด
     Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
     Click Element    css=#register-form > div:nth-child(6) > div > div > button
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
@@ -281,7 +282,7 @@ TC2007การสมัครสมาชิกไม่กรอกพาส�
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
+    #เพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
@@ -294,27 +295,27 @@ TC2008การสมัครสมาชิกไม่กรอกวัน�
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nattavut2
+    Input Text    name=first_name    nawapor
     Wait Until Element Is Visible  id=last_name-label
-    Input Text    name=last_name    keawmaha2
+    Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    nattNa1
+    Input Text    id=username    dreams
     Wait Until Element Is Visible    id=phone_number-label
-    Input Text    id=phone_number    0891234568
+    Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    natt1@gmail.com
+    Input Text    name=email    nawaporns@com
     Wait Until Element Is Visible    id=password-label
-    Input Text    id=password    23456789l1
+    Input Text    id=password    12345678bs
+    #วันเกิด
+    #Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
+    #Click Element    css=#register-form > div:nth-child(6) > div > div > button
+    #Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
     
-    Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
-    Click Element    css=#register-form > div:nth-child(6) > div > div > button
-    Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
-    Click Button  xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button
 
-    Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
-    Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
-    Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
+    #Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
+    
+
+    #เพศ
     Click Element    xpath=//input[@name='gender' and @value='other']
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
@@ -327,18 +328,18 @@ TC2009การสมัครสมาชิกไม่กรอกเพศ
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nattavut2
+    Input Text    name=first_name    nawapor
     Wait Until Element Is Visible  id=last_name-label
-    Input Text    name=last_name    keawmaha2
+    Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    nattNa1
+    Input Text    id=username    dreams
     Wait Until Element Is Visible    id=phone_number-label
-    Input Text    id=phone_number    0891234568
+    Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    natt1@gmail.com
+    Input Text    name=email    nawaporns@com
     Wait Until Element Is Visible    id=password-label
-    Input Text    id=password    23456789l1
-    
+    Input Text    id=password    12345678bs
+    #วันเกิด
     Wait Until Element Is Visible    xpath=//input[@placeholder='MM/DD/YYYY' and @type='text']    timeout=10s
     Click Element    css=#register-form > div:nth-child(6) > div > div > button
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[1]/div[1]/button    20s
@@ -347,8 +348,7 @@ TC2009การสมัครสมาชิกไม่กรอกเพศ
     Wait Until Element Is Visible    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button    timeout=30s
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[103]/button
     Click Element    xpath=/html/body/div[2]/div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/button[5]
- 
-    Click Element    xpath=//input[@name='gender' and @value='other']
+    #เพศ
     Click Element    xpath=//button[contains(text(),'Register')]
     sleep    ${Delay}
     Check Title blog register8
