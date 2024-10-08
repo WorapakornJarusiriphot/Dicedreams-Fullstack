@@ -62,4 +62,5 @@ TC1502 ยกเลิกการเข้าร่วม
     Wait Until Page Contains     ผู้เข้าร่วมถูกลบออก!
     Sleep    ${Delay}
     Capture Page Screenshot  Photo/Viwearticle/TC1502.png
+    
     Close Browser
