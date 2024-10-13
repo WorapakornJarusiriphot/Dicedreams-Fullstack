@@ -62,15 +62,15 @@ TC2001การสมัครสมาชิก
     
     Click Button    id=register-button
     Click Button    id=first_name
-    Input Text    name=first_name    nawapors1
+    Input Text    name=first_name    nawapors2
     Wait Until Element Is Visible  id=last_name-label
     Input Text    name=last_name    boongo
     Wait Until Element Is Visible    id=username-label
-    Input Text    id=username    dreams1
+    Input Text    id=username    dreams2
     Wait Until Element Is Visible    id=phone_number-label
     Input Text    id=phone_number    0987654321
     Wait Until Element Is Visible    xpath=//label[@id='email-label']/span
-    Input Text    name=email    nawaporns1@com
+    Input Text    name=email    nawaporns2@com
     Wait Until Element Is Visible    id=password-label
     Input Text    id=password    12345678bs
     #วันเกิด
