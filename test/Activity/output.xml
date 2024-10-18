@@ -1,154 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-09-22T19:14:22.544652" rpa="false" schemaversion="5">
-<suite id="s1" name="DeleteActivity" source="/Users/macbook/Desktop/TestDDream/Dicedreams-Fullstack/test/Activity/DeleteActivity.robot">
-<test id="s1-t1" name="TC1601ลบโพสต์กิจกรรม" line="23">
-<kw name="loginStore1">
-<kw name="Execute Javascript" owner="SeleniumLibrary">
-<msg time="2024-09-22T19:14:22.932641" level="INFO">Executing JavaScript:
-document.getElementById('identifier').click()
-Without any arguments.</msg>
-<msg time="2024-09-22T19:14:22.932720" level="INFO">Cannot capture screenshot because no browser is open.</msg>
-<msg time="2024-09-22T19:14:22.932855" level="FAIL">No browser is open.</msg>
-<arg>document.getElementById('identifier').click()</arg>
-<doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="FAIL" start="2024-09-22T19:14:22.932118" elapsed="0.008711">No browser is open.</status>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="identifier"]</arg>
-<arg>outcast</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.941183" elapsed="0.000062"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="password-label"]</arg>
-<arg>10s</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.941427" elapsed="0.000045"/>
-</kw>
-<kw name="Execute Javascript" owner="SeleniumLibrary">
-<arg>document.getElementById("password").click()</arg>
-<doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.941639" elapsed="0.000039"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<arg>name=password</arg>
-<arg>111111</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.941807" elapsed="0.000035"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=/html/body/main/div/form/button</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.941967" elapsed="0.000034"/>
-</kw>
-<status status="FAIL" start="2024-09-22T19:14:22.931227" elapsed="0.010949">No browser is open.</status>
-</kw>
+<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-10-17T22:14:40.909577" rpa="false" schemaversion="5">
+<suite id="s1" name="Activity" source="/Users/macbook/Desktop/TestDDream/Dicedreams-Fullstack/test/Activity/Activity.robot">
+<test id="s1-t1" name="TC1601สร้างโพสต์กิจกรรม" line="27">
 <kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-17T22:14:41.338179" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app/'.</msg>
 <arg>${URL}</arg>
 <arg>${Browser}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.962182" elapsed="0.001866"/>
+<status status="PASS" start="2024-10-17T22:14:41.337735" elapsed="11.944838"/>
 </kw>
+<kw name="loginStore">
 <kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="MoreVertOutlinedIcon"]</arg>
+<msg time="2024-10-17T22:14:53.287885" level="INFO">Clicking button 'id=login-button'.</msg>
+<arg>id=login-button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.968580" elapsed="0.000176"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="Delete-PostActivity"]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.969337" elapsed="0.000057"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="Delete-Post"]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.969773" elapsed="0.000049"/>
-</kw>
-<kw name="Close Browser" owner="SeleniumLibrary">
-<doc>Closes the current browser.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.970131" elapsed="0.000040"/>
-</kw>
-<status status="FAIL" start="2024-09-22T19:14:22.929962" elapsed="0.040553">No browser is open.</status>
-</test>
-<test id="s1-t2" name="TC1602ลบโพสต์กิจกรรม" line="33">
-<kw name="loginStore1">
-<kw name="Execute Javascript" owner="SeleniumLibrary">
-<msg time="2024-09-22T19:14:22.976831" level="INFO">Executing JavaScript:
-document.getElementById('identifier').click()
-Without any arguments.</msg>
-<msg time="2024-09-22T19:14:22.977035" level="INFO">Cannot capture screenshot because no browser is open.</msg>
-<msg time="2024-09-22T19:14:22.977304" level="FAIL">No browser is open.</msg>
-<arg>document.getElementById('identifier').click()</arg>
-<doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="FAIL" start="2024-09-22T19:14:22.974928" elapsed="0.003454">No browser is open.</status>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="identifier"]</arg>
-<arg>outcast</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.978623" elapsed="0.000047"/>
+<status status="PASS" start="2024-10-17T22:14:53.286629" elapsed="0.351236"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="password-label"]</arg>
+<arg>xpath=//div[@id='login-form']/div</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.978826" elapsed="0.001656"/>
-</kw>
-<kw name="Execute Javascript" owner="SeleniumLibrary">
-<arg>document.getElementById("password").click()</arg>
-<doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.982418" elapsed="0.000130"/>
+<status status="PASS" start="2024-10-17T22:14:53.638167" elapsed="0.127949"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<arg>name=password</arg>
+<msg time="2024-10-17T22:14:53.767401" level="INFO">Typing text 'Outcast' into text field 'name=identifier'.</msg>
+<arg>name=identifier</arg>
+<arg>Outcast</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-17T22:14:53.766927" elapsed="0.669899"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-17T22:14:54.437352" level="INFO">Clicking button 'id=loginPassword'.</msg>
+<arg>id=loginPassword</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-17T22:14:54.437111" elapsed="0.088346"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-17T22:14:54.526021" level="INFO">Typing text '111111' into text field 'name=loginPassword'.</msg>
+<arg>name=loginPassword</arg>
 <arg>111111</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.982932" elapsed="0.000062"/>
+<status status="PASS" start="2024-10-17T22:14:54.525682" elapsed="0.354352"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=/html/body/main/div/form/button</arg>
+<msg time="2024-10-17T22:14:54.882079" level="INFO">Clicking button 'id=login-submit-button'.</msg>
+<arg>id=login-submit-button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.983150" elapsed="0.000036"/>
+<status status="PASS" start="2024-10-17T22:14:54.880273" elapsed="0.129329"/>
 </kw>
-<status status="FAIL" start="2024-09-22T19:14:22.973566" elapsed="0.009776">No browser is open.</status>
+<status status="PASS" start="2024-10-17T22:14:53.285691" elapsed="1.724082"/>
 </kw>
-<kw name="Open Browser" owner="SeleniumLibrary">
-<arg>${URL}</arg>
-<arg>${Browser}</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.984519" elapsed="0.000071"/>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-10-17T22:14:56.011554" level="INFO">Slept 1 second.</msg>
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-10-17T22:14:55.010337" elapsed="1.002117"/>
 </kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="MoreVertOutlinedIcon"]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.988171" elapsed="0.000380"/>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>id=username</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-10-17T22:14:56.013927" elapsed="1.052581"/>
 </kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="Delete-PostActivity"]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.989240" elapsed="0.001202"/>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2024-10-17T22:14:57.067447" level="INFO">Clicking element 'id=username'.</msg>
+<arg>id=username</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-17T22:14:57.067067" elapsed="0.231419"/>
 </kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="cancel"]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.991445" elapsed="0.000063"/>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//*[@id="root"]/div/main/div/div/div/div[2]/div[2]/div/div[1]/button</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-10-17T22:14:57.299589" elapsed="1.984321"/>
 </kw>
-<kw name="Close Browser" owner="SeleniumLibrary">
-<doc>Closes the current browser.</doc>
-<status status="NOT RUN" start="2024-09-22T19:14:22.991904" elapsed="0.000053"/>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2024-10-17T22:14:59.284939" level="INFO">Clicking element 'xpath=//*[@id="root"]/div/main/div/div/div/div[2]/div[2]/div/div[1]/button'.</msg>
+<msg time="2024-10-17T22:15:01.150731" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-1.png"&gt;&lt;img src="selenium-screenshot-1.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2024-10-17T22:15:01.153655" level="FAIL">ElementClickInterceptedException: Message: element click intercepted: Element &lt;button class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-16jj1rv" tabindex="0" type="button"&gt;...&lt;/button&gt; is not clickable at point (624, 538). Other element would receive the click: &lt;div class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorSuccess MuiAlert-standardSuccess MuiAlert-standard css-tx411y" role="alert" id="post-alert" direction="up" style="opacity: 1; transform: none; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);"&gt;...&lt;/div&gt;
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+0   chromedriver                        0x000000010b844d08 chromedriver + 4996360
+1   chromedriver                        0x000000010b83c5ca chromedriver + 4961738
+2   chromedriver                        0x000000010b3dfd10 chromedriver + 388368
+3   chromedriver                        0x000000010b432db6 chromedriver + 728502
+4   chromedriver                        0x000000010b430ccd chromedriver + 720077
+5   chromedriver                        0x000000010b42e797 chromedriver + 710551
+6   chromedriver                        0x000000010b42d64f chromedriver + 706127
+7   chromedriver                        0x000000010b421258 chromedriver + 655960
+8   chromedriver                        0x000000010b4509b2 chromedriver + 850354
+9   chromedriver                        0x000000010b420c48 chromedriver + 654408
+10  chromedriver                        0x000000010b450b6e chromedriver + 850798
+11  chromedriver                        0x000000010b46ea00 chromedriver + 973312
+12  chromedriver                        0x000000010b450753 chromedriver + 849747
+13  chromedriver                        0x000000010b41f635 chromedriver + 648757
+14  chromedriver                        0x000000010b41fe5e chromedriver + 650846
+15  chromedriver                        0x000000010b80aff0 chromedriver + 4759536
+16  chromedriver                        0x000000010b80ff08 chromedriver + 4779784
+17  chromedriver                        0x000000010b8105d5 chromedriver + 4781525
+18  chromedriver                        0x000000010b7eda99 chromedriver + 4639385
+19  chromedriver                        0x000000010b8108c9 chromedriver + 4782281
+20  chromedriver                        0x000000010b7df034 chromedriver + 4579380
+21  chromedriver                        0x000000010b82c9f8 chromedriver + 4897272
+22  chromedriver                        0x000000010b82cbf3 chromedriver + 4897779
+23  chromedriver                        0x000000010b83c1ce chromedriver + 4960718
+24  libsystem_pthread.dylib             0x00007fff208bf8fc _pthread_start + 224
+25  libsystem_pthread.dylib             0x00007fff208bb443 thread_start + 15
+</msg>
+<arg>xpath=//*[@id="root"]/div/main/div/div/div/div[2]/div[2]/div/div[1]/button</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="FAIL" start="2024-10-17T22:14:59.284520" elapsed="1.907883">ElementClickInterceptedException: Message: element click intercepted: Element &lt;button class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-16jj1rv" tabindex="0" type="button"&gt;...&lt;/button&gt; is not clickable at point (624, 538). Other element would receive the click: &lt;div class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorSuccess MuiAlert-standardSuccess MuiAlert-standard css-tx411y" role="alert" id="post-alert" direction="up" style="opacity: 1; transform: none; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);"&gt;...&lt;/div&gt;
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+0   chromedriver                        0x000000010b844d08 chromedriver + 4996360
+1   chromedriver                        0x000000010b83c5ca chromedriver + 4961738
+2   chromedriver                        0x000000010b3dfd10 chromedriver + 388368
+3   chromedriver                        0x000000010b432db6 chromedriver + 7...
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x000000010b80aff0 chromedriver + 4759536
+16  chromedriver                        0x000000010b80ff08 chromedriver + 4779784
+17  chromedriver                        0x000000010b8105d5 chromedriver + 4781525
+18  chromedriver                        0x000000010b7eda99 chromedriver + 4639385
+19  chromedriver                        0x000000010b8108c9 chromedriver + 4782281
+20  chromedriver                        0x000000010b7df034 chromedriver + 4579380
+21  chromedriver                        0x000000010b82c9f8 chromedriver + 4897272
+22  chromedriver                        0x000000010b82cbf3 chromedriver + 4897779
+23  chromedriver                        0x000000010b83c1ce chromedriver + 4960718
+24  libsystem_pthread.dylib             0x00007fff208bf8fc _pthread_start + 224
+25  libsystem_pthread.dylib             0x00007fff208bb443 thread_start + 15</status>
 </kw>
-<status status="FAIL" start="2024-09-22T19:14:22.971088" elapsed="0.021200">No browser is open.</status>
+<status status="FAIL" start="2024-10-17T22:14:41.335988" elapsed="19.857815">ElementClickInterceptedException: Message: element click intercepted: Element &lt;button class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-16jj1rv" tabindex="0" type="button"&gt;...&lt;/button&gt; is not clickable at point (624, 538). Other element would receive the click: &lt;div class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-colorSuccess MuiAlert-standardSuccess MuiAlert-standard css-tx411y" role="alert" id="post-alert" direction="up" style="opacity: 1; transform: none; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.4, 0, 0.2, 1);"&gt;...&lt;/div&gt;
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+0   chromedriver                        0x000000010b844d08 chromedriver + 4996360
+1   chromedriver                        0x000000010b83c5ca chromedriver + 4961738
+2   chromedriver                        0x000000010b3dfd10 chromedriver + 388368
+3   chromedriver                        0x000000010b432db6 chromedriver + 7...
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x000000010b80aff0 chromedriver + 4759536
+16  chromedriver                        0x000000010b80ff08 chromedriver + 4779784
+17  chromedriver                        0x000000010b8105d5 chromedriver + 4781525
+18  chromedriver                        0x000000010b7eda99 chromedriver + 4639385
+19  chromedriver                        0x000000010b8108c9 chromedriver + 4782281
+20  chromedriver                        0x000000010b7df034 chromedriver + 4579380
+21  chromedriver                        0x000000010b82c9f8 chromedriver + 4897272
+22  chromedriver                        0x000000010b82cbf3 chromedriver + 4897779
+23  chromedriver                        0x000000010b83c1ce chromedriver + 4960718
+24  libsystem_pthread.dylib             0x00007fff208bf8fc _pthread_start + 224
+25  libsystem_pthread.dylib             0x00007fff208bb443 thread_start + 15</status>
 </test>
-<status status="FAIL" start="2024-09-22T19:14:22.548080" elapsed="0.444863"/>
+<status status="FAIL" start="2024-10-17T22:14:40.912572" elapsed="20.283822"/>
 </suite>
 <statistics>
 <total>
-<stat pass="0" fail="2" skip="0">All Tests</stat>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="0" fail="2" skip="0" id="s1" name="DeleteActivity">DeleteActivity</stat>
+<stat pass="0" fail="1" skip="0" id="s1" name="Activity">Activity</stat>
 </suite>
 </statistics>
 <errors>

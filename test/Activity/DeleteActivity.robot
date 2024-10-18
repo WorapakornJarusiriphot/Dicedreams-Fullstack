@@ -3,39 +3,36 @@ Library           SeleniumLibrary
 
 *** Variables ***
 ${Browser}  chrome
-${URL}    https://dicedreams-eta.vercel.app/sign-in
+${URL}   https://dicedreams-font-end.vercel.app/
 ${Delay}    1s
 
 
 
 *** Keywords ***
-loginStore1
+loginStore
    # Wait Until Element Is Visible    xpath=(//a[contains(@href, '/sign-in')])[2]
-    Execute Javascript    document.getElementById('identifier').click()
-    Input Text   xpath=//*[@id="identifier"]  outcast
-    Wait Until Element Is Visible    xpath=//*[@id="password-label"]    10s
-    Execute JavaScript    document.getElementById("password").click()
-    Input Text      name=password   111111 
-    Click Button    xpath=/html/body/main/div/form/button
+    Click Button    id=login-button
+    Wait Until Element Is Visible  xpath=//div[@id='login-form']/div  10s
+    Input Text      name=identifier   Outcast
+    Click Button   id=loginPassword
+    Input Text      name=loginPassword   111111
+    Click Button    id=login-submit-button
 
 
 *** Test Cases ***
-TC1601ลบโพสต์กิจกรรม
-    loginStore1
+TC1601Deleteโพสต์กิจกรรม 
     Open Browser    ${URL}    ${Browser}
-    Click Button    xpath=//*[@id="MoreVertOutlinedIcon"]
-    Click Button    xpath=//*[@id="Delete-PostActivity"]
-    Click Button    xpath=//*[@id="Delete-Post"]
-   
-    
-    Close Browser
-
-TC1602ลบโพสต์กิจกรรม
-    loginStore1
-    Open Browser    ${URL}    ${Browser}
-    Click Button    xpath=//*[@id="MoreVertOutlinedIcon"]
-    Click Button    xpath=//*[@id="Delete-PostActivity"]
-    Click Button    xpath=//*[@id="cancel"]
-   
-    
-    Close Browser
+    loginStore
+    sleep    ${Delay}
+    Wait Until Element Is Visible     xpath=//*[@id="root"]/div/main/header[1]/div/div[2]/div
+    Click Element    xpath=//*[@id="root"]/div/main/header[1]/div/div[2]/div
+    #ที่อยู่โพสต์
+    Wait Until Element Is Visible     xpath=//*[@id="root"]/div/main/div/div/div/div[2]/div[2]/div/div[2]/div[1]
+    #เมนู
+    Wait Until Element Is Visible     id=long-button
+    Click Element    id=long-button
+    Wait Until Element Is Visible     xpath=//*[@id="long-menu"]/div[3]/ul
+    #ลบ
+    sleep    ${Delay}
+    Scroll Element Into View  xpath=//*[@id="long-menu"]/div[3]/ul/li[2]
+    Click Element  xpath=//*[@id="long-menu"]/div[3]/ul/li[2]

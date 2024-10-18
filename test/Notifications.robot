@@ -3,33 +3,37 @@ Library           SeleniumLibrary
 
 *** Variables ***
 ${Browser}  chrome
-${URL}   https://dicedreams-eta.vercel.app/sign-in
+${URL}   https://dicedreams-font-end.vercel.app/
 ${Delay}    1s
 
 
 
 *** Keywords ***
-login check11
-   # Wait Until Element Is Visible    xpath=(//a[contains(@href, '/sign-in')])[2]
-    Execute Javascript    document.getElementById('identifier').click()
-    Input Text   xpath=//*[@id="identifier"]  WOJA2
-    Wait Until Element Is Visible    xpath=//*[@id="password-label"]    10s
-    Execute JavaScript    document.getElementById("password").click()
-    Input Text      name=password   111111 
-    Click Button    xpath=/html/body/main/div/form/button
+login check1
+    Click Button    id=login-button
+    Wait Until Element Is Visible  xpath=//div[@id='login-form']/div  10s
+    Input Text      name=identifier    WOJA2
+    Click Button   id=loginPassword
+    Input Text      name=loginPassword   111111
+    Click Button    id=login-submit-button
 
 
 
 *** Test Cases ***
 TCแจ้งเตือน
     Open Browser    ${URL}    ${Browser}
-    login check11
-    sleep    ${Delay}
-    Wait Until Element Is Visible    xpath=//*[@id="Notification"]
-    Click Element     xpath=//*[@id="Notification"]
-    sleep    ${Delay}
-    #Page Should Contain  ดีคับ
-    #sleep    ${Delay}
+    login check1
+    Sleep    ${Delay}
+    Wait Until Element Is Visible   id=menu-button    30s
+    Click Element    id=menu-button
+    Wait Until Element Is Visible    id=notifications-link   30s
+    Click Element  id=notifications-link
+    Sleep    ${Delay}
+    Sleep    ${Delay}
+    Sleep    ${Delay}
+    Wait Until Element Is Visible    //*[@id="notification-message-0"]
+    Sleep    ${Delay}
+    Page Should Contain  Message: test 
     Capture Page Screenshot  Photo/Viwearticle/TCแจ้งเตือน.png
 
     Close Browser
