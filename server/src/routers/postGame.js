@@ -45,7 +45,7 @@ const passportJWT = require('../middleware/passportJWT');
  *                 example: "18:00:00"
  *               games_image:
  *                 type: string
- *                 example: "2e0c0d0a-b71c-486b-a57f-7d85b6f7d558.jpeg"
+ *                 example: "https://dicedreams-images.s3.ap-southeast-2.amazonaws.com/images/2e0c0d0a-b71c-486b-a57f-7d85b6f7d558.jpeg"
  *               status_post:
  *                 type: string
  *                 example: "active"

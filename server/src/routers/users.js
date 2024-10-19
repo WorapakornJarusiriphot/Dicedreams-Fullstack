@@ -51,7 +51,7 @@ const authentication = require("../middleware/authentication");
  *                 example: "ชาย"
  *               user_image:
  *                 type: string
- *                 example: "a84f9cd9-3c1d-4cb2-ba88-a188c298d119.jpeg"
+ *                 example: "https://dicedreams-images.s3.ap-southeast-2.amazonaws.com/images/a84f9cd9-3c1d-4cb2-ba88-a188c298d119.jpeg"
  *     responses:
  *       201:
  *         description: The user was successfully created
@@ -208,7 +208,7 @@ router.get('/:id', [passportJWT.isLogin], userController.findOne);
  *                 example: "store"
  *               user_image:
  *                 type: string
- *                 example: "b3afd629-c2cb-4dfe-8657-157f9a567fb8.jpeg"
+ *                 example: "https://dicedreams-images.s3.ap-southeast-2.amazonaws.com/images/b3afd629-c2cb-4dfe-8657-157f9a567fb8.jpeg"
  *               bio:
  *                 type: string
  *                 example: "รักการเล่นบอร์ดเกมและชอบพบปะผู้คนใหม่ๆ มาร่วมสนุกกันนะ! ,มาเล่นบอร์ดเกมกับเรา ทุกคนจะได้พบเพื่อนใหม่และสนุกไปด้วยกัน! ,ความสนุกของบอร์ดเกมคือการสร้างความสัมพันธ์ที่ดี มาร่วมเป็นส่วนหนึ่งของเรา! ,เป็นนักสะสมบอร์ดเกมที่หลงใหลในทุกประเภท พร้อมแบ่งปันความสนุกกับทุกคน! ,การเล่นบอร์ดเกมคือวิธีที่ดีที่สุดในการผ่อนคลายและเชื่อมโยงกับผู้คน มาเล่นกันเถอะ! ,ชอบการวางกลยุทธ์และความท้าทายของบอร์ดเกม มาร่วมแข่งขันและสนุกไปด้วยกัน! ,ร่วมสนุกกับการเล่นบอร์ดเกมในบรรยากาศที่เป็นกันเองและเต็มไปด้วยเสียงหัวเราะ! ,ไม่ว่าคุณจะเป็นมือใหม่หรือมือโปร ก็สามารถมาร่วมเล่นบอร์ดเกมกับเราได้ทุกครั้ง! ,ชื่นชอบการสร้างความทรงจำที่ดีผ่านการเล่นบอร์ดเกม มาเป็นส่วนหนึ่งของประสบการณ์นี้กัน! ,บอร์ดเกมทำให้เราทุกคนใกล้ชิดกันมากขึ้น มาเล่นและสนุกไปพร้อมๆ กัน!"

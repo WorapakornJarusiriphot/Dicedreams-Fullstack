@@ -9,6 +9,16 @@ const path = require("path");
 const { promisify } = require("util");
 const writeFileAsync = promisify(fs.writeFile);
 const config = { DOMAIN: process.env.DOMAIN };
+const IMAGE_PATH = { IMAGE_PATH: process.env.IMAGE_PATH };
+const AWS = require("aws-sdk");
+const configs = require("../configs/config"); // ดึง config.js มาใช้
+
+// ตั้งค่า AWS SDK ให้เชื่อมต่อกับ S3
+const s3 = new AWS.S3({
+  accessKeyId: configs.AWS_ACCESS_KEY_ID,
+  secretAccessKey: configs.AWS_SECRET_ACCESS_KEY,
+  region: configs.AWS_REGION,
+});
 
 const User = db.user;
 
@@ -92,7 +102,7 @@ exports.findAll = async (req, res, next) => {
     const usersWithPhotoDomain = await users.map((user, index) => {
       return {
         ...user.dataValues,
-        user_image: `${config.DOMAIN}/images/${user.user_image}`,
+        user_image: `${user.user_image}`,
       };
     });
 
@@ -110,7 +120,7 @@ exports.findOne = (req, res, next) => {
       attributes: { exclude: ["password"] },
     })
       .then(async (data) => {
-        data.user_image = `${config.DOMAIN}/images/${data.user_image}`;
+        data.user_image = `${data.user_image}`;
 
         res.status(200).json(data);
       })
@@ -128,10 +138,23 @@ exports.update = async (req, res, next) => {
   try {
     const users_id = req.params.id;
 
-    let birthday;
+    // Handle user image
+    if (req.body.user_image) {
+      if (req.body.user_image.startsWith("data:image")) {
+        const user = await User.findByPk(users_id);
+        const uploadPath = path.resolve("./") + "/src/public/images/";
+
+        fs.unlink(uploadPath + user.user_image, function (err) {
+          if (err) console.log("File not found or already deleted.");
+        });
+
+        req.body.user_image = await saveImageToDisk(req.body.user_image);
+      }
+    }
+
     if (req.body.birthday) {
-      birthday = moment(req.body.birthday, "MM-DD-YYYY");
-      if (!birthday.isValid()) {
+      req.body.birthday = moment(req.body.birthday, "MM-DD-YYYY");
+      if (!req.body.birthday.isValid()) {
         res.status(400).send({
           message: "Invalid date format, please use MM-DD-YYYY",
         });
@@ -139,41 +162,12 @@ exports.update = async (req, res, next) => {
       }
     }
 
-    let passwordHash;
     if (req.body.password) {
       const salt = await bcrypt.genSalt(5);
-      passwordHash = await bcrypt.hash(req.body.password, salt);
+      req.body.password = await bcrypt.hash(req.body.password, salt);
     }
-    
-    let userImage;
-    if (req.body.user_image) {
-      if (req.body.user_image.startsWith("data:image")) {
-        userImage = await saveImageToDisk(req.body.user_image);
-      } else {
-        userImage = req.body.user_image;
-      }
-    }
-    const user = {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      username: req.body.username,
-      password: passwordHash || undefined,
-      email: req.body.email,
-      birthday: birthday || undefined,
-      phone_number: req.body.phone_number,
-      gender: req.body.gender,
-      bio: req.body.bio,
-      user_image: userImage || undefined,
-    };
 
-    // Remove undefined values
-    Object.keys(user).forEach((key) => {
-      if (user[key] === undefined) {
-        delete user[key];
-      }
-    });
-
-    const [updated] = await User.update(user, {
+    const [updated] = await User.update(req.body, {
       where: { users_id: users_id },
     });
 
@@ -196,7 +190,7 @@ exports.update = async (req, res, next) => {
       });
     } else {
       res.status(500).send({
-        message: `Error updating User with id=${req.params.id}`,
+        message: "Error updating User with id=" + users_id,
       });
     }
   }
@@ -265,27 +259,38 @@ exports.findByEmail = async (req, res, next) => {
 };
 
 async function saveImageToDisk(baseImage) {
-  const projectPath = path.resolve("./");
-
-  const uploadPath = `${projectPath}/src/public/images/`;
-
   const ext = baseImage.substring(
     baseImage.indexOf("/") + 1,
     baseImage.indexOf(";base64")
   );
 
-  let filename = "";
-  if (ext === "svg+xml") {
-    filename = `${uuidv4()}.svg`;
-  } else {
-    filename = `${uuidv4()}.${ext}`;
+  let filename = `${uuidv4()}.${ext}`;
+
+  const imageBuffer = Buffer.from(
+    baseImage.replace(/^data:image\/\w+;base64,/, ""),
+    "base64"
+  );
+
+  // ตรวจสอบว่าตัวแปร Bucket ถูกกำหนดหรือไม่
+  if (!process.env.S3_BUCKET_NAME) {
+    throw new Error("S3 Bucket name is missing in environment variables.");
   }
 
-  let image = decodeBase64Image(baseImage);
+  const params = {
+    Bucket: process.env.S3_BUCKET_NAME, // ใช้ตัวแปรจาก .env
+    Key: `images/${filename}`, // ตั้งชื่อไฟล์ที่ต้องการอัปโหลด
+    Body: imageBuffer,
+    ContentEncoding: "base64", // บอก S3 ว่าไฟล์นี้ถูกเข้ารหัสด้วย base64
+    ContentType: `image/${ext}`, // ประเภทของรูปภาพ
+  };
 
-  await writeFileAsync(uploadPath + filename, image.data, "base64");
-
-  return filename;
+  try {
+    const uploadResponse = await s3.upload(params).promise();
+    return uploadResponse.Location; // คืนค่า URL ของรูปภาพที่ถูกอัปโหลด
+  } catch (error) {
+    console.error("Error uploading image to S3:", error);
+    throw new Error("Failed to upload image to S3.");
+  }
 }
 
 function decodeBase64Image(base64Str) {
