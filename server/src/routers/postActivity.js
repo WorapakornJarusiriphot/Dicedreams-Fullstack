@@ -49,7 +49,7 @@ const passportJWT = require('../middleware/passportJWT');
  *                 example: "18:00:00"
  *               post_activity_image:
  *                 type: string
- *                 example: "1cd2498d-07fa-4ea5-83ef-c71781bc8cdf.jpeg"
+ *                 example: "https://dicedreams-images.s3.ap-southeast-2.amazonaws.com/images/1cd2498d-07fa-4ea5-83ef-c71781bc8cdf.jpeg"
  *               store_id:
  *                 type: string
  *                 example: "3594f82f-e3bf-11ee-9efc-30d0422f59c9"
@@ -60,6 +60,8 @@ const passportJWT = require('../middleware/passportJWT');
  *         description: Invalid input
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: You do not have permission to access this section. This section is for store access only. || ไม่มีสิทธิ์ใช้งานส่วนนี้ เฉพาะ store เท่านั้น
  */
 router.post("/", [passportJWT.isLogin, authentication.isStore], postActivityController.create);
 
@@ -301,7 +303,7 @@ router.get("/:id", [passportJWT.isLogin, authentication.isStoreOrUser], postActi
  *                 example: "17:00:00"
  *               post_activity_image:
  *                 type: string
- *                 example: "1cd2498d-07fa-4ea5-83ef-c71781bc8cdf.jpeg"
+ *                 example: "https://dicedreams-images.s3.ap-southeast-2.amazonaws.com/images/1cd2498d-07fa-4ea5-83ef-c71781bc8cdf.jpeg"
  *     responses:
  *       200:
  *         description: Activity post was updated successfully.
