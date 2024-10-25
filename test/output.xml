@@ -1,319 +1,526 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-10-14T00:25:00.910171" rpa="false" schemaversion="5">
-<suite id="s1" name="Chat" source="/Users/macbook/Desktop/TestDDream/Dicedreams-Fullstack/test/Chat.robot">
-<test id="s1-t1" name="TC1101พูดคุยเข้าผ่านปุ่มแชท" line="49">
+<robot generator="Robot 7.0 (Python 3.12.4 on darwin)" generated="2024-10-18T16:17:32.608599" rpa="false" schemaversion="5">
+<suite id="s1" name="Login" source="/Users/macbook/Desktop/TestDDream/Dicedreams-Fullstack/test/Login.robot">
+<test id="s1-t1" name="TC1001 การเข้าสู่ระบบ" line="42">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:01.255539" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app/'.</msg>
+<msg time="2024-10-18T16:17:33.027831" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app'.</msg>
 <arg>${URL}</arg>
 <arg>${Browser}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-10-14T00:25:01.254844" elapsed="11.796993"/>
+<status status="PASS" start="2024-10-18T16:17:33.026472" elapsed="46.763534"/>
 </kw>
-<kw name="login check">
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:13.110160" level="INFO">Clicking button 'id=login-button'.</msg>
+<msg time="2024-10-18T16:18:19.872710" level="INFO">Clicking button 'id=login-button'.</msg>
 <arg>id=login-button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:13.107666" elapsed="0.395960"/>
+<status status="PASS" start="2024-10-18T16:18:19.836075" elapsed="0.451577"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//div[@id='login-form']/div</arg>
 <arg>10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:13.504078" elapsed="0.047348"/>
+<status status="PASS" start="2024-10-18T16:18:20.288226" elapsed="0.147255"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:13.552127" level="INFO">Typing text 'dream' into text field 'name=identifier'.</msg>
-<arg>name=identifier</arg>
-<arg>dream</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:13.551718" elapsed="0.540833"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:14.093696" level="INFO">Clicking button 'id=loginPassword'.</msg>
-<arg>id=loginPassword</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:14.093080" elapsed="0.080926"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:14.174657" level="INFO">Typing text '00998877n' into text field 'name=loginPassword'.</msg>
-<arg>name=loginPassword</arg>
-<arg>00998877n</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:14.174327" elapsed="0.430341"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:14.605428" level="INFO">Clicking button 'id=login-submit-button'.</msg>
-<arg>id=login-submit-button</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:14.605027" elapsed="0.104119"/>
-</kw>
-<status status="PASS" start="2024-10-14T00:25:13.105438" elapsed="1.603864"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-10-14T00:25:15.710823" level="INFO">Slept 1 second.</msg>
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-10-14T00:25:14.709596" elapsed="1.002937"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>id=chat-button-99375271-5feb-4bdc-908e-8c13b8ec1979</arg>
-<arg>30s</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:15.730430" elapsed="1.455749"/>
-</kw>
-<kw name="Click Element" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:17.187133" level="INFO">Clicking element 'id=chat-button-99375271-5feb-4bdc-908e-8c13b8ec1979'.</msg>
-<arg>id=chat-button-99375271-5feb-4bdc-908e-8c13b8ec1979</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:17.186725" elapsed="0.213366"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="chat-container"]</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:17.400691" elapsed="1.113083"/>
-</kw>
-<kw name="Click Element" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:18.517111" level="INFO">Clicking element 'xpath=//*[@id="chat-container"]'.</msg>
-<arg>xpath=//*[@id="chat-container"]</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:18.516205" elapsed="0.055437"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>id=message-input</arg>
-<arg>30s</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:18.572017" elapsed="0.057011"/>
-</kw>
-<kw name="Click Element" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:18.629608" level="INFO">Clicking element 'id=message-input'.</msg>
-<arg>id=message-input</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:18.629356" elapsed="0.094124"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:18.724788" level="INFO">Typing text 'ดีค้าบ' into text field 'id=message-input'.</msg>
-<arg>id=message-input</arg>
-<arg>ดีค้าบ</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:18.724334" elapsed="0.261108"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:18.986071" level="INFO">Clicking button 'id=send-message-button'.</msg>
-<arg>id=send-message-button</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:18.985780" elapsed="0.150590"/>
-</kw>
-<kw name="Check Title blog1">
-<kw name="Page Should Contain" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:19.193055" level="INFO">Current page contains text 'ดีค้าบ'.</msg>
-<arg>ดีค้าบ</arg>
-<doc>Verifies that current page contains ``text``.</doc>
-<status status="PASS" start="2024-10-14T00:25:19.137975" elapsed="0.055199"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-10-14T00:25:20.193895" level="INFO">Slept 1 second.</msg>
-<arg>1</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-10-14T00:25:19.193382" elapsed="1.000712"/>
-</kw>
-<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:20.835551" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Photo/Viwearticle/TC1101.png"&gt;&lt;img src="Photo/Viwearticle/TC1101.png" width="800px"&gt;&lt;/a&gt;</msg>
-<arg>Photo/Viwearticle/TC1101.png</arg>
-<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
-<status status="PASS" start="2024-10-14T00:25:20.194600" elapsed="0.641089"/>
-</kw>
-<status status="PASS" start="2024-10-14T00:25:19.137144" elapsed="1.698698"/>
-</kw>
-<kw name="Close Browser" owner="SeleniumLibrary">
-<doc>Closes the current browser.</doc>
-<status status="PASS" start="2024-10-14T00:25:20.836133" elapsed="0.317248"/>
-</kw>
-<status status="PASS" start="2024-10-14T00:25:01.252659" elapsed="19.903521"/>
-</test>
-<test id="s1-t2" name="TC1102พูดคุยเข้าผ่านแจ้งเตือน" line="66">
-<kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:21.161115" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app/'.</msg>
-<arg>${URL}</arg>
-<arg>${Browser}</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-10-14T00:25:21.159986" elapsed="3.232030"/>
-</kw>
-<kw name="login check1">
-<kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:24.396611" level="INFO">Clicking button 'id=login-button'.</msg>
-<arg>id=login-button</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:24.396239" elapsed="0.468424"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//div[@id='login-form']/div</arg>
-<arg>10s</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:24.865149" elapsed="0.051497"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:24.921211" level="INFO">Typing text 'WOJA2' into text field 'name=identifier'.</msg>
+<msg time="2024-10-18T16:18:20.436618" level="INFO">Typing text 'WOJA2' into text field 'name=identifier'.</msg>
 <arg>name=identifier</arg>
 <arg>WOJA2</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:24.920323" elapsed="0.500795"/>
+<status status="PASS" start="2024-10-18T16:18:20.436264" elapsed="0.981383"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:25.422003" level="INFO">Clicking button 'id=loginPassword'.</msg>
+<msg time="2024-10-18T16:18:21.421638" level="INFO">Clicking button 'id=loginPassword'.</msg>
 <arg>id=loginPassword</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:25.421539" elapsed="0.081193"/>
+<status status="PASS" start="2024-10-18T16:18:21.419542" elapsed="0.234612"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:25.503183" level="INFO">Typing text '111111' into text field 'name=loginPassword'.</msg>
+<msg time="2024-10-18T16:18:21.656844" level="INFO">Typing text '111111' into text field 'name=loginPassword'.</msg>
 <arg>name=loginPassword</arg>
 <arg>111111</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:25.502949" elapsed="0.346894"/>
+<status status="PASS" start="2024-10-18T16:18:21.656513" elapsed="0.399666"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:25.852818" level="INFO">Clicking button 'id=login-submit-button'.</msg>
+<msg time="2024-10-18T16:18:22.057050" level="INFO">Clicking button 'id=login-submit-button'.</msg>
 <arg>id=login-submit-button</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:25.851530" elapsed="0.103684"/>
+<status status="PASS" start="2024-10-18T16:18:22.056793" elapsed="0.214662"/>
 </kw>
-<status status="PASS" start="2024-10-14T00:25:24.395613" elapsed="1.560018"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-10-14T00:25:26.957511" level="INFO">Slept 1 second.</msg>
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-10-14T00:25:25.956413" elapsed="1.001408"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>id=menu-button</arg>
-<arg>30s</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:26.958742" elapsed="0.952643"/>
-</kw>
-<kw name="Click Element" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:27.912130" level="INFO">Clicking element 'id=menu-button'.</msg>
-<arg>id=menu-button</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:27.911833" elapsed="0.133234"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>id=notifications-link</arg>
-<arg>30s</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:28.054577" elapsed="0.088994"/>
-</kw>
-<kw name="Click Element" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:28.144428" level="INFO">Clicking element 'id=notifications-link'.</msg>
-<arg>id=notifications-link</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:28.144053" elapsed="0.676141"/>
+<kw name="Check Title blog">
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>เข้าสู่ระบบสำเร็จ</arg>
+<arg>10s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2024-10-18T16:18:22.298840" elapsed="0.942586"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
-<msg time="2024-10-14T00:25:29.822494" level="INFO">Slept 1 second.</msg>
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-10-14T00:25:28.821206" elapsed="1.001480"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-10-14T00:25:30.824349" level="INFO">Slept 1 second.</msg>
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-10-14T00:25:29.823104" elapsed="1.001479"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-10-14T00:25:31.826143" level="INFO">Slept 1 second.</msg>
-<arg>${Delay}</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-10-14T00:25:30.825411" elapsed="1.001064"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="notification-message-0"]</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:31.828558" elapsed="3.045412"/>
-</kw>
-<kw name="Click Element" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:34.874845" level="INFO">Clicking element 'xpath=//*[@id="notification-message-0"]'.</msg>
-<arg>xpath=//*[@id="notification-message-0"]</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:34.874488" elapsed="0.057423"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//*[@id="chat-container"]</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:34.932350" elapsed="0.980627"/>
-</kw>
-<kw name="Click Element" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:35.914233" level="INFO">Clicking element 'xpath=//*[@id="chat-container"]'.</msg>
-<arg>xpath=//*[@id="chat-container"]</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:35.913883" elapsed="0.089503"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>id=message-input</arg>
-<arg>30s</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2024-10-14T00:25:36.003966" elapsed="0.050768"/>
-</kw>
-<kw name="Click Element" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:36.055713" level="INFO">Clicking element 'id=message-input'.</msg>
-<arg>id=message-input</arg>
-<doc>Click the element identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:36.055444" elapsed="0.074331"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:36.131354" level="INFO">Typing text 'ดีค้าบ' into text field 'id=message-input'.</msg>
-<arg>id=message-input</arg>
-<arg>ดีค้าบ</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:36.130801" elapsed="0.168697"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:36.301823" level="INFO">Clicking button 'id=send-message-button'.</msg>
-<arg>id=send-message-button</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-14T00:25:36.301410" elapsed="0.113437"/>
-</kw>
-<kw name="Check Title blog2">
-<kw name="Page Should Contain" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:36.449943" level="INFO">Current page contains text 'ดีค้าบ'.</msg>
-<arg>ดีค้าบ</arg>
-<doc>Verifies that current page contains ``text``.</doc>
-<status status="PASS" start="2024-10-14T00:25:36.419983" elapsed="0.035969"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2024-10-14T00:25:37.458253" level="INFO">Slept 1 second.</msg>
+<msg time="2024-10-18T16:18:24.250158" level="INFO">Slept 1 second.</msg>
 <arg>1</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-10-14T00:25:36.457695" elapsed="1.000773"/>
+<status status="PASS" start="2024-10-18T16:18:23.248312" elapsed="1.002085"/>
 </kw>
 <kw name="Capture Page Screenshot" owner="SeleniumLibrary">
-<msg time="2024-10-14T00:25:38.020323" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Photo/Viwearticle/TC1102.png"&gt;&lt;img src="Photo/Viwearticle/TC1102.png" width="800px"&gt;&lt;/a&gt;</msg>
-<arg>Photo/Viwearticle/TC1102.png</arg>
+<msg time="2024-10-18T16:18:26.027952" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Photo/Viwearticle/TC1001.png"&gt;&lt;img src="Photo/Viwearticle/TC1001.png" width="800px"&gt;&lt;/a&gt;</msg>
+<arg>Photo/Viwearticle/TC1001.png</arg>
 <doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
-<status status="PASS" start="2024-10-14T00:25:37.458825" elapsed="0.561624"/>
+<status status="PASS" start="2024-10-18T16:18:24.250805" elapsed="1.777324"/>
 </kw>
-<status status="PASS" start="2024-10-14T00:25:36.417437" elapsed="1.603158"/>
+<status status="PASS" start="2024-10-18T16:18:22.293700" elapsed="3.734663"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary">
 <doc>Closes the current browser.</doc>
-<status status="PASS" start="2024-10-14T00:25:38.020893" elapsed="0.277908"/>
+<status status="PASS" start="2024-10-18T16:18:26.029030" elapsed="0.758482"/>
 </kw>
-<status status="PASS" start="2024-10-14T00:25:21.157371" elapsed="17.142125"/>
+<status status="PASS" start="2024-10-18T16:17:33.020412" elapsed="53.768148"/>
 </test>
-<status status="PASS" start="2024-10-14T00:25:00.911814" elapsed="37.391383"/>
+<test id="s1-t2" name="TC1002 การเข้าสู่ระบบโดยไม่กรอกชื่อ" line="53">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:18:26.870927" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app'.</msg>
+<arg>${URL}</arg>
+<arg>${Browser}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-10-18T16:18:26.869807" elapsed="16.009007"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:18:42.900329" level="INFO">Clicking button 'id=login-button'.</msg>
+<arg>id=login-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:18:42.894135" elapsed="0.500119"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[@id='login-form']/div</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-10-18T16:18:43.396002" elapsed="0.247886"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:18:43.645742" level="INFO">Clicking button 'id=loginPassword'.</msg>
+<arg>id=loginPassword</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:18:43.645203" elapsed="0.249308"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:18:43.911444" level="INFO">Typing text '111111' into text field 'name=loginPassword'.</msg>
+<arg>name=loginPassword</arg>
+<arg>111111</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:18:43.907942" elapsed="0.667502"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:18:44.576711" level="INFO">Clicking button 'id=login-submit-button'.</msg>
+<arg>id=login-submit-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:18:44.576124" elapsed="0.493076"/>
+</kw>
+<kw name="Check Title blog2">
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:18:45.178287" level="INFO">Current page contains text 'กรอก E-mail หรือ Username ไม่ถูกต้อง'.</msg>
+<arg>กรอก E-mail หรือ Username ไม่ถูกต้อง</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2024-10-18T16:18:45.079993" elapsed="0.099521"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-10-18T16:18:46.181242" level="INFO">Slept 1 second.</msg>
+<arg>1</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-10-18T16:18:45.179809" elapsed="1.001694"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:18:47.631807" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Photo/Viwearticle/TC1002.png"&gt;&lt;img src="Photo/Viwearticle/TC1002.png" width="800px"&gt;&lt;/a&gt;</msg>
+<arg>Photo/Viwearticle/TC1002.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2024-10-18T16:18:46.181982" elapsed="1.450153"/>
+</kw>
+<status status="PASS" start="2024-10-18T16:18:45.072826" elapsed="2.559799"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2024-10-18T16:18:47.633426" elapsed="0.551276"/>
+</kw>
+<status status="PASS" start="2024-10-18T16:18:26.795133" elapsed="21.392142"/>
+</test>
+<test id="s1-t3" name="TC1003 การเข้าสู่ระบบโดยไม่กรอกรหัสผ่าน" line="65">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:18:48.224521" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app'.</msg>
+<arg>${URL}</arg>
+<arg>${Browser}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-10-18T16:18:48.201711" elapsed="14.901687"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:19:03.146817" level="INFO">Clicking button 'id=login-button'.</msg>
+<arg>id=login-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:19:03.140407" elapsed="0.593131"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[@id='login-form']/div</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-10-18T16:19:03.736345" elapsed="0.097914"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:19:03.835078" level="INFO">Typing text 'WOJA2' into text field 'name=identifier'.</msg>
+<arg>name=identifier</arg>
+<arg>WOJA2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:19:03.834704" elapsed="0.668604"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:19:04.507416" level="INFO">Clicking button 'id=loginPassword'.</msg>
+<arg>id=loginPassword</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:19:04.505090" elapsed="0.179304"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:19:04.685764" level="INFO">Clicking button 'id=login-submit-button'.</msg>
+<arg>id=login-submit-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:19:04.685070" elapsed="0.585716"/>
+</kw>
+<kw name="Check Title blog3">
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:19:05.333554" level="INFO">Current page contains text 'กรอก Password ไม่ถูกต้อง'.</msg>
+<arg>กรอก Password ไม่ถูกต้อง</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2024-10-18T16:19:05.280017" elapsed="0.055476"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-10-18T16:19:06.348043" level="INFO">Slept 1 second.</msg>
+<arg>1</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-10-18T16:19:05.336057" elapsed="1.012172"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:19:08.171078" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Photo/Viwearticle/TC1003.png"&gt;&lt;img src="Photo/Viwearticle/TC1003.png" width="800px"&gt;&lt;/a&gt;</msg>
+<arg>Photo/Viwearticle/TC1003.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2024-10-18T16:19:06.348588" elapsed="1.825913"/>
+</kw>
+<status status="PASS" start="2024-10-18T16:19:05.274062" elapsed="2.902863"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2024-10-18T16:19:08.181365" elapsed="0.582275"/>
+</kw>
+<status status="PASS" start="2024-10-18T16:18:48.195061" elapsed="20.570836"/>
+</test>
+<test id="s1-t4" name="TC1004 การเข้าสู่ระบบโดยไม่กรอกอะไรเลย" line="77">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:19:08.808079" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app'.</msg>
+<msg time="2024-10-18T16:19:36.585215" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10d545d60&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/54c790a591476ab973ee6f831df3436f/screenshot</msg>
+<msg time="2024-10-18T16:19:36.591803" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10d545e80&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/54c790a591476ab973ee6f831df3436f/screenshot</msg>
+<msg time="2024-10-18T16:19:36.593240" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10d546090&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/54c790a591476ab973ee6f831df3436f/screenshot</msg>
+<msg time="2024-10-18T16:19:36.637616" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: HTTPConnectionPool(host='localhost', port=49970): Max retries exceeded with url: /session/54c790a591476ab973ee6f831df3436f/screenshot (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10d5462d0&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</msg>
+<msg time="2024-10-18T16:19:36.662553" level="FAIL">ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))</msg>
+<arg>${URL}</arg>
+<arg>${Browser}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="FAIL" start="2024-10-18T16:19:08.801993" elapsed="28.076006">ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))</status>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=login-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-18T16:19:36.900607" elapsed="0.000206"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[@id='login-form']/div</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-18T16:19:36.901554" elapsed="0.000064"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=loginPassword</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-18T16:19:36.902332" elapsed="0.000063"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=login-submit-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-18T16:19:36.902839" elapsed="0.000095"/>
+</kw>
+<kw name="Check Title blog4">
+<status status="NOT RUN" start="2024-10-18T16:19:36.905141" elapsed="0.004054"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2024-10-18T16:19:36.910556" elapsed="0.000083"/>
+</kw>
+<status status="FAIL" start="2024-10-18T16:19:08.773356" elapsed="28.140033">ProtocolError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))</status>
+</test>
+<test id="s1-t5" name="TC1005 การเข้าสู่ระบบโดยกรอกรหัสผิด" line="89">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:19:36.946675" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app'.</msg>
+<arg>${URL}</arg>
+<arg>${Browser}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-10-18T16:19:36.941378" elapsed="72.733261"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:20:49.723068" level="INFO">Clicking button 'id=login-button'.</msg>
+<arg>id=login-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:20:49.698099" elapsed="0.490714"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[@id='login-form']/div</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2024-10-18T16:20:50.189378" elapsed="0.145479"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:20:50.335824" level="INFO">Typing text 'WOJA2' into text field 'name=identifier'.</msg>
+<arg>name=identifier</arg>
+<arg>WOJA2</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:20:50.335449" elapsed="1.374144"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:20:51.731133" level="INFO">Clicking button 'id=loginPassword'.</msg>
+<arg>id=loginPassword</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:20:51.722184" elapsed="0.236799"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:20:51.964666" level="INFO">Typing text '45643265657' into text field 'name=loginPassword'.</msg>
+<arg>name=loginPassword</arg>
+<arg>45643265657</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:20:51.962026" elapsed="0.311740"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:20:52.274484" level="INFO">Clicking button 'id=login-submit-button'.</msg>
+<arg>id=login-submit-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-18T16:20:52.274166" elapsed="0.115459"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-10-18T16:20:53.395853" level="INFO">Slept 1 second.</msg>
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-10-18T16:20:52.390403" elapsed="1.005645"/>
+</kw>
+<kw name="Check Title blog5">
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:20:53.423760" level="INFO">Current page contains text 'Incorrect Password !'.</msg>
+<arg>Incorrect Password !</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2024-10-18T16:20:53.398827" elapsed="0.025038"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-10-18T16:20:54.450189" level="INFO">Slept 1 second.</msg>
+<arg>1</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-10-18T16:20:53.424057" elapsed="1.026389"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:20:58.926717" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="Photo/Viwearticle/TC1005.png"&gt;&lt;img src="Photo/Viwearticle/TC1005.png" width="800px"&gt;&lt;/a&gt;</msg>
+<arg>Photo/Viwearticle/TC1005.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2024-10-18T16:20:54.451069" elapsed="4.478882"/>
+</kw>
+<status status="PASS" start="2024-10-18T16:20:53.397600" elapsed="5.534380"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2024-10-18T16:20:58.935506" elapsed="0.629324"/>
+</kw>
+<status status="PASS" start="2024-10-18T16:19:36.935380" elapsed="82.630364"/>
+</test>
+<test id="s1-t6" name="TC1006 การเข้าสู่ระบบโดยกรอกชื่อผิด" line="101">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:20:59.585997" level="INFO">Opening browser 'chrome' to base url 'https://dicedreams-font-end.vercel.app'.</msg>
+<arg>${URL}</arg>
+<arg>${Browser}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-10-18T16:20:59.582713" elapsed="17.974803"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-18T16:21:17.583660" level="INFO">Clicking button 'id=login-button'.</msg>
+<msg time="2024-10-18T16:21:17.592221" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+0   chromedriver                        0x0000000101df0d08 chromedriver + 4996360
+1   chromedriver                        0x0000000101de85ca chromedriver + 4961738
+2   chromedriver                        0x000000010198bd10 chromedriver + 388368
+3   chromedriver                        0x000000010196344f chromedriver + 222287
+4   chromedriver                        0x0000000101a049fd chromedriver + 883197
+5   chromedriver                        0x0000000101a1a3f9 chromedriver + 971769
+6   chromedriver                        0x00000001019fc753 chromedriver + 849747
+7   chromedriver                        0x00000001019cb635 chromedriver + 648757
+8   chromedriver                        0x00000001019cbe5e chromedriver + 650846
+9   chromedriver                        0x0000000101db6ff0 chromedriver + 4759536
+10  chromedriver                        0x0000000101dbbf08 chromedriver + 4779784
+11  chromedriver                        0x0000000101dbc5d5 chromedriver + 4781525
+12  chromedriver                        0x0000000101d99a99 chromedriver + 4639385
+13  chromedriver                        0x0000000101dbc8c9 chromedriver + 4782281
+14  chromedriver                        0x0000000101d8b034 chromedriver + 4579380
+15  chromedriver                        0x0000000101dd89f8 chromedriver + 4897272
+16  chromedriver                        0x0000000101dd8bf3 chromedriver + 4897779
+17  chromedriver                        0x0000000101de81ce chromedriver + 4960718
+18  libsystem_pthread.dylib             0x00007fff208bf8fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff208bb443 thread_start + 15
+</msg>
+<msg time="2024-10-18T16:21:17.595782" level="FAIL">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+0   chromedriver                        0x0000000101df0d08 chromedriver + 4996360
+1   chromedriver                        0x0000000101de85ca chromedriver + 4961738
+2   chromedriver                        0x000000010198bd10 chromedriver + 388368
+3   chromedriver                        0x000000010196344f chromedriver + 222287
+4   chromedriver                        0x0000000101a049fd chromedriver + 883197
+5   chromedriver                        0x0000000101a1a3f9 chromedriver + 971769
+6   chromedriver                        0x00000001019fc753 chromedriver + 849747
+7   chromedriver                        0x00000001019cb635 chromedriver + 648757
+8   chromedriver                        0x00000001019cbe5e chromedriver + 650846
+9   chromedriver                        0x0000000101db6ff0 chromedriver + 4759536
+10  chromedriver                        0x0000000101dbbf08 chromedriver + 4779784
+11  chromedriver                        0x0000000101dbc5d5 chromedriver + 4781525
+12  chromedriver                        0x0000000101d99a99 chromedriver + 4639385
+13  chromedriver                        0x0000000101dbc8c9 chromedriver + 4782281
+14  chromedriver                        0x0000000101d8b034 chromedriver + 4579380
+15  chromedriver                        0x0000000101dd89f8 chromedriver + 4897272
+16  chromedriver                        0x0000000101dd8bf3 chromedriver + 4897779
+17  chromedriver                        0x0000000101de81ce chromedriver + 4960718
+18  libsystem_pthread.dylib             0x00007fff208bf8fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff208bb443 thread_start + 15
+</msg>
+<arg>id=login-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="FAIL" start="2024-10-18T16:21:17.575026" elapsed="0.091911">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+0   chromedriver                        0x0000000101df0d08 chromedriver + 4996360
+1   chromedriver                        0x0000000101de85ca chromedriver + 4961738
+2   chromedriver                        0x000000010198bd10 chromedriver + 388368
+3   chromedriver                        0x000000010196344f chromedriver + 222287
+4   chromedriver                        0x0000000101a049fd chromedriver + 883197
+5   chromedriver                        0x0000000101a1a3f9 chromedriver + 971769
+6   chromedriver                        0x00000001019fc753 chromedriver + 849747
+7   chromedriver                        0x00000001019cb635 chromedriver + 648757
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x0000000101db6ff0 chromedriver + 4759536
+10  chromedriver                        0x0000000101dbbf08 chromedriver + 4779784
+11  chromedriver                        0x0000000101dbc5d5 chromedriver + 4781525
+12  chromedriver                        0x0000000101d99a99 chromedriver + 4639385
+13  chromedriver                        0x0000000101dbc8c9 chromedriver + 4782281
+14  chromedriver                        0x0000000101d8b034 chromedriver + 4579380
+15  chromedriver                        0x0000000101dd89f8 chromedriver + 4897272
+16  chromedriver                        0x0000000101dd8bf3 chromedriver + 4897779
+17  chromedriver                        0x0000000101de81ce chromedriver + 4960718
+18  libsystem_pthread.dylib             0x00007fff208bf8fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff208bb443 thread_start + 15</status>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[@id='login-form']/div</arg>
+<arg>10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2024-10-18T16:21:17.668201" elapsed="0.000075"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=identifier</arg>
+<arg>WOJA2frtdreesz</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-18T16:21:17.668762" elapsed="0.000056"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=loginPassword</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-18T16:21:17.669380" elapsed="0.000168"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<arg>name=loginPassword</arg>
+<arg>111111</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-18T16:21:17.669951" elapsed="0.000052"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=login-submit-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-18T16:21:17.670296" elapsed="0.000047"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>${Delay}</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2024-10-18T16:21:17.670844" elapsed="0.000157"/>
+</kw>
+<kw name="Check Title blog6">
+<status status="NOT RUN" start="2024-10-18T16:21:17.672260" elapsed="0.000101"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2024-10-18T16:21:17.672738" elapsed="0.002227"/>
+</kw>
+<status status="FAIL" start="2024-10-18T16:20:59.570298" elapsed="18.106536">NoSuchWindowException: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+0   chromedriver                        0x0000000101df0d08 chromedriver + 4996360
+1   chromedriver                        0x0000000101de85ca chromedriver + 4961738
+2   chromedriver                        0x000000010198bd10 chromedriver + 388368
+3   chromedriver                        0x000000010196344f chromedriver + 222287
+4   chromedriver                        0x0000000101a049fd chromedriver + 883197
+5   chromedriver                        0x0000000101a1a3f9 chromedriver + 971769
+6   chromedriver                        0x00000001019fc753 chromedriver + 849747
+7   chromedriver                        0x00000001019cb635 chromedriver + 648757
+    [ Message content over the limit has been removed. ]
+...romedriver                        0x0000000101db6ff0 chromedriver + 4759536
+10  chromedriver                        0x0000000101dbbf08 chromedriver + 4779784
+11  chromedriver                        0x0000000101dbc5d5 chromedriver + 4781525
+12  chromedriver                        0x0000000101d99a99 chromedriver + 4639385
+13  chromedriver                        0x0000000101dbc8c9 chromedriver + 4782281
+14  chromedriver                        0x0000000101d8b034 chromedriver + 4579380
+15  chromedriver                        0x0000000101dd89f8 chromedriver + 4897272
+16  chromedriver                        0x0000000101dd8bf3 chromedriver + 4897779
+17  chromedriver                        0x0000000101de81ce chromedriver + 4960718
+18  libsystem_pthread.dylib             0x00007fff208bf8fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff208bb443 thread_start + 15</status>
+</test>
+<status status="FAIL" start="2024-10-18T16:17:32.612106" elapsed="225.095457"/>
 </suite>
 <statistics>
 <total>
-<stat pass="2" fail="0" skip="0">All Tests</stat>
+<stat pass="4" fail="2" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="2" fail="0" skip="0" id="s1" name="Chat">Chat</stat>
+<stat pass="4" fail="2" skip="0" id="s1" name="Login">Login</stat>
 </suite>
 </statistics>
 <errors>
+<msg time="2024-10-18T16:19:36.585215" level="WARN">Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10d545d60&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/54c790a591476ab973ee6f831df3436f/screenshot</msg>
+<msg time="2024-10-18T16:19:36.591803" level="WARN">Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10d545e80&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/54c790a591476ab973ee6f831df3436f/screenshot</msg>
+<msg time="2024-10-18T16:19:36.593240" level="WARN">Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10d546090&gt;: Failed to establish a new connection: [Errno 61] Connection refused')': /session/54c790a591476ab973ee6f831df3436f/screenshot</msg>
+<msg time="2024-10-18T16:19:36.637616" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: HTTPConnectionPool(host='localhost', port=49970): Max retries exceeded with url: /session/54c790a591476ab973ee6f831df3436f/screenshot (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x10d5462d0&gt;: Failed to establish a new connection: [Errno 61] Connection refused'))</msg>
+<msg time="2024-10-18T16:21:17.592221" level="WARN">Keyword 'Capture Page Screenshot' could not be run on failure: Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=129.0.6668.101)
+Stacktrace:
+0   chromedriver                        0x0000000101df0d08 chromedriver + 4996360
+1   chromedriver                        0x0000000101de85ca chromedriver + 4961738
+2   chromedriver                        0x000000010198bd10 chromedriver + 388368
+3   chromedriver                        0x000000010196344f chromedriver + 222287
+4   chromedriver                        0x0000000101a049fd chromedriver + 883197
+5   chromedriver                        0x0000000101a1a3f9 chromedriver + 971769
+6   chromedriver                        0x00000001019fc753 chromedriver + 849747
+7   chromedriver                        0x00000001019cb635 chromedriver + 648757
+8   chromedriver                        0x00000001019cbe5e chromedriver + 650846
+9   chromedriver                        0x0000000101db6ff0 chromedriver + 4759536
+10  chromedriver                        0x0000000101dbbf08 chromedriver + 4779784
+11  chromedriver                        0x0000000101dbc5d5 chromedriver + 4781525
+12  chromedriver                        0x0000000101d99a99 chromedriver + 4639385
+13  chromedriver                        0x0000000101dbc8c9 chromedriver + 4782281
+14  chromedriver                        0x0000000101d8b034 chromedriver + 4579380
+15  chromedriver                        0x0000000101dd89f8 chromedriver + 4897272
+16  chromedriver                        0x0000000101dd8bf3 chromedriver + 4897779
+17  chromedriver                        0x0000000101de81ce chromedriver + 4960718
+18  libsystem_pthread.dylib             0x00007fff208bf8fc _pthread_start + 224
+19  libsystem_pthread.dylib             0x00007fff208bb443 thread_start + 15
+</msg>
 </errors>
 </robot>

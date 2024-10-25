@@ -20,7 +20,7 @@ loginStore
 
 
 *** Test Cases ***
-TC1601Deleteโพสต์กิจกรรม 
+TC1702Deleteโพสต์กิจกรรม 
     Open Browser    ${URL}    ${Browser}
     loginStore
     sleep    ${Delay}

@@ -44,7 +44,7 @@ login check
     #Capture Page Screenshot  Photo/Viwearticle/TC13
 #    Close Browser
 
-TC13.2ลบโพสต์นัดเล่น
+TC1301.2ลบโพสต์นัดเล่น
     Open Browser    ${URL}    ${Browser}
     login check
     sleep    ${Delay}
