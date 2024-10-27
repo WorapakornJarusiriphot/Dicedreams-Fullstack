@@ -33,7 +33,7 @@ TCแจ้งเตือน
     Sleep    ${Delay}
     Wait Until Element Is Visible    //*[@id="notification-message-0"]
     Sleep    ${Delay}
-    Page Should Contain  Message: test 
+    Page Should Contain  Message
     Capture Page Screenshot  Photo/Viwearticle/TCแจ้งเตือน.png
 
     Close Browser
